@@ -12,6 +12,8 @@
 		D364F4E226A529CC00357EAE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F4E126A529CC00357EAE /* HomeViewController.swift */; };
 		D364F4E726A529CD00357EAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D364F4E626A529CD00357EAE /* Assets.xcassets */; };
 		D364F4EA26A529CD00357EAE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D364F4E826A529CD00357EAE /* LaunchScreen.storyboard */; };
+		D364F4F526A53A8400357EAE /* CitizenMinimumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F4F426A53A8400357EAE /* CitizenMinimumCell.swift */; };
+		D364F4F826A53CB000357EAE /* CitizenMinimumData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F4F726A53CB000357EAE /* CitizenMinimumData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		D364F4E626A529CD00357EAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D364F4E926A529CD00357EAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D364F4EB26A529CD00357EAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D364F4F426A53A8400357EAE /* CitizenMinimumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenMinimumCell.swift; sourceTree = "<group>"; };
+		D364F4F726A53CB000357EAE /* CitizenMinimumData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenMinimumData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,8 @@
 		D364F4DC26A529CC00357EAE /* AnimateSample */ = {
 			isa = PBXGroup;
 			children = (
+				D364F4F626A53C8400357EAE /* Data */,
+				D364F4F326A53A6900357EAE /* View */,
 				D364F4DD26A529CC00357EAE /* AppDelegate.swift */,
 				D364F4DF26A529CC00357EAE /* SceneDelegate.swift */,
 				D364F4E126A529CC00357EAE /* HomeViewController.swift */,
@@ -62,6 +68,22 @@
 				D364F4EB26A529CD00357EAE /* Info.plist */,
 			);
 			path = AnimateSample;
+			sourceTree = "<group>";
+		};
+		D364F4F326A53A6900357EAE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D364F4F426A53A8400357EAE /* CitizenMinimumCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D364F4F626A53C8400357EAE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D364F4F726A53CB000357EAE /* CitizenMinimumData.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,7 +156,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D364F4E226A529CC00357EAE /* HomeViewController.swift in Sources */,
+				D364F4F826A53CB000357EAE /* CitizenMinimumData.swift in Sources */,
 				D364F4DE26A529CC00357EAE /* AppDelegate.swift in Sources */,
+				D364F4F526A53A8400357EAE /* CitizenMinimumCell.swift in Sources */,
 				D364F4E026A529CC00357EAE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
