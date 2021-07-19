@@ -10,6 +10,7 @@ import UIKit
 /// 주민 상세정보 화면
 class CitizenDetailViewController: UIViewController {
     var transitioningPushAnimator: UIViewControllerAnimatedTransitioning?
+    var transitioningPopAnimator: UIViewControllerAnimatedTransitioning?
     
     let profileImage = UIImageView()
     
@@ -26,7 +27,7 @@ class CitizenDetailViewController: UIViewController {
         profileImageHeight.priority = .defaultHigh
         NSLayoutConstraint.activate([
             profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            profileImage.topAnchor.constraint(equalTo: view.topAnchor),
             profileImage.widthAnchor.constraint(equalTo: view.widthAnchor),
             profileImageHeight,
             profileImage.heightAnchor.constraint(lessThanOrEqualToConstant: 400)
@@ -50,5 +51,9 @@ class CitizenDetailViewController: UIViewController {
 extension CitizenDetailViewController: TransitioningAnimatable {
     func pushAnimator() -> UIViewControllerAnimatedTransitioning? {
         return transitioningPushAnimator
+    }
+    
+    func popAnimator() -> UIViewControllerAnimatedTransitioning? {
+        return transitioningPopAnimator
     }
 }

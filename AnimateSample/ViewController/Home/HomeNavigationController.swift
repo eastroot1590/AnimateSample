@@ -21,13 +21,12 @@ class HomeNavigationController: UINavigationController {
 // MARK: UINavigationControllerDelegate
 extension HomeNavigationController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let transitioningViewController = self.transitioningViewController else {
-            return nil
-        }
-        
         switch operation {
         case .push:
-            return transitioningViewController.pushAnimator()
+            return transitioningViewController?.pushAnimator()
+            
+        case .pop:
+            return transitioningViewController?.popAnimator()
             
         default:
             return nil

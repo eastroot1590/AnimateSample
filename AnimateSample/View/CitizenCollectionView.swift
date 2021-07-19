@@ -65,10 +65,12 @@ extension CitizenCollectionView: UICollectionViewDataSource, UICollectionViewDel
         
         // Animator
         let transitioningPushAnimator = ExpandPushAnimator(selectedCell: selectedCell)
+        let transitioningPopAnimator = ExpandPopAnimator(selectedCell: selectedCell)
         
         // DetailViewController
         let citizenDetailViewController = CitizenDetailViewController(citizen: citizenMinimumList[indexPath.item])
         citizenDetailViewController.transitioningPushAnimator = transitioningPushAnimator
+        citizenDetailViewController.transitioningPopAnimator = transitioningPopAnimator
         
         // push
         // TODO: pushViewController만 호출하는 것으로 수정
