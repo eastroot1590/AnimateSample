@@ -47,8 +47,4 @@ extension CitizenMinimumCell: Expandable {
     var primeView: UIView {
         self.thumbnailImage
     }
-    
-//    func primeView() -> UIView {
-//        return thumbnailImage
-//    }
 }

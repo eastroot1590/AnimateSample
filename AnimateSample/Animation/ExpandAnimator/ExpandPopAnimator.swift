@@ -30,10 +30,12 @@ class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
         
         // 최종 프레임
         let finalFrame = selectedCell.convert(selectedCell.primeView.frame, to: transitionContext.containerView)
+        let finalBackgroundColor = selectedCell.primeView.backgroundColor
         
         // 애니메이션
         let animation = UIViewPropertyAnimator(duration: transitionDuration(using: transitionContext), dampingRatio: 0.75) {
             controller.view.frame = finalFrame
+            controller.view.backgroundColor = finalBackgroundColor
 
             controller.view.layoutIfNeeded()
         }

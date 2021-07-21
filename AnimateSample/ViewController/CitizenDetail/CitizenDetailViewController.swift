@@ -12,8 +12,9 @@ class CitizenDetailViewController: UIViewController {
     var transitioningPushAnimator: UIViewControllerAnimatedTransitioning?
     var transitioningPopAnimator: UIViewControllerAnimatedTransitioning?
     
-    /// 프로필 이미지 (배너)
-    let profileImage = UIImageView()
+    
+    /// 상세 폼
+    var detailForm: CitizenDetailForm!
     
     /// 뒤로가기 버튼
     let backButton = UIButton()
@@ -25,12 +26,16 @@ class CitizenDetailViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         
-        view.backgroundColor = .systemBackground
-        
-        // make detail form
-        profileImage.image = UIImage(named: citizenInfo.profileImage)
-        profileImage.contentMode = .scaleAspectFit
-        view.addSubview(profileImage)
+        // detail form
+        detailForm = CitizenDetailForm(profile: UIImage(named: citizenInfo.profileImage))
+        detailForm.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(detailForm)
+        NSLayoutConstraint.activate([
+            detailForm.topAnchor.constraint(equalTo: view.topAnchor),
+            detailForm.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            detailForm.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            detailForm.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         
         // back button
         backButton.setTitle("<", for: .normal)
@@ -59,6 +64,9 @@ class CitizenDetailViewController: UIViewController {
         super.viewDidAppear(animated)
         
         backButton.isHidden = false
+        
+        // fatch data
+        detailForm.fatch(citizenInfo)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -67,7 +75,7 @@ class CitizenDetailViewController: UIViewController {
         backButton.isHidden = true
     }
     
-    override func viewWillLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
         var leftTop: CGPoint
@@ -79,7 +87,7 @@ class CitizenDetailViewController: UIViewController {
             leftTop = CGPoint(x: view.safeAreaInsets.left, y: view.safeAreaInsets.top)
         }
         
-        profileImage.frame = CGRect(origin: leftTop, size: CGSize(width: view.frame.width, height: view.frame.height > 400 ? 400 : view.frame.height))
+        detailForm.frame.origin = leftTop
         
         backButton.frame.origin = CGPoint(x: leftTop.x + 20, y: leftTop.y + 20)
     }
