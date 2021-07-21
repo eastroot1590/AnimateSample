@@ -37,7 +37,7 @@ class CitizenMinimumCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initialize(data: CitizenMinimumData) {
+    func initialize(data: CitizenInfo) {
         thumbnailImage.image = UIImage(named: data.profileImage)
         nameLabel.text = data.name
     }

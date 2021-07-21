@@ -9,7 +9,7 @@ import UIKit
 
 /// 주민 목록을 표시하는 CollectionView
 class CitizenCollectionView: UICollectionView {
-    var citizenMinimumList: [CitizenMinimumData] = []
+    var citizenInfos: [CitizenInfo] = []
     
     override init(frame: CGRect, collectionViewLayout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: collectionViewLayout)
@@ -21,7 +21,7 @@ class CitizenCollectionView: UICollectionView {
         }
         
         do {
-            self.citizenMinimumList = try JSONDecoder().decode([CitizenMinimumData].self, from: citizenData.data)
+            self.citizenInfos = try JSONDecoder().decode([CitizenInfo].self, from: citizenData.data)
         } catch {
             print(error.localizedDescription)
             return
@@ -40,15 +40,15 @@ class CitizenCollectionView: UICollectionView {
 
 extension CitizenCollectionView: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return citizenMinimumList.count
+        return citizenInfos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CitizenMimimum", for: indexPath)
         
         if let citizenCell = cell as? CitizenMinimumCell,
-           indexPath.item < citizenMinimumList.count {
-            citizenCell.initialize(data: citizenMinimumList[indexPath.item])
+           indexPath.item < citizenInfos.count {
+            citizenCell.initialize(data: citizenInfos[indexPath.item])
             
             return citizenCell
         }
@@ -57,7 +57,7 @@ extension CitizenCollectionView: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard indexPath.item < citizenMinimumList.count,
+        guard indexPath.item < citizenInfos.count,
               let selectedCell = collectionView.cellForItem(at: indexPath) as? CitizenMinimumCell,
               let homeNavigation = rootNavigationController as? HomeNavigationController else {
             return
@@ -68,7 +68,7 @@ extension CitizenCollectionView: UICollectionViewDataSource, UICollectionViewDel
         let transitioningPopAnimator = ExpandPopAnimator(selectedCell: selectedCell)
         
         // DetailViewController
-        let citizenDetailViewController = CitizenDetailViewController(citizen: citizenMinimumList[indexPath.item])
+        let citizenDetailViewController = CitizenDetailViewController(citizenInfo: citizenInfos[indexPath.item])
         citizenDetailViewController.transitioningPushAnimator = transitioningPushAnimator
         citizenDetailViewController.transitioningPopAnimator = transitioningPopAnimator
         

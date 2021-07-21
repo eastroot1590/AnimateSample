@@ -9,7 +9,7 @@ import UIKit
 
 class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 5
+        return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -40,6 +40,7 @@ class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
         
         animation.addCompletion({ position in
             if position == .end {
+                self.selectedCell.primeView.isHidden = false
                 controller.view.removeFromSuperview()
             }
             

@@ -19,7 +19,7 @@
 		D364F4E726A529CD00357EAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D364F4E626A529CD00357EAE /* Assets.xcassets */; };
 		D364F4EA26A529CD00357EAE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D364F4E826A529CD00357EAE /* LaunchScreen.storyboard */; };
 		D364F4F526A53A8400357EAE /* CitizenMinimumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F4F426A53A8400357EAE /* CitizenMinimumCell.swift */; };
-		D364F4F826A53CB000357EAE /* CitizenMinimumData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F4F726A53CB000357EAE /* CitizenMinimumData.swift */; };
+		D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F4F726A53CB000357EAE /* CitizenInfo.swift */; };
 		D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */; };
 		D364F50C26A54A7700357EAE /* ExpandPushAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */; };
 		D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50E26A54B2800357EAE /* ExpandAnimator.swift */; };
@@ -40,7 +40,7 @@
 		D364F4E926A529CD00357EAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D364F4EB26A529CD00357EAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D364F4F426A53A8400357EAE /* CitizenMinimumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenMinimumCell.swift; sourceTree = "<group>"; };
-		D364F4F726A53CB000357EAE /* CitizenMinimumData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenMinimumData.swift; sourceTree = "<group>"; };
+		D364F4F726A53CB000357EAE /* CitizenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenInfo.swift; sourceTree = "<group>"; };
 		D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenDetailViewController.swift; sourceTree = "<group>"; };
 		D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandPushAnimator.swift; sourceTree = "<group>"; };
 		D364F50E26A54B2800357EAE /* ExpandAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandAnimator.swift; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 		D364F4F626A53C8400357EAE /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				D364F4F726A53CB000357EAE /* CitizenMinimumData.swift */,
+				D364F4F726A53CB000357EAE /* CitizenInfo.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -241,7 +241,7 @@
 				D3479A9126A570280006340F /* ExpandPopAnimator.swift in Sources */,
 				D364F4E226A529CC00357EAE /* HomeViewController.swift in Sources */,
 				D3479A8B26A559AE0006340F /* UIView+AnimateSample.swift in Sources */,
-				D364F4F826A53CB000357EAE /* CitizenMinimumData.swift in Sources */,
+				D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */,
 				D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */,
 				D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */,
 				D3479A8326A552270006340F /* HomeNavigationController.swift in Sources */,

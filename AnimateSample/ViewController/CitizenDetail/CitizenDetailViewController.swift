@@ -12,28 +12,37 @@ class CitizenDetailViewController: UIViewController {
     var transitioningPushAnimator: UIViewControllerAnimatedTransitioning?
     var transitioningPopAnimator: UIViewControllerAnimatedTransitioning?
     
+    /// 프로필 이미지 (배너)
     let profileImage = UIImageView()
     
-    init(citizen: CitizenMinimumData) {
+    /// 뒤로가기 버튼
+    let backButton = UIButton()
+    
+    let citizenInfo: CitizenInfo
+    
+    init(citizenInfo: CitizenInfo) {
+        self.citizenInfo = citizenInfo
+        
         super.init(nibName: nil, bundle: nil)
         
         view.backgroundColor = .systemBackground
         
-        profileImage.image = UIImage(named: citizen.profileImage)
+        // make detail form
+        profileImage.image = UIImage(named: citizenInfo.profileImage)
         profileImage.contentMode = .scaleAspectFit
-        profileImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileImage)
-        let profileImageHeight = profileImage.heightAnchor.constraint(equalTo: view.heightAnchor)
-        profileImageHeight.priority = .defaultHigh
-        NSLayoutConstraint.activate([
-            profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImage.topAnchor.constraint(equalTo: view.topAnchor),
-            profileImage.widthAnchor.constraint(equalTo: view.widthAnchor),
-            profileImageHeight,
-            profileImage.heightAnchor.constraint(lessThanOrEqualToConstant: 400)
-        ])
         
-        // TODO: load detail data
+        // back button
+        backButton.setTitle("<", for: .normal)
+        backButton.titleLabel?.font = .boldSystemFont(ofSize: 24)
+        backButton.frame.size = CGSize(width: 50, height: 50)
+        backButton.backgroundColor = UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        backButton.setTitleColor(.white, for: .normal)
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        backButton.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]
+        backButton.layer.cornerRadius = 25
+        view.addSubview(backButton)
+        backButton.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +53,39 @@ class CitizenDetailViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        backButton.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        backButton.isHidden = true
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        var leftTop: CGPoint
+        
+        // TODO: present 된 상태를 이렇게 말고 더 확실하게 식별할 수 있는 방법이 있을까?
+        if view.frame.width < UIScreen.main.bounds.width {
+            leftTop = .zero
+        } else {
+            leftTop = CGPoint(x: view.safeAreaInsets.left, y: view.safeAreaInsets.top)
+        }
+        
+        profileImage.frame = CGRect(origin: leftTop, size: CGSize(width: view.frame.width, height: view.frame.height > 400 ? 400 : view.frame.height))
+        
+        backButton.frame.origin = CGPoint(x: leftTop.x + 20, y: leftTop.y + 20)
+    }
+    
+    @objc func backButtonPressed() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

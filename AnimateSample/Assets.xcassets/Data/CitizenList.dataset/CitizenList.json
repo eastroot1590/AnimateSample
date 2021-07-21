@@ -1,26 +1,98 @@
 [
   {
-    "profileImage": "Mira",
-    "name": "미랑이"
-  },
-  {
-    "profileImage": "Bam",
-    "name": "록키"
-  },
-  {
     "profileImage": "Midge",
-    "name": "핑글이"
+    "iconImage": "MidgeM",
+    "name": "핑글이",
+    "signature": "핑그르르",
+    "species": "새",
+    "gender": "여성",
+    "tendency": "친절함",
+    "character": "평범한",
+    "birth": "3월 12일",
+    "constellation": "물고기자리",
+    "hobby": "교육",
+    "specialty": "빨리 말하기",
+    "dream": "프로 골퍼",
+    "favoriteSentence": "내 눈에 콩깍지"
   },
   {
-    "profileImage": "Bonbon",
-    "name": "미미"
+    "profileImage": "Mira",
+    "iconImage": "MiraM",
+    "name": "미랑",
+    "signature": "거봐라",
+    "species": "토끼",
+    "gender": "여성",
+    "tendency": "단순 활발",
+    "character": "언니같은",
+    "birth": "7월 6일",
+    "constellation": "게자리",
+    "hobby": "운동",
+    "specialty": "까불기",
+    "dream": "메이크업 아티스트",
+    "favoriteSentence": "구하라, 그러면 얻을 것이다"
   },
   {
     "profileImage": "Stu",
-    "name": "모리스"
+    "iconImage": "StuM",
+    "name": "모리스",
+    "signature": "알것소",
+    "species": "소",
+    "gender": "남성",
+    "tendency": "먹보",
+    "character": "게으른",
+    "birth": "4월 20일",
+    "constellation": "황소자리",
+    "hobby": "자연",
+    "specialty": "알람 끄고 다시 자기",
+    "dream": "소방수",
+    "favoriteSentence": "소가 성장하면 콧구멍도 열린다"
+  },
+  {
+    "profileImage": "Bam",
+    "iconImage": "BamM",
+    "name": "록키",
+    "signature": "슉슉",
+    "species": "사슴",
+    "gender": "남성",
+    "tendency": "운동광",
+    "character": "장난스러운",
+    "birth": "11월 7일",
+    "constellation": "전갈자리",
+    "hobby": "놀이",
+    "specialty": "백덤블링",
+    "dream": "축구 선수",
+    "favoriteSentence": "삼십육계가 제일"
+  },
+  {
+    "profileImage": "Bonbon",
+    "iconImage": "BonbonM",
+    "name": "미미",
+    "signature": "어뜨케",
+    "species": "토끼",
+    "gender": "여성",
+    "tendency": "아이돌",
+    "character": "활기찬",
+    "birth": "3월 3일",
+    "constellation": "물고기자리",
+    "hobby": "놀이",
+    "specialty": "많이 먹기",
+    "dream": "치어리더",
+    "favoriteSentence": "현지 집합, 현지 해산"
   },
   {
     "profileImage": "Klaus",
-    "name": "곰도로스"
+    "iconImage": "KlausM",
+    "name": "곰도로스",
+    "signature": "라저",
+    "species": "곰",
+    "gender": "남성",
+    "tendency": "느끼함",
+    "character": "잘난체하는",
+    "birth": "3월 31일",
+    "constellation": "양자리",
+    "hobby": "교육",
+    "specialty": "따지기",
+    "dream": "정치가",
+    "favoriteSentence": "모든 길은 로마로 통한다"
   }
 ]

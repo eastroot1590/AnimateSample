@@ -20,6 +20,10 @@ class HomeNavigationController: UINavigationController {
 
 // MARK: UINavigationControllerDelegate
 extension HomeNavigationController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        setNavigationBarHidden(!(viewController is HomeViewController), animated: true)
+    }
+    
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .push:
