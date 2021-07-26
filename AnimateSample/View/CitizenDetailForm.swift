@@ -15,6 +15,14 @@ class CitizenDetailForm: VStackScroll {
     
     let speciesSubject = SimpleSubject()
     let genderSubject = SimpleSubject()
+    let tendencySubject = SimpleSubject()
+    let characterSubject = SimpleSubject()
+    let birthSubject = SimpleSubject()
+    let constellationSubject = SimpleSubject()
+    let hobbySubject = SimpleSubject()
+    let dreamSubject = SimpleSubject()
+    let specialtySubject = SimpleSubject()
+    let favoriteSentenceSubjetc = SimpleSubject()
 
     init(frame: CGRect, profile: UIImage?) {
         super.init(frame: frame)
@@ -26,10 +34,18 @@ class CitizenDetailForm: VStackScroll {
         
         nameLabel.frame.size = CGSize(width: 0, height: UIFont.boldSystemFont(ofSize: 24).lineHeight)
         nameLabel.font = .boldSystemFont(ofSize: 24)
-        push(nameLabel, spacing: 10, offset: 10)
+        push(nameLabel, spacing: 20)
 
         push(speciesSubject, spacing: 10)
         push(genderSubject, spacing: 10)
+        push(tendencySubject, spacing: 10)
+        push(characterSubject, spacing: 10)
+        push(birthSubject, spacing: 10)
+        push(constellationSubject, spacing: 10)
+        push(hobbySubject, spacing: 10)
+        push(dreamSubject, spacing: 10)
+        push(specialtySubject, spacing: 10)
+        push(favoriteSentenceSubjetc, spacing: 10)
     }
     
     required init(coder: NSCoder) {
@@ -42,14 +58,16 @@ class CitizenDetailForm: VStackScroll {
         
         speciesSubject.fatch(title: "종", subject: citizenInfo.species)
         genderSubject.fatch(title: "성별", subject: citizenInfo.gender)
+        tendencySubject.fatch(title: "성향", subject: citizenInfo.tendency)
+        characterSubject.fatch(title: "성격", subject: citizenInfo.character)
+        birthSubject.fatch(title: "생일", subject: citizenInfo.birth)
+        constellationSubject.fatch(title: "별자리", subject: citizenInfo.constellation)
+        hobbySubject.fatch(title: "취미", subject: citizenInfo.hobby)
+        dreamSubject.fatch(title: "장래희망", subject: citizenInfo.dream)
+        specialtySubject.fatch(title: "장기", subject: citizenInfo.specialty)
+        favoriteSentenceSubjetc.fatch(title: "좋아하는 문장", subject: citizenInfo.favoriteSentence)
         
-        for _ in 0...10 {
-            let view = UIView()
-            view.frame.size = CGSize(width: 100, height: 100)
-            view.backgroundColor = .systemYellow
-            
-            push(view, spacing: 10)
-        }
+        contentView.layoutIfNeeded()
         
         contentView.playCascade()
     }

@@ -28,6 +28,7 @@
 		D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */; };
 		D364F50C26A54A7700357EAE /* ExpandPushAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */; };
 		D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50E26A54B2800357EAE /* ExpandAnimator.swift */; };
+		D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FC926AE6C0B00183BD3 /* HStackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenDetailViewController.swift; sourceTree = "<group>"; };
 		D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandPushAnimator.swift; sourceTree = "<group>"; };
 		D364F50E26A54B2800357EAE /* ExpandAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandAnimator.swift; sourceTree = "<group>"; };
+		D3A36FC926AE6C0B00183BD3 /* HStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				D345FCD326A7D4C100A9126C /* Stackable.swift */,
 				D345FCD526A7D4C100A9126C /* VStackScroll.swift */,
 				D345FCD426A7D4C100A9126C /* VStackView.swift */,
+				D3A36FC926AE6C0B00183BD3 /* HStackView.swift */,
 			);
 			path = StackView;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				D345FCD826A7D4C100A9126C /* VStackScroll.swift in Sources */,
 				D3479A8626A555EF0006340F /* TransitioningAnimatable.swift in Sources */,
 				D3479A8F26A563500006340F /* Expandable.swift in Sources */,
+				D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */,
 				D364F4F526A53A8400357EAE /* CitizenMinimumCell.swift in Sources */,
 				D364F4E026A529CC00357EAE /* SceneDelegate.swift in Sources */,
 				D3479A8D26A55A0D0006340F /* CitizenCollectionView.swift in Sources */,

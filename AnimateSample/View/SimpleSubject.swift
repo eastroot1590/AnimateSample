@@ -9,31 +9,36 @@ import UIKit
 
 /// 간단하게 제목과 내용으로 표현하는 view
 class SimpleSubject: UIView {
-    let layoutInset: UIEdgeInsets = UIEdgeInsets(top: 5, left: 30, bottom: 5, right: 5)
+    var padding: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    
+    var titleWidth: CGFloat = 100
     
     let titleLabel = UILabel()
     let subjectLabel = UILabel()
     
     init() {
         super.init(frame: .zero)
-
-        translatesAutoresizingMaskIntoConstraints = false
-        
-        let height = UIFont.boldSystemFont(ofSize: 16).lineHeight + layoutInset.top + layoutInset.bottom
         
         titleLabel.font = .boldSystemFont(ofSize: 16)
-        titleLabel.frame.origin = CGPoint(x: layoutInset.left, y: layoutInset.top)
+        titleLabel.numberOfLines = 0
+        titleLabel.preferredMaxLayoutWidth = 100
+        titleLabel.textAlignment = .right
         addSubview(titleLabel)
         
         subjectLabel.font = .systemFont(ofSize: 16)
-        subjectLabel.frame.origin = CGPoint(x: layoutInset.left + 50, y: layoutInset.top)
+        subjectLabel.numberOfLines = 0
         addSubview(subjectLabel)
-        
-        frame.size = CGSize(width: 0, height: height)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        titleLabel.frame = CGRect(origin: CGPoint(x: padding.left, y: padding.top), size: CGSize(width: titleWidth, height: titleLabel.frame.height))
+        subjectLabel.frame = CGRect(origin: CGPoint(x: padding.left + titleWidth + 20, y: padding.top), size: CGSize(width: frame.width - padding.right - 20 - titleWidth - padding.left, height: subjectLabel.frame.height))
+        
+        frame.size = CGSize(width: frame.width, height: max(titleLabel.frame.height, subjectLabel.frame.height) + padding.top + padding.bottom)
     }
     
     func fatch(title: String, subject: String) {

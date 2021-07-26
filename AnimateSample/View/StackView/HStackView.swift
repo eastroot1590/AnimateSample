@@ -1,19 +1,19 @@
 //
-//  VStackView.swift
-//  Aspasia
+//  HStackView.swift
+//  AnimateSample
 //
-//  Created by 이동근 on 2021/06/18.
+//  Created by 이동근 on 2021/07/26.
 //
 
 import UIKit
 
-class VStackView: UIView {
+class HStackView: UIView {
     var alignment: UIView.ContentMode = .center
     
     var stack: [Stackable] = []
     
     override init(frame: CGRect) {
-        super.init(frame: CGRect(origin: frame.origin, size: CGSize(width: frame.width, height: 0)))
+        super.init(frame: CGRect(origin: frame.origin, size: CGSize(width: 0, height: frame.height)))
     }
     
     required init?(coder: NSCoder) {
@@ -23,19 +23,19 @@ class VStackView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var height: CGFloat = 0
+        var width: CGFloat = 0
         
         for node in stack {
             if node.view.frame.width > 0 {
-                alignmentLayout(node.view, node.spacing, 0, minY: height)
+                alignmentLayout(node.view, node.spacing, 0, minX: width)
             } else {
-                fillLayout(node.view, node.spacing, 0, minY: height)
+                fillLayout(node.view, node.spacing, 0, minX: width)
             }
             
-            height += node.spacing + node.view.frame.height
+            width += node.spacing + node.view.frame.width
         }
         
-        frame.size = CGSize(width: frame.size.width, height: height)
+        frame.size = CGSize(width: width, height: frame.height)
     }
     
     /// VStackView에 view를 추가한다.
@@ -45,9 +45,9 @@ class VStackView: UIView {
     func push(_ child: UIView, spacing: CGFloat = 0, offset: CGFloat = 0) {
         // layout
         if child.frame.width > 0 {
-            alignmentLayout(child, spacing, offset, minY: frame.height)
+            alignmentLayout(child, spacing, offset, minX: frame.height)
         } else {
-            fillLayout(child, spacing, offset, minY: frame.height)
+            fillLayout(child, spacing, offset, minX: frame.height)
         }
         
         // add
@@ -62,7 +62,7 @@ class VStackView: UIView {
         var playing: Int = 0
         
         for node in stack {
-            node.view.transform = CGAffineTransform(translationX: 0, y: -20)
+            node.view.transform = CGAffineTransform(translationX: -20, y: 0)
             node.view.alpha = 0
             
             UIView.animate(withDuration: 0.1, delay: 0.05 * Double(playing), animations: {
@@ -74,16 +74,16 @@ class VStackView: UIView {
         }
     }
     
-    private func alignmentLayout(_ child: UIView, _ spacing: CGFloat, _ offset: CGFloat, minY: CGFloat) {
+    private func alignmentLayout(_ child: UIView, _ spacing: CGFloat, _ offset: CGFloat, minX: CGFloat) {
         // default center
-        var origin = CGPoint(x: frame.width / 2 - child.frame.width / 2, y: minY + spacing)
+        var origin = CGPoint(x: minX + spacing, y: frame.height / 2 - child.frame.height / 2)
         
         switch alignment {
-        case .left:
-            origin.x = 0 + offset
+        case .top:
+            origin.y = offset
             
-        case .right:
-            origin.x = frame.width - child.frame.width + offset
+        case .bottom:
+            origin.y = frame.height - child.frame.height + offset
             
         default:
             break
@@ -93,7 +93,7 @@ class VStackView: UIView {
         
     }
     
-    private func fillLayout(_ child: UIView, _ spacing: CGFloat, _ offset: CGFloat, minY: CGFloat) {
-        child.frame = CGRect(x: offset, y: minY + spacing, width: frame.width, height: child.frame.height)
+    private func fillLayout(_ child: UIView, _ spacing: CGFloat, _ offset: CGFloat, minX: CGFloat) {
+        child.frame = CGRect(x: minX + spacing, y: offset, width: child.frame.width, height: frame.height)
     }
 }
