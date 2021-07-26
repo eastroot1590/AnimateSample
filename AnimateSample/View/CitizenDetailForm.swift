@@ -50,5 +50,7 @@ class CitizenDetailForm: VStackScroll {
             
             push(view, spacing: 10)
         }
+        
+        contentView.playCascade()
     }
 }

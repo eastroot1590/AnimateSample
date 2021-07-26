@@ -65,6 +65,22 @@ class VStackView: UIView {
         stack.append(stackNode)
     }
     
+    func playCascade() {
+        var playing: Int = 0
+        
+        for node in stack {
+            node.view.transform = CGAffineTransform(translationX: 0, y: -20)
+            node.view.alpha = 0
+            
+            playing += 1
+            UIView.animate(withDuration: 0.1, delay: 0.05 * Double(playing), animations: {
+                print("\(playing) \(node.view.frame) \(UIScreen.main.bounds)")
+                node.view.alpha = 1
+                node.view.transform = .identity
+            })
+        }
+    }
+    
     private func alignmentLayout(_ child: UIView, _ spacing: CGFloat, _ offset: CGFloat, minY: CGFloat) {
         // default center
         var origin = CGPoint(x: frame.width / 2 - child.frame.width / 2, y: minY + spacing)
