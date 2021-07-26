@@ -9,32 +9,27 @@ import UIKit
 
 /// 간단하게 제목과 내용으로 표현하는 view
 class SimpleSubject: UIView {
+    let layoutInset: UIEdgeInsets = UIEdgeInsets(top: 5, left: 30, bottom: 5, right: 5)
+    
     let titleLabel = UILabel()
     let subjectLabel = UILabel()
     
     init() {
-        super.init(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 0)))
-        
+        super.init(frame: .zero)
+
         translatesAutoresizingMaskIntoConstraints = false
         
+        let height = UIFont.boldSystemFont(ofSize: 16).lineHeight + layoutInset.top + layoutInset.bottom
+        
         titleLabel.font = .boldSystemFont(ofSize: 16)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.frame.origin = CGPoint(x: layoutInset.left, y: layoutInset.top)
         addSubview(titleLabel)
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            titleLabel.widthAnchor.constraint(equalToConstant: 50)
-        ])
         
         subjectLabel.font = .systemFont(ofSize: 16)
-        subjectLabel.translatesAutoresizingMaskIntoConstraints = false
+        subjectLabel.frame.origin = CGPoint(x: layoutInset.left + 50, y: layoutInset.top)
         addSubview(subjectLabel)
-        NSLayoutConstraint.activate([
-            subjectLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            subjectLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 10),
-            subjectLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            bottomAnchor.constraint(equalTo: subjectLabel.bottomAnchor)
-        ])
+        
+        frame.size = CGSize(width: 0, height: height)
     }
     
     required init?(coder: NSCoder) {

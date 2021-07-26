@@ -25,9 +25,20 @@ class CitizenDetailViewController: UIViewController {
         self.citizenInfo = citizenInfo
         
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .systemBackground
         
         // detail form
-        detailForm = CitizenDetailForm(profile: UIImage(named: citizenInfo.profileImage))
+        detailForm = CitizenDetailForm(frame: view.frame, profile: UIImage(named: citizenInfo.profileImage))
+        detailForm.backgroundColor = .systemBackground
         detailForm.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(detailForm)
         NSLayoutConstraint.activate([
@@ -50,16 +61,6 @@ class CitizenDetailViewController: UIViewController {
         backButton.isHidden = true
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = .systemBackground
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -72,6 +73,8 @@ class CitizenDetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        detailForm.setContentOffset(.zero, animated: true)
+        detailForm.showsVerticalScrollIndicator = false
         backButton.isHidden = true
     }
     
@@ -86,8 +89,6 @@ class CitizenDetailViewController: UIViewController {
         } else {
             leftTop = CGPoint(x: view.safeAreaInsets.left, y: view.safeAreaInsets.top)
         }
-        
-        detailForm.frame.origin = leftTop
         
         backButton.frame.origin = CGPoint(x: leftTop.x + 20, y: leftTop.y + 20)
     }

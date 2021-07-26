@@ -8,25 +8,28 @@
 import UIKit
 
 class VStackScroll: UIScrollView {
-    let contentView: VStackView = VStackView()
+    var alignment: UIView.ContentMode {
+        get {
+            self.contentView.alignment
+        }
+        set {
+            self.contentView.alignment = newValue
+        }
+    }
     
-    // Sticky Header
-    var headerView: UIView?
-    var headerHeight: CGFloat = 0
+    var contentView: VStackView!
     
-    init() {
-        super.init(frame: .zero)
+    var bannerView: UIView?
+    var bannerHeight: CGFloat = 0
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        showsHorizontalScrollIndicator = false
+        
+        contentView = VStackView(frame: frame)
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(contentView)
-        let height = contentView.heightAnchor.constraint(equalTo: heightAnchor)
-        height.priority = .defaultHigh
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            contentView.widthAnchor.constraint(equalTo: widthAnchor),
-            height
-        ])
     }
     
     required init?(coder: NSCoder) {
@@ -36,30 +39,42 @@ class VStackScroll: UIScrollView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var origin: CGPoint = .zero
+        let offset = min(contentOffset.y, 0)
+        let bannerHeightMax = bannerHeight - offset
         
-        if frame.width < UIScreen.main.bounds.width {
-            origin = CGPoint(x: -safeAreaInsets.left, y: -safeAreaInsets.top)
+        bannerView?.frame.origin = CGPoint(x: 0, y: offset)
+        
+        if frame.height > bannerHeightMax {
+            bannerView?.frame.size = CGSize(width: frame.width, height: bannerHeightMax)
         } else {
-            origin = .zero
+            bannerView?.frame.size = frame.size
         }
         
-        headerView?.frame.origin = origin
-        headerView?.frame.size = CGSize(width: frame.width, height: frame.height > headerHeight ? headerHeight : frame.height)
+        resizeScrollBound()
     }
     
-    func push(_ stack: UIView, spacing: CGFloat) {
-        contentView.push(stack, spacing: spacing)
-        
-        contentView.layoutIfNeeded()
-        contentSize = contentView.frame.size
+    /// VStackScroll에 view를 추가한다.
+    /// - parameter stack : 추가할 view
+    /// - parameter spacing : 앞서 추가한 view와의 공백
+    /// - parameter offset : 수직축에 대한 offset
+    func push(_ stack: UIView, spacing: CGFloat = 0, offset: CGFloat = 0) {
+        contentView.push(stack, spacing: spacing, offset: offset)
     }
     
-    func pushHeader(_ stack: UIView, height: CGFloat) {
-        headerView = stack
-        headerHeight = height
+    func setBanner(_ banner: UIView, height: CGFloat) {
+        bannerView = banner
+        bannerHeight = height
         
-        contentView.addSubview(stack)
-        contentView.minHeight = height
+        addSubview(banner)
+        
+        // layout
+        banner.frame.origin = .zero
+        banner.frame.size = CGSize(width: frame.width, height: height)
+        
+        contentView.frame.origin = CGPoint(x: 0, y: height)
+    }
+    
+    private func resizeScrollBound() {
+        contentSize = CGSize(width: contentView.frame.width, height: bannerHeight + contentView.frame.height)
     }
 }

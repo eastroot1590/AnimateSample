@@ -16,17 +16,17 @@ class CitizenDetailForm: VStackScroll {
     let speciesSubject = SimpleSubject()
     let genderSubject = SimpleSubject()
 
-    init(profile: UIImage?) {
-        super.init()
+    init(frame: CGRect, profile: UIImage?) {
+        super.init(frame: frame)
         
         profileImage.image = profile
         profileImage.frame.size = CGSize(width: 400, height: 400)
         profileImage.contentMode = .scaleAspectFit
-        pushHeader(profileImage, height: 400)
+        setBanner(profileImage, height: 400)
         
-        nameLabel.frame.size = CGSize(width: 0, height: 40)
+        nameLabel.frame.size = CGSize(width: 0, height: UIFont.boldSystemFont(ofSize: 24).lineHeight)
         nameLabel.font = .boldSystemFont(ofSize: 24)
-        push(nameLabel, spacing: 0)
+        push(nameLabel, spacing: 10, offset: 10)
 
         push(speciesSubject, spacing: 10)
         push(genderSubject, spacing: 10)
@@ -42,5 +42,13 @@ class CitizenDetailForm: VStackScroll {
         
         speciesSubject.fatch(title: "종", subject: citizenInfo.species)
         genderSubject.fatch(title: "성별", subject: citizenInfo.gender)
+        
+        for _ in 0...10 {
+            let view = UIView()
+            view.frame.size = CGSize(width: 100, height: 100)
+            view.backgroundColor = .systemYellow
+            
+            push(view, spacing: 10)
+        }
     }
 }
