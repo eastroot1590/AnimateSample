@@ -48,9 +48,9 @@ class CitizenDetailViewController: UIViewController, TransitioningInteractable {
         ])
         
         // back button
-        backButton.setTitle("<", for: .normal)
+        backButton.setImage(UIImage(named: "arrowLeftW48"), for: .normal)
         backButton.titleLabel?.font = .boldSystemFont(ofSize: 24)
-        backButton.frame.size = CGSize(width: 50, height: 50)
+        backButton.frame.size = backButton.imageView?.frame.size ?? CGSize(width: 48, height: 48)
         backButton.backgroundColor = UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
         backButton.setTitleColor(.white, for: .normal)
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
@@ -60,8 +60,8 @@ class CitizenDetailViewController: UIViewController, TransitioningInteractable {
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            backButton.widthAnchor.constraint(equalToConstant: 50),
-            backButton.heightAnchor.constraint(equalToConstant: 50)
+            backButton.widthAnchor.constraint(equalToConstant: backButton.imageView?.frame.width ?? 48),
+            backButton.heightAnchor.constraint(equalToConstant: backButton.imageView?.frame.height ?? 48)
         ])
         
         backButton.isHidden = true
