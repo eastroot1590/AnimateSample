@@ -63,18 +63,12 @@ extension CitizenCollectionView: UICollectionViewDataSource, UICollectionViewDel
             return
         }
         
-        // Animator
-        let transitioningPushAnimator = ExpandPushAnimator(selectedCell: selectedCell)
-        let transitioningPopAnimator = ExpandPopAnimator(selectedCell: selectedCell)
-        
         // DetailViewController
         let citizenDetailViewController = CitizenDetailViewController(citizenInfo: citizenInfos[indexPath.item])
-        citizenDetailViewController.transitioningPushAnimator = transitioningPushAnimator
-        citizenDetailViewController.transitioningPopAnimator = transitioningPopAnimator
+        citizenDetailViewController.pushAnimator = ExpandPushAnimator(selectedCell: selectedCell)
+        citizenDetailViewController.popAnimator = ExpandPopAnimator(selectedCell: selectedCell)
         
         // push
-        // TODO: pushViewController만 호출하는 것으로 수정
-        homeNavigation.transitioningViewController = citizenDetailViewController
-        homeNavigation.pushViewController(citizenDetailViewController, animated: true)
+        homeNavigation.pushInteractivePopableViewController(citizenDetailViewController, animated: true)
     }
 }

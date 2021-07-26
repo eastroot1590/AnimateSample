@@ -29,6 +29,7 @@
 		D364F50C26A54A7700357EAE /* ExpandPushAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */; };
 		D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50E26A54B2800357EAE /* ExpandAnimator.swift */; };
 		D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FC926AE6C0B00183BD3 /* HStackView.swift */; };
+		D3A36FCC26AE83D100183BD3 /* TransitioningInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandPushAnimator.swift; sourceTree = "<group>"; };
 		D364F50E26A54B2800357EAE /* ExpandAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandAnimator.swift; sourceTree = "<group>"; };
 		D3A36FC926AE6C0B00183BD3 /* HStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackView.swift; sourceTree = "<group>"; };
+		D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitioningInteractable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				D3479A8526A555EF0006340F /* TransitioningAnimatable.swift */,
+				D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */,
 				D3479A8E26A563500006340F /* Expandable.swift */,
 			);
 			path = Protocol;
@@ -276,6 +279,7 @@
 				D3479A8326A552270006340F /* HomeNavigationController.swift in Sources */,
 				D345FCD626A7D4C100A9126C /* Stackable.swift in Sources */,
 				D364F50C26A54A7700357EAE /* ExpandPushAnimator.swift in Sources */,
+				D3A36FCC26AE83D100183BD3 /* TransitioningInteractable.swift in Sources */,
 				D364F4DE26A529CC00357EAE /* AppDelegate.swift in Sources */,
 				D345FCD826A7D4C100A9126C /* VStackScroll.swift in Sources */,
 				D3479A8626A555EF0006340F /* TransitioningAnimatable.swift in Sources */,

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ExpandAnimator: NSObject {
+class ExpandAnimator: UIPercentDrivenInteractiveTransition {
     let selectedCell: Expandable
     
     init(selectedCell: Expandable) {

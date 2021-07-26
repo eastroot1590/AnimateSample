@@ -8,39 +8,66 @@
 import UIKit
 
 class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
+    private var animatorForCurrentSession: UIViewImplicitlyAnimating?
+    
+    override func cancel() {
+        super.cancel()
+        
+        animatorForCurrentSession = nil
+    }
+    
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
+        return 1
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let controller = transitionContext.viewController(forKey: .from) else {
-            return
+        let animator = interruptibleAnimator(using: transitionContext)
+        animator.startAnimation()
+    }
+
+    func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+        if let animatorForCurrentSession = animatorForCurrentSession {
+            return animatorForCurrentSession
         }
         
+        var animator = UIViewPropertyAnimator()
+        
+        if let controller = transitionContext.viewController(forKey: .from) {
+            animator = generateAnimator(transitionContext, with: controller)
+            self.animatorForCurrentSession = animator
+        }
+        
+        return animator
+    }
+    
+    private func generateAnimator(_ transitionContext: UIViewControllerContextTransitioning, with controller: UIViewController) -> UIViewPropertyAnimator {
+        // 이전 화면
         if let toVC = transitionContext.viewController(forKey: .to) {
+            toVC.view.frame = transitionContext.finalFrame(for: toVC)
             transitionContext.containerView.addSubview(toVC.view)
         }
         
+        // 현재 화면
         transitionContext.containerView.addSubview(controller.view)
         
-        // 시작 프레임
+        // 현재 화면의 시작 프레임
         let initialFrame = transitionContext.initialFrame(for: controller)
         controller.view.frame = initialFrame
-        controller.view.layoutIfNeeded()
         
-        // 최종 프레임
-        let finalFrame = selectedCell.convert(selectedCell.primeView.frame, to: transitionContext.containerView)
+        // 현재 화면의 최종 프레임
+        var finalFrame = selectedCell.convert(selectedCell.primeView.frame, to: transitionContext.containerView)
+        finalFrame.origin = CGPoint(x: finalFrame.origin.x + transitionContext.containerView.safeAreaInsets.left, y: finalFrame.origin.y + transitionContext.containerView.safeAreaInsets.top)
         let finalBackgroundColor = selectedCell.primeView.backgroundColor
         
         // 애니메이션
-        let animation = UIViewPropertyAnimator(duration: transitionDuration(using: transitionContext), dampingRatio: 0.75) {
+        let animator = UIViewPropertyAnimator(duration: transitionDuration(using: transitionContext), dampingRatio: 0.75) {
             controller.view.frame = finalFrame
             controller.view.backgroundColor = finalBackgroundColor
 
             controller.view.layoutIfNeeded()
         }
         
-        animation.addCompletion({ position in
+        animator.addCompletion({ position in
             if position == .end {
                 self.selectedCell.primeView.isHidden = false
                 controller.view.removeFromSuperview()
@@ -49,6 +76,8 @@ class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
         
-        animation.startAnimation()
+        animator.isUserInteractionEnabled = true
+        
+        return animator
     }
 }
