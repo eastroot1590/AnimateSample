@@ -20,7 +20,7 @@ class TestViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(stack)
         
-        for _ in 0..<15 {
+        for _ in 0..<5 {
             let number = Number(integerDigitCount: 5, floatingDigitCount: 5)
             number.setFont(.boldSystemFont(ofSize: 24))
             number.setNumber(12345.78)
@@ -45,6 +45,7 @@ class TestViewController: UIViewController {
             if let number = node.view as? Number {
                 let newNumber = Double.random(in: 0...99999)
                 print("newNumber: \(newNumber)")
+                number.setFont(.boldSystemFont(ofSize: 32))
                 number.setNumber(newNumber)
             }
         }

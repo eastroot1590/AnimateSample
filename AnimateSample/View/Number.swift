@@ -187,7 +187,7 @@ class Number: UIView {
         self.number = number
         
         let mostLeftDigit = getMostLeftDigit()
-        let mostRightDigit = mostRightDigit()
+        let mostRightDigit = getMostRightDigit()
         
         // 정수부
         for digit in 0..<integerDigitCount {
@@ -224,7 +224,7 @@ class Number: UIView {
     
     /// 실수부에서 의미없는 0 자리를 제외한 가장 우측 자리
     /// - returns : 의미를 가지는 가장 우측 자리
-    private func mostRightDigit() -> Int {
+    private func getMostRightDigit() -> Int {
         for digit in (0..<floatingDigitCount).reversed() {
             let multiplier = Double(truncating: NSDecimalNumber(decimal: pow(10, digit + 1)))
             
