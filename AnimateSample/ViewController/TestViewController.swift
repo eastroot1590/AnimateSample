@@ -20,10 +20,10 @@ class TestViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(stack)
         
-        for _ in 0..<1 {
-            let number = Number(10)
+        for _ in 0..<15 {
+            let number = Number(integerDigitCount: 5, floatingDigitCount: 5)
             number.setFont(.boldSystemFont(ofSize: 24))
-            number.setNumber(UInt.random(in: 0...9999999999))
+            number.setNumber(12345.78)
             
             stack.push(number, spacing: 10)
         }
@@ -43,7 +43,7 @@ class TestViewController: UIViewController {
     @objc func touched() {
         for node in stack.stack {
             if let number = node.view as? Number {
-                let newNumber = UInt.random(in: 0...9999999999)
+                let newNumber = Double.random(in: 0...99999)
                 print("newNumber: \(newNumber)")
                 number.setNumber(newNumber)
             }

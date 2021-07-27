@@ -8,11 +8,20 @@
 import UIKit
 
 class Number: UIView {
-    let digitCount: UInt
-    /// 가장 우측부터 각 자리 숫자를 표시한다.
-    /// - [0] : 가장 낮은 자리
-    /// - [max] : 가장 높은 자리 (0 포함. 0을 포함하지 않는 가장 높은 자리는 getMostLeftDigit() 함수를 통해 계산)
-    var digitScrollLayers: [CAScrollLayer] = []
+    let integerDigitCount: Int
+    let floatingDigitCount: Int
+    
+    /// 가장 우측부터 각 자리 정수 숫자를 표시한다.
+    /// - [0] : 가장 작은 자리
+    /// - [max] : 가장 큰 자리 (0 포함. 0을 포함하지 않는 가장 큰 자리는 getMostLeftDigit() 함수를 통해 계산)
+    var integerDigits: [CAScrollLayer] = []
+    
+    var decimalPoint: CATextLayer?
+    
+    /// 가장 좌측부터 각 자리 실수 숫자를 표시한다.
+    /// - [0] : 가장 큰 자리
+    /// - [max] : 가장 작은 자리 (0 포함. 0을 포함하지 않는 가장 큰 자리는 getMostRightDigit() 함수를 통해 계산)
+    var floatingDigits: [CAScrollLayer] = []
         
     var digitWidth: CGFloat {
         font.pointSize * 0.75
@@ -20,13 +29,18 @@ class Number: UIView {
     var digitHeight: CGFloat {
         font.lineHeight
     }
+    var symbolWidth: CGFloat {
+        font.pointSize * 0.5
+    }
     
     var animationDuration: TimeInterval = 1
     var animationInerval: TimeInterval = 0.2
     
     private var font: UIFont = .systemFont(ofSize: 16)
     
-    private var number: UInt = 0
+    private var number: Double = 0
+//    private var integerOfNumber: Int = 0
+//    private var floatingOfNumber: Double = 0
     
     /// 숫자 한자리를 표시한다.
     private var digitScroll: CAScrollLayer {
@@ -48,16 +62,40 @@ class Number: UIView {
         return scrollLayer
     }
     
-    init(_ digitCount: UInt) {
-        self.digitCount = digitCount
+    init(integerDigitCount: Int, floatingDigitCount: Int = 0) {
+        self.integerDigitCount = max(0, integerDigitCount)
+        self.floatingDigitCount = max(0, floatingDigitCount)
         
         super.init(frame: .zero)
         
-        for _ in 0..<digitCount {
-            let digitScroll = digitScroll
-            layer.addSublayer(digitScroll)
+        // 정수부
+        for _ in 0..<integerDigitCount {
+            let digit = digitScroll
+            layer.addSublayer(digit)
             
-            digitScrollLayers.append(digitScroll)
+            integerDigits.append(digit)
+        }
+        
+        // 소숫점
+        if floatingDigitCount > 0 {
+            let decimalPoint = CATextLayer()
+            decimalPoint.string = "."
+            decimalPoint.alignmentMode = .center
+            decimalPoint.contentsScale = UIScreen.main.scale
+            decimalPoint.fontSize = font.pointSize
+            decimalPoint.font = font
+            decimalPoint.foregroundColor = UIColor.black.cgColor
+            layer.addSublayer(decimalPoint)
+            
+            self.decimalPoint = decimalPoint
+        }
+        
+        // 실수부
+        for _ in 0..<floatingDigitCount {
+            let digit = digitScroll
+            layer.addSublayer(digit)
+            
+            floatingDigits.append(digit)
         }
     }
     
@@ -71,11 +109,29 @@ class Number: UIView {
         let digitWidth = self.digitWidth
         let digitHeight = self.digitHeight
         
-        for digit in 0..<digitCount {
-            digitScrollLayers[Int(digit)].frame = CGRect(origin: CGPoint(x: CGFloat(digitCount - digit) * digitWidth - digitWidth, y: 0), size: CGSize(width: digitWidth, height: digitHeight))
+        var symbolWidth: CGFloat = 0
+        
+        // 소숫점
+        if floatingDigitCount > 0 {
+            symbolWidth += self.symbolWidth
+            decimalPoint?.frame = CGRect(origin: CGPoint(x: CGFloat(integerDigitCount) * digitWidth, y: 0), size: CGSize(width: self.symbolWidth, height: digitHeight))
         }
         
-        frame.size = CGSize(width: CGFloat(digitCount) * digitWidth, height: digitHeight)
+        // 정수부
+        for digit in 0..<integerDigitCount {
+            integerDigits[digit].frame = CGRect(origin: CGPoint(x: CGFloat(integerDigitCount - digit) * digitWidth - digitWidth, y: 0), size: CGSize(width: digitWidth, height: digitHeight))
+        }
+        
+        // 실수부
+        for digit in 0..<floatingDigitCount {
+            floatingDigits[digit].frame = CGRect(origin: CGPoint(x: CGFloat(integerDigitCount) * digitWidth + symbolWidth + CGFloat(digit) * digitWidth, y: 0), size: CGSize(width: digitWidth, height: digitHeight))
+        }
+        
+        // 전체
+        var newWidth: CGFloat = digitWidth * CGFloat(integerDigitCount)
+        newWidth += symbolWidth
+        newWidth += digitWidth * CGFloat(floatingDigitCount)
+        frame.size = CGSize(width: newWidth, height: digitHeight)
     }
     
     func setFont(_ font: UIFont) {
@@ -85,7 +141,29 @@ class Number: UIView {
         let digitWidth = self.digitWidth
         let digitHeight = self.digitHeight
         
-        digitScrollLayers.forEach { digitScroll in
+        // 정수부
+        integerDigits.forEach { digitScroll in
+            var index: CGFloat = 0
+            
+            digitScroll.sublayers?.forEach({ sublayer in
+                guard let subTextLayer = sublayer as? CATextLayer else {
+                    return
+                }
+                
+                subTextLayer.frame = CGRect(origin: CGPoint(x: 0, y: index * digitHeight), size: CGSize(width: digitWidth, height: digitHeight))
+                subTextLayer.font = font
+                subTextLayer.fontSize = font.pointSize
+                
+                index += 1
+            })
+        }
+        
+        // 소숫점
+        decimalPoint?.font = font
+        decimalPoint?.fontSize = font.pointSize
+        
+        // 실수부
+        floatingDigits.forEach { digitScroll in
             var index: CGFloat = 0
             
             digitScroll.sublayers?.forEach({ sublayer in
@@ -104,32 +182,59 @@ class Number: UIView {
         setNeedsLayout()
     }
     
-    func setNumber(_ number: UInt) {
-        self.number = min(number, UInt(10).pow(digitCount) - 1)
+    func setNumber(_ number: Double) {
+        // TODO: floatingDigitCount 이후 자리수는 반올림 하도록 할 수도 있을 것 같다.
+        self.number = number
         
         let mostLeftDigit = getMostLeftDigit()
+        let mostRightDigit = mostRightDigit()
         
-        for digit in 0..<digitCount {
-            let devider = UInt(10).pow(digit)
-            let digitNumber = (self.number / devider) % 10
+        // 정수부
+        for digit in 0..<integerDigitCount {
+            let devider = Int(truncating: NSDecimalNumber(decimal: pow(10, digit)))
+            let digitNumber = (Int(self.number) / devider) % 10
             
-            scrollTo(digitScrollLayers[Int(digit)], digitNumber: digitNumber, digit: digit, visible: digit <= mostLeftDigit)
+            scrollTo(integerDigits[Int(digit)], digitNumber: digitNumber, digit: digit, visible: digit <= mostLeftDigit)
+        }
+        
+        // 실수부
+        for digit in 0..<floatingDigitCount {
+            let multiplier = Double(truncating: NSDecimalNumber(decimal: pow(10, digit + 1)))
+            let digitNumber = Int(self.number * multiplier) % 10
+            
+            scrollTo(floatingDigits[digit], digitNumber: digitNumber, digit: digit, visible: digit <= mostRightDigit)
         }
     }
     
-    /// 의미없는 0 자리를 제외한 가장 좌측 자리
+    /// 정수부에서 의미없는 0 자리를 제외한 가장 좌측 자리
     /// - returns : 의미를 가지는 가장 좌측 자리
-    private func getMostLeftDigit() -> UInt {
-        for digit in (0..<digitCount).reversed() {
-            let devider = UInt(10).pow(digit)
+    private func getMostLeftDigit() -> Int {
+        for digit in (0..<integerDigitCount).reversed() {
+            let devider = Int(truncating: NSDecimalNumber(decimal: pow(10, digit)))
 
-            let value = number / devider
+            let digitNumber = Int(self.number) / devider
 
-            if value > 0 {
+            if digitNumber > 0 {
                 return digit
             }
         }
 
+        return 0
+    }
+    
+    /// 실수부에서 의미없는 0 자리를 제외한 가장 우측 자리
+    /// - returns : 의미를 가지는 가장 우측 자리
+    private func mostRightDigit() -> Int {
+        for digit in (0..<floatingDigitCount).reversed() {
+            let multiplier = Double(truncating: NSDecimalNumber(decimal: pow(10, digit + 1)))
+            
+            let digitNumber = Int(self.number * multiplier) % 10
+            
+            if digitNumber > 0 {
+                return digit
+            }
+        }
+        
         return 0
     }
     
@@ -139,7 +244,7 @@ class Number: UIView {
     /// - Parameter digitNumber : 해당 자리 숫자
     /// - Parameter digit : 자리
     /// - Parameter visible : 의미없는 0은 보이지 않게 스크롤
-    private func scrollTo(_ digitScroll: CAScrollLayer, digitNumber: UInt, digit: UInt, visible: Bool) {
+    private func scrollTo(_ digitScroll: CAScrollLayer, digitNumber: Int, digit: Int, visible: Bool) {
         let currentY: CGFloat = digitScroll.presentation()?.value(forKeyPath: "sublayerTransform.translation.y") as? CGFloat ?? 0
         let targetY = visible ? -CGFloat(digitNumber + 1) * digitHeight : 0
         
@@ -152,6 +257,7 @@ class Number: UIView {
         animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         animation.fillMode = .forwards
         animation.isRemovedOnCompletion = false
+        
         digitScroll.add(animation, forKey: "scroll")
     }
 }
