@@ -28,6 +28,9 @@
 		D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */; };
 		D364F50C26A54A7700357EAE /* ExpandPushAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */; };
 		D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50E26A54B2800357EAE /* ExpandAnimator.swift */; };
+		D378DA2926AF86BA00743BED /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378DA2826AF86BA00743BED /* TestViewController.swift */; };
+		D378DA2B26AF876E00743BED /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378DA2A26AF876E00743BED /* Number.swift */; };
+		D378DA2E26AFD4EE00743BED /* UInt+AnimateSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378DA2D26AFD4EE00743BED /* UInt+AnimateSample.swift */; };
 		D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FC926AE6C0B00183BD3 /* HStackView.swift */; };
 		D3A36FCC26AE83D100183BD3 /* TransitioningInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */; };
 /* End PBXBuildFile section */
@@ -56,6 +59,9 @@
 		D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenDetailViewController.swift; sourceTree = "<group>"; };
 		D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandPushAnimator.swift; sourceTree = "<group>"; };
 		D364F50E26A54B2800357EAE /* ExpandAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandAnimator.swift; sourceTree = "<group>"; };
+		D378DA2826AF86BA00743BED /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		D378DA2A26AF876E00743BED /* Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
+		D378DA2D26AFD4EE00743BED /* UInt+AnimateSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt+AnimateSample.swift"; sourceTree = "<group>"; };
 		D3A36FC926AE6C0B00183BD3 /* HStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackView.swift; sourceTree = "<group>"; };
 		D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitioningInteractable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -136,6 +142,7 @@
 		D364F4DC26A529CC00357EAE /* AnimateSample */ = {
 			isa = PBXGroup;
 			children = (
+				D378DA2C26AFD43300743BED /* Foundation */,
 				D3479A8926A5599E0006340F /* UIKit */,
 				D364F4FF26A5489900357EAE /* ViewController */,
 				D364F4F926A546A700357EAE /* Animation */,
@@ -159,6 +166,7 @@
 				D3479A8C26A55A0D0006340F /* CitizenCollectionView.swift */,
 				D345FCCE26A7CA4C00A9126C /* CitizenDetailForm.swift */,
 				D345FCD026A7CEAD00A9126C /* SimpleSubject.swift */,
+				D378DA2A26AF876E00743BED /* Number.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -184,6 +192,7 @@
 			children = (
 				D3479A8826A556F00006340F /* CitizenDetail */,
 				D3479A8726A556E80006340F /* Home */,
+				D378DA2826AF86BA00743BED /* TestViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -196,6 +205,14 @@
 				D3479A9026A570280006340F /* ExpandPopAnimator.swift */,
 			);
 			path = ExpandAnimator;
+			sourceTree = "<group>";
+		};
+		D378DA2C26AFD43300743BED /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				D378DA2D26AFD4EE00743BED /* UInt+AnimateSample.swift */,
+			);
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,10 +285,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3479A9126A570280006340F /* ExpandPopAnimator.swift in Sources */,
+				D378DA2B26AF876E00743BED /* Number.swift in Sources */,
 				D364F4E226A529CC00357EAE /* HomeViewController.swift in Sources */,
+				D378DA2926AF86BA00743BED /* TestViewController.swift in Sources */,
 				D3479A8B26A559AE0006340F /* UIView+AnimateSample.swift in Sources */,
 				D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */,
 				D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */,
+				D378DA2E26AFD4EE00743BED /* UInt+AnimateSample.swift in Sources */,
 				D345FCCF26A7CA4C00A9126C /* CitizenDetailForm.swift in Sources */,
 				D345FCD726A7D4C100A9126C /* VStackView.swift in Sources */,
 				D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */,

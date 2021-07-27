@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = HomeNavigationController(rootViewController: HomeViewController())
+        window?.rootViewController = HomeNavigationController(rootViewController: TestViewController())
         window?.makeKeyAndVisible()
     }
 
