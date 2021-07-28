@@ -40,6 +40,14 @@ class Number: UIView {
         CGSize(width: font.pointSize * 0.5, height: font.lineHeight)
     }
     
+    /// 컨텐츠 가로 넓이
+    var numberWidth: CGFloat = 0
+    
+    /// 컨텐츠 크기
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: numberWidth, height: digitSize.height)
+    }
+    
     var animationDuration: TimeInterval = 1
     var animationInterval: TimeInterval = 0.2
     
@@ -102,50 +110,6 @@ class Number: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-  
-        var totalSymbolWidth: CGFloat = 0
-        
-        // 정수부
-        for digit in 0..<integerDigitCount {
-            if isCommaDigit(digit) {
-                // 콤마
-                let commaDigit = getCommaDigit(digit)
-                let offset = CGFloat(commas.count - commaDigit) * symbolSize.width
-                let minX = CGFloat(integerDigitCount - digit) * digitSize.width - symbolSize.width
-                commas[commaDigit].frame = CGRect(origin: CGPoint(x: minX + offset, y: 0), size: symbolSize)
-                totalSymbolWidth += symbolSize.width
-            }
-            
-            // TODO: 현재 콤마 개수가 아니라 전체 콤마 개수로 계산하는 점이 마음에 안든다.
-            let minX = CGFloat(integerDigitCount - digit) * digitSize.width - digitSize.width
-            let offset = CGFloat(commas.count - digit / 3) * symbolSize.width
-            integerDigits[digit].frame = CGRect(origin: CGPoint(x: minX + offset, y: 0), size: digitSize)
-        }
-        
-        
-        // 소숫점
-        if floatingDigitCount > 0 {
-            let minX = CGFloat(integerDigitCount) * digitSize.width
-            decimalPoint?.frame = CGRect(origin: CGPoint(x: minX + totalSymbolWidth, y: 0), size: symbolSize)
-            totalSymbolWidth += symbolSize.width
-        }
-        
-        // 실수부
-        for digit in 0..<floatingDigitCount {
-            let minX =  CGFloat(integerDigitCount) * digitSize.width + CGFloat(digit) * digitSize.width
-            floatingDigits[digit].frame = CGRect(origin: CGPoint(x: minX + totalSymbolWidth, y: 0), size: digitSize)
-        }
-        
-        // 전체
-        var newWidth: CGFloat = digitSize.width * CGFloat(integerDigitCount)
-        newWidth += totalSymbolWidth
-        newWidth += digitSize.width * CGFloat(floatingDigitCount)
-        frame.size = CGSize(width: newWidth, height: digitSize.height)
-        print("self \(frame)")
-    }
-    
     func setFont(_ font: UIFont) {
         self.font = font
         
@@ -165,13 +129,13 @@ class Number: UIView {
         // 실수부
         floatingDigits.forEach { $0.setFont(font) }
         
-        setNeedsLayout()
+        updateContentSize()
     }
     
     func setNumber(_ number: Double) {
         // TODO: floatingDigitCount 이후 자리수는 반올림 하도록 할 수도 있을 것 같다.
         self.number = number
-        
+
         // 콤마 초기화
         commas.forEach { $0.removeFromSuperlayer() }
         
@@ -206,6 +170,49 @@ class Number: UIView {
             
             floatingDigits[digit].scroll(to: bValidFloating ? digitNumber : nil, duration: animationDuration, offset: TimeInterval(digit) * animationInterval)
         }
+    }
+    
+    func updateContentSize() {
+        var totalSymbolWidth: CGFloat = 0
+        
+        // 정수부
+        for digit in 0..<integerDigitCount {
+            if isCommaDigit(digit) {
+                // 콤마
+                let commaDigit = getCommaDigit(digit)
+                let offset = CGFloat(commas.count - commaDigit) * symbolSize.width
+                let minX = CGFloat(integerDigitCount - digit) * digitSize.width - symbolSize.width
+                commas[commaDigit].frame = CGRect(origin: CGPoint(x: minX + offset, y: 0), size: symbolSize)
+                totalSymbolWidth += symbolSize.width
+            }
+            
+            // TODO: 현재 콤마 개수가 아니라 전체 콤마 개수로 계산하는 점이 마음에 안든다.
+            let minX = CGFloat(integerDigitCount - digit) * digitSize.width - digitSize.width
+            let offset = CGFloat(commas.count - digit / 3) * symbolSize.width
+            integerDigits[digit].frame = CGRect(origin: CGPoint(x: minX + offset, y: 0), size: digitSize)
+        }
+        
+        // 소숫점
+        if floatingDigitCount > 0 {
+            let minX = CGFloat(integerDigitCount) * digitSize.width
+            decimalPoint?.frame = CGRect(origin: CGPoint(x: minX + totalSymbolWidth, y: 0), size: symbolSize)
+            totalSymbolWidth += symbolSize.width
+        }
+        
+        // 실수부
+        for digit in 0..<floatingDigitCount {
+            let minX =  CGFloat(integerDigitCount) * digitSize.width + CGFloat(digit) * digitSize.width
+            floatingDigits[digit].frame = CGRect(origin: CGPoint(x: minX + totalSymbolWidth, y: 0), size: digitSize)
+        }
+        
+        // 전체
+        var newWidth: CGFloat = digitSize.width * CGFloat(integerDigitCount)
+        newWidth += totalSymbolWidth
+        newWidth += digitSize.width * CGFloat(floatingDigitCount)
+        
+        numberWidth = newWidth
+        frame.size = CGSize(width: newWidth, height: digitSize.height)
+        invalidateIntrinsicContentSize()
     }
     
     private func isCommaDigit(_ digit: Int) -> Bool {

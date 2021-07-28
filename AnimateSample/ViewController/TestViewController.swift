@@ -10,8 +10,6 @@ import UIKit
 class TestViewController: UIViewController {
     let stack = VStackView()
     
-//    let number = Number(10)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +22,7 @@ class TestViewController: UIViewController {
             let number = Number(integerDigitCount: 8, floatingDigitCount: 1)
             number.setFont(.boldSystemFont(ofSize: 24))
             number.setNumber(0.0)
-            
+
             stack.push(number, spacing: 10)
         }
         
