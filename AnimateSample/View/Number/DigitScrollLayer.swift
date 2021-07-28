@@ -62,23 +62,6 @@ class DigitScrollLayer: CAScrollLayer {
         })
     }
     
-    /// 오른쪽부터 채우는 레이아웃
-    /// 정수부를 표현할 때 사용한다.
-    /// - Parameter digitSize : 각 자리 크기
-    /// - Parameter totalDigitCount : 표현할 수 있는 최대 자리수
-    func layoutRightToLeft(_ digitSize: CGSize, totalDigitCount: Int) {
-        frame = CGRect(origin: CGPoint(x: CGFloat(totalDigitCount - digit) * digitSize.width - digitSize.width, y: 0), size: digitSize)
-    }
-    
-    /// 왼쪽부터 채우는 레이아웃
-    /// 왼쪽부터 채우는 경우는 실수부를 표현할 때 인데, 실수부는 소숫점 이후로 그리기 때문에 소숫점 크기만큼 offset을 설정한다.
-    /// - Parameter digitSize : 각 자리 크기
-    /// - Parameter totalDigitCount : 표현할 수 있는 최대 자리수
-    /// - Parameter offset : 소숫점 가로 크기
-    func layoutLeftToRight(_ digitSize: CGSize, totalDigitCount: Int, offset: CGFloat = 0) {
-        frame = CGRect(origin: CGPoint(x: CGFloat(totalDigitCount) * digitSize.width + offset + CGFloat(digit) * digitSize.width, y: 0), size: digitSize)
-    }
-    
     /// 스크롤 애니메이션을 재생한다.
     /// 이미 애니메이션 중이라면 해당 위치부터 다시 새로운 애니메이션을 재생한다.
     /// - Parameter to : 해당 자리 숫자. nil이라면 공백을 표시하도록 스크롤한다.
