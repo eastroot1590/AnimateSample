@@ -43,6 +43,7 @@ class DigitScrollLayer: CAScrollLayer {
     }
     
     /// 폰트를 변경한다.
+    /// 이미 스크롤 애니메이션이 재생중이라면 toValue를 수정한 값으로 변경하고 애니메이션을 다시 재생한다.
     func setFont(_ font: UIFont) {
         let height = font.lineHeight
         let width = font.pointSize * 0.75
@@ -60,6 +61,23 @@ class DigitScrollLayer: CAScrollLayer {
             
             index += 1
         })
+        
+        let targetY = -CGFloat((number ?? -1) + 1) * height
+        
+        if let playingAnimation = animation(forKey: "scroll") {
+            let currentTransform: CATransform3D = presentation()?.value(forKeyPath: "sublayerTransform") as? CATransform3D ?? CATransform3DIdentity
+
+            let animation = CABasicAnimation(keyPath: "sublayerTransform")
+            animation.duration = playingAnimation.duration
+            animation.fromValue = currentTransform
+            animation.toValue = CATransform3DTranslate(CATransform3DIdentity, 0, targetY, 0)
+            animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+            animation.delegate = self
+
+            add(animation, forKey: "scroll")
+        }
+        
+        sublayerTransform = CATransform3DTranslate(CATransform3DIdentity, 0, targetY, 0)
     }
     
     /// 스크롤 애니메이션을 재생한다.
@@ -67,23 +85,28 @@ class DigitScrollLayer: CAScrollLayer {
     /// - Parameter to : 해당 자리 숫자. nil이라면 공백을 표시하도록 스크롤한다.
     /// - Parameter duration : 애니메이션 최소 재생시간
     /// - Parameter offset : 애니메이션 재생시간 차이
-    func scroll(to number: Int?, duration: TimeInterval, offset: TimeInterval) {
-        self.number = number
-        
-        let currentY: CGFloat = presentation()?.value(forKeyPath: "sublayerTransform.translation.y") as? CGFloat ?? 0
+    func scroll(duration: TimeInterval, offset: TimeInterval) {
+        let currentTransform: CATransform3D = presentation()?.value(forKeyPath: "sublayerTransform") as? CATransform3D ?? CATransform3DIdentity
         let height: CGFloat = sublayers?.first?.frame.height ?? 0
         let targetY = -CGFloat((number ?? -1) + 1) * height
+        let targetTransform = CATransform3DTranslate(CATransform3DIdentity, 0, targetY, 0)
         
-        removeAnimation(forKey: "scroll")
-        
-        let animation = CABasicAnimation(keyPath: "sublayerTransform.translation.y")
+        let animation = CABasicAnimation(keyPath: "sublayerTransform")
         animation.duration = duration + offset
-        animation.fromValue = currentY
-        animation.toValue = targetY
+        animation.fromValue = currentTransform
+        animation.toValue = targetTransform
         animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
-        animation.fillMode = .forwards
-        animation.isRemovedOnCompletion = false
+        animation.delegate = self
         
         add(animation, forKey: "scroll")
+        sublayerTransform = targetTransform
+    }
+}
+
+extension DigitScrollLayer: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if flag {
+            removeAnimation(forKey: "scroll")
+        }
     }
 }

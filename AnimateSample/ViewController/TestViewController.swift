@@ -8,7 +8,7 @@
 import UIKit
 
 class TestViewController: UIViewController {
-    let stack = VStackView()
+    let number = Number(integerDigitCount: 8, floatingDigitCount: 1)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,36 +16,24 @@ class TestViewController: UIViewController {
         title = "테스트"
         
         view.backgroundColor = .systemBackground
-        view.addSubview(stack)
         
-        for _ in 0..<1 {
-            let number = Number(integerDigitCount: 8, floatingDigitCount: 1)
-            number.setFont(.boldSystemFont(ofSize: 24))
-            number.setNumber(0.0)
-
-            stack.push(number, spacing: 10)
-        }
+        number.number = 12345678.9
+        number.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(number)
+        NSLayoutConstraint.activate([
+            number.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            number.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(touched)))
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        let leftTop: CGPoint = CGPoint(x: view.safeAreaInsets.left, y: view.safeAreaInsets.top)
-        
-        stack.frame.origin = leftTop
-        stack.frame.size = CGSize(width: view.frame.width, height: stack.frame.height)
-    }
-    
     @objc func touched() {
-        for node in stack.stack {
-            if let number = node.view as? Number {
-                let newNumber = Double.random(in: 0...99999999)
-                print("newNumber: \(newNumber)")
-                number.setFont(.boldSystemFont(ofSize: 32))
-                number.setNumber(newNumber)
-            }
-        }
+        let newNumber = Double.random(in: 0...99999999)
+        print("newNumber \(newNumber)")
+        
+//        number.font = .systemFont(ofSize: CGFloat.random(in: 16...32))
+        number.number = newNumber
+        number.font = .systemFont(ofSize: CGFloat.random(in: 16...32))
     }
 }
