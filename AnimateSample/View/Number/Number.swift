@@ -76,7 +76,7 @@ class Number: UIView {
         
         // 정수부
         for digit in 0..<integerDigitCount {
-            let digitScroll = DigitScrollLayer(digit: digit)
+            let digitScroll = DigitScrollLayer(digit: digit, font: font, digitSize: digitSize)
             
             layer.addSublayer(digitScroll)
             integerDigits.append(digitScroll)
@@ -108,7 +108,7 @@ class Number: UIView {
         
         // 실수부
         for digit in 0..<floatingDigitCount {
-            let digitScroll = DigitScrollLayer(digit: digit)
+            let digitScroll = DigitScrollLayer(digit: digit, font: font, digitSize: digitSize)
             layer.addSublayer(digitScroll)
             
             floatingDigits.append(digitScroll)
@@ -194,7 +194,7 @@ class Number: UIView {
             }
             
             // TODO: 현재 콤마 개수가 아니라 전체 콤마 개수로 계산하는 점이 마음에 안든다.
-            integerDigits[digit].setFont(font)
+            integerDigits[digit].setFont(font, digitSize: digitSize)
             let minX = CGFloat(integerDigitCount - digit) * digitSize.width - digitSize.width
             let offset = CGFloat(commas.count - digit / 3) * symbolSize.width
             integerDigits[digit].frame = CGRect(origin: CGPoint(x: minX + offset, y: 0), size: digitSize)
@@ -213,7 +213,7 @@ class Number: UIView {
         for digit in 0..<floatingDigitCount {
             let minX =  CGFloat(integerDigitCount) * digitSize.width + CGFloat(digit) * digitSize.width
             floatingDigits[digit].frame = CGRect(origin: CGPoint(x: minX + totalSymbolWidth, y: 0), size: digitSize)
-            floatingDigits[digit].setFont(font)
+            floatingDigits[digit].setFont(font, digitSize: digitSize)
         }
         
         // 전체

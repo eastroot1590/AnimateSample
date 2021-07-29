@@ -11,18 +11,21 @@ class DigitScrollLayer: CAScrollLayer {
     let digit: Int
     var number: Int?
     
-    init(digit: Int) {
+    private var size: CGSize = .zero
+    
+    init(digit: Int, font: UIFont, digitSize: CGSize) {
         self.digit = digit
+        self.size = digitSize
         
         super.init()
         
-        let font = UIFont.systemFont(ofSize: 16)
-        let width = font.pointSize * 0.75
-        let height = font.lineHeight
+//        let font = UIFont.systemFont(ofSize: 16)
+//        let width = font.pointSize * 0.75
+//        let height = font.lineHeight
         
         for index in 0...10 {
             let digitLayer = CATextLayer()
-            digitLayer.frame = CGRect(origin: CGPoint(x: 0, y: CGFloat(index) * height), size: CGSize(width: width, height: height))
+            digitLayer.frame = CGRect(origin: CGPoint(x: 0, y: CGFloat(index) * size.height), size: size)
             digitLayer.string = index == 0 ? " " : String(index-1)
             digitLayer.alignmentMode = .center
             digitLayer.contentsScale = UIScreen.main.scale
@@ -44,9 +47,10 @@ class DigitScrollLayer: CAScrollLayer {
     
     /// 폰트를 변경한다.
     /// 이미 스크롤 애니메이션이 재생중이라면 toValue를 수정한 값으로 변경하고 애니메이션을 다시 재생한다.
-    func setFont(_ font: UIFont) {
-        let height = font.lineHeight
-        let width = font.pointSize * 0.75
+    func setFont(_ font: UIFont, digitSize: CGSize) {
+        self.size = digitSize
+//        let height = font.lineHeight
+//        let width = font.pointSize * 0.75
         
         var index: CGFloat = 0
         
@@ -55,14 +59,14 @@ class DigitScrollLayer: CAScrollLayer {
                 return
             }
             
-            subTextLayer.frame = CGRect(origin: CGPoint(x: 0, y: index * height), size: CGSize(width: width, height: height))
+            subTextLayer.frame = CGRect(origin: CGPoint(x: 0, y: index * size.height), size: size)
             subTextLayer.font = font
             subTextLayer.fontSize = font.pointSize
             
             index += 1
         })
         
-        let targetY = -CGFloat((number ?? -1) + 1) * height
+        let targetY = -CGFloat((number ?? -1) + 1) * size.height
         
         if let playingAnimation = animation(forKey: "scroll") {
             let currentTransform: CATransform3D = presentation()?.value(forKeyPath: "sublayerTransform") as? CATransform3D ?? CATransform3DIdentity
@@ -87,8 +91,7 @@ class DigitScrollLayer: CAScrollLayer {
     /// - Parameter offset : 애니메이션 재생시간 차이
     func scroll(duration: TimeInterval, offset: TimeInterval) {
         let currentTransform: CATransform3D = presentation()?.value(forKeyPath: "sublayerTransform") as? CATransform3D ?? CATransform3DIdentity
-        let height: CGFloat = sublayers?.first?.frame.height ?? 0
-        let targetY = -CGFloat((number ?? -1) + 1) * height
+        let targetY = -CGFloat((number ?? -1) + 1) * size.height
         let targetTransform = CATransform3DTranslate(CATransform3DIdentity, 0, targetY, 0)
         
         let animation = CABasicAnimation(keyPath: "sublayerTransform")
