@@ -17,13 +17,23 @@ class TestViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        number.number = 12345678.9
-        number.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(number)
+        let stack = VStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stack)
         NSLayoutConstraint.activate([
-            number.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            number.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        number.number = 12345678.9
+        stack.push(number, spacing: 10)
+
+        let label = UILabel()
+        label.text = "나도 해보시지"
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .label
+        stack.push(label, spacing: 10)
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(touched)))
     }

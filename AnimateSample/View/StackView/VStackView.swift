@@ -12,13 +12,11 @@ class VStackView: UIView {
     
     var stack: [Stackable] = []
     
-    override init(frame: CGRect) {
-        super.init(frame: CGRect(origin: frame.origin, size: CGSize(width: frame.width, height: 0)))
+    override var intrinsicContentSize: CGSize {
+        return contentSize
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var contentSize: CGSize = .zero
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -35,7 +33,9 @@ class VStackView: UIView {
             height += node.spacing + node.view.frame.height
         }
         
-        frame.size = CGSize(width: frame.size.width, height: height)
+        contentSize = CGSize(width: frame.width, height: height)
+        
+        invalidateIntrinsicContentSize()
     }
     
     /// VStackView에 view를 추가한다.
@@ -43,6 +43,8 @@ class VStackView: UIView {
     /// - parameter spacing : 앞서 추가한 view와의 공백
     /// - parameter offset : 수직축에 대한 offset
     func push(_ child: UIView, spacing: CGFloat = 0, offset: CGFloat = 0) {
+        child.sizeToFit()
+        
         // layout
         if child.frame.width > 0 {
             alignmentLayout(child, spacing, offset, minY: frame.height)
