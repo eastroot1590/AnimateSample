@@ -16,13 +16,13 @@ class HomeViewController: UIViewController {
         
         title = "모여봐요 동물의 숲"
      
-        let customCollectionLayout = UICollectionViewFlowLayout()
-        customCollectionLayout.itemSize = CGSize(width: 100, height: 150)
+        let customCollectionLayout = ScaleableCollectionLayout()
+        customCollectionLayout.itemSize = CGSize(width: 100, height: 400)
         customCollectionLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         let citizemMimimumCollection = CitizenCollectionView(frame: view.frame, collectionViewLayout: customCollectionLayout)
         citizemMimimumCollection.backgroundColor = .systemBackground
-        citizemMimimumCollection.autoresizingMask = [.flexibleTopMargin]
+        citizemMimimumCollection.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(citizemMimimumCollection)
     }
 }

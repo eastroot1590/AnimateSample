@@ -8,8 +8,6 @@
 import UIKit
 
 class TestViewController: UIViewController {
-    let number = Number(integerDigitCount: 8, floatingDigitCount: 1)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -17,33 +15,31 @@ class TestViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        let stack = VStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stack)
-        NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+        let layout = ScaleableCollectionLayout()
+        layout.itemSize = CGSize(width: (view.frame.width - 40) / 2, height: 150)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        number.number = 12345678.9
-        stack.push(number, spacing: 10)
+        let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
+        collectionView.backgroundColor = .systemBackground
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "default")
+        collectionView.dataSource = self
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(collectionView)
+    }
+}
 
-        let label = UILabel()
-        label.text = "나도 해보시지"
-        label.font = .systemFont(ofSize: 16)
-        label.textColor = .label
-        stack.push(label, spacing: 10)
-        
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(touched)))
+extension TestViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        10
     }
     
-    @objc func touched() {
-        let newNumber = Double.random(in: 0...99999999)
-        print("newNumber \(newNumber)")
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "default", for: indexPath)
         
-        number.font = .systemFont(ofSize: CGFloat.random(in: 16...32))
-//        number.number = newNumber
-//        number.font = .systemFont(ofSize: CGFloat.random(in: 16...32))
+        cell.backgroundColor = .systemBlue
+        cell.layer.cornerRadius = 15
+        cell.layer.masksToBounds = true
+        
+        return cell
     }
 }
