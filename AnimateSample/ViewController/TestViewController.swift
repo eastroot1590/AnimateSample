@@ -42,8 +42,8 @@ class TestViewController: UIViewController {
         let newNumber = Double.random(in: 0...99999999)
         print("newNumber \(newNumber)")
         
-//        number.font = .systemFont(ofSize: CGFloat.random(in: 16...32))
-        number.number = newNumber
         number.font = .systemFont(ofSize: CGFloat.random(in: 16...32))
+//        number.number = newNumber
+//        number.font = .systemFont(ofSize: CGFloat.random(in: 16...32))
     }
 }

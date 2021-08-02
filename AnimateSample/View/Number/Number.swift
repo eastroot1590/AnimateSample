@@ -11,7 +11,7 @@ class Number: UIView {
     // MARK: Property
     var font: UIFont = .systemFont(ofSize: 16) {
         didSet {
-            resizing()
+            fontChanged()
         }
     }
     
@@ -35,7 +35,7 @@ class Number: UIView {
     /// - [max] : 가장 큰 자리 (0 포함. 0을 포함하지 않는 가장 큰 자리는 getMostLeftDigit() 함수를 통해 계산)
     private var integerDigits: [DigitScrollLayer] = []
     
-    /// 구분 콤마
+    /// 천 단위 구분 콤마
     private var commas: [CATextLayer] = []
     
     /// 소숫점
@@ -56,15 +56,12 @@ class Number: UIView {
         CGSize(width: font.pointSize * 0.5, height: font.lineHeight)
     }
     
-    /// 컨텐츠 가로 넓이
-    private var numberWidth: CGFloat = 0
-    
-    /// blur
+    /// 투명도 gradient
     private var gradientLayer = CAGradientLayer()
     
     /// 컨텐츠 크기
     override var intrinsicContentSize: CGSize {
-        CGSize(width: numberWidth, height: digitSize.height)
+        frame.size
     }
     
     // MARK: Initialize
@@ -75,8 +72,8 @@ class Number: UIView {
         super.init(frame: .zero)
         
         // 정수부
-        for digit in 0..<integerDigitCount {
-            let digitScroll = DigitScrollLayer(digit: digit, font: font, digitSize: digitSize)
+        for _ in 0..<integerDigitCount {
+            let digitScroll = DigitScrollLayer(font: font, digitSize: digitSize)
             
             layer.addSublayer(digitScroll)
             integerDigits.append(digitScroll)
@@ -107,8 +104,8 @@ class Number: UIView {
         }
         
         // 실수부
-        for digit in 0..<floatingDigitCount {
-            let digitScroll = DigitScrollLayer(digit: digit, font: font, digitSize: digitSize)
+        for _ in 0..<floatingDigitCount {
+            let digitScroll = DigitScrollLayer(font: font, digitSize: digitSize)
             layer.addSublayer(digitScroll)
             
             floatingDigits.append(digitScroll)
@@ -127,7 +124,7 @@ class Number: UIView {
         layer.mask = gradientLayer
         
         // layout
-        resizing()
+        fontChanged()
     }
     
     required init?(coder: NSCoder) {
@@ -157,9 +154,7 @@ class Number: UIView {
                 layer.addSublayer(commas[commaDigit])
             }
             
-            // TODO: 여기에 if문을 넣는것 보다 -1 위치에 공백을 넣는게 더 좋아보인다.
-            integerDigits[digit].number = bValidInteger ? digitNumber : nil
-            integerDigits[digit].scroll(duration: animationDuration, offset: TimeInterval(digit) * animationInterval)
+            integerDigits[digit].setNumber(bValidInteger ? digitNumber : -1, duration: animationDuration, offset: TimeInterval(digit) * animationInterval)
         }
         
         // 실수부
@@ -170,60 +165,61 @@ class Number: UIView {
                 bValidFloating = true
             }
             
-            floatingDigits[digit].number = bValidFloating ? digitNumber : nil
-            floatingDigits[digit].scroll(duration: animationDuration, offset: TimeInterval(digit) * animationInterval)
+            floatingDigits[digit].setNumber(bValidFloating ? digitNumber : -1, duration: animationDuration, offset: TimeInterval(digit) * animationInterval)
         }
     }
     
-    /// 전체 크기를 다시 계산한다.
-    private func resizing() {
-        var totalSymbolWidth: CGFloat = 0
+    /// 폰트가 새로 설정되었기 때문에 전체 크기를 다시 계산한다.
+    private func fontChanged() {
+        var newWidth: CGFloat = 0
+        var commaDigit: Int = 0
         
         // 정수부
         for digit in 0..<integerDigitCount {
             if isCommaDigit(digit) {
-                // 콤마
-                let commaDigit = getCommaDigit(digit)
+                // 콤마 (R to L)
                 let offset = CGFloat(commas.count - commaDigit) * symbolSize.width
                 let minX = CGFloat(integerDigitCount - digit) * digitSize.width - symbolSize.width
-                // TODO: font를 여기에서 설정하는게 마음에 안들지만 for문을 두번 돌아야 해서 일단 이렇게 했다.
+                
                 commas[commaDigit].frame = CGRect(origin: CGPoint(x: minX + offset, y: 0), size: symbolSize)
                 commas[commaDigit].font = font
                 commas[commaDigit].fontSize = font.pointSize
-                totalSymbolWidth += symbolSize.width
+                
+//                totalSymbolWidth += symbolSize.width
+                newWidth += symbolSize.width
+                commaDigit += 1
             }
             
             // TODO: 현재 콤마 개수가 아니라 전체 콤마 개수로 계산하는 점이 마음에 안든다.
             integerDigits[digit].setFont(font, digitSize: digitSize)
+            
             let minX = CGFloat(integerDigitCount - digit) * digitSize.width - digitSize.width
             let offset = CGFloat(commas.count - digit / 3) * symbolSize.width
+            
             integerDigits[digit].frame = CGRect(origin: CGPoint(x: minX + offset, y: 0), size: digitSize)
+            
+            newWidth += digitSize.width
         }
         
         // 소숫점
         if floatingDigitCount > 0 {
-            let minX = CGFloat(integerDigitCount) * digitSize.width
             decimalPoint?.font = font
             decimalPoint?.fontSize = font.pointSize
-            decimalPoint?.frame = CGRect(origin: CGPoint(x: minX + totalSymbolWidth, y: 0), size: symbolSize)
-            totalSymbolWidth += symbolSize.width
+            decimalPoint?.frame = CGRect(origin: CGPoint(x: newWidth, y: 0), size: symbolSize)
+            
+            newWidth += symbolSize.width
         }
         
         // 실수부
         for digit in 0..<floatingDigitCount {
-            let minX =  CGFloat(integerDigitCount) * digitSize.width + CGFloat(digit) * digitSize.width
-            floatingDigits[digit].frame = CGRect(origin: CGPoint(x: minX + totalSymbolWidth, y: 0), size: digitSize)
+            floatingDigits[digit].frame = CGRect(origin: CGPoint(x: newWidth, y: 0), size: digitSize)
             floatingDigits[digit].setFont(font, digitSize: digitSize)
+            
+            newWidth += digitSize.width
         }
         
-        // 전체
-        var newWidth: CGFloat = digitSize.width * CGFloat(integerDigitCount)
-        newWidth += totalSymbolWidth
-        newWidth += digitSize.width * CGFloat(floatingDigitCount)
-        
-        numberWidth = newWidth
+        // 크기 재설정
         frame.size = CGSize(width: newWidth, height: digitSize.height)
-        
         gradientLayer.frame = bounds
         
         invalidateIntrinsicContentSize()
@@ -231,9 +227,5 @@ class Number: UIView {
     
     private func isCommaDigit(_ digit: Int) -> Bool {
         return digit > 0 && digit % 3 == 0
-    }
-    
-    private func getCommaDigit(_ digit: Int) -> Int {
-        return digit / 3 - 1
     }
 }
