@@ -65,8 +65,9 @@ extension CitizenCollectionView: UICollectionViewDataSource, UICollectionViewDel
         
         // DetailViewController
         let citizenDetailViewController = CitizenDetailViewController(citizenInfo: citizenInfos[indexPath.item])
-        citizenDetailViewController.pushAnimator = ExpandPushAnimator(selectedCell: selectedCell)
-        citizenDetailViewController.popAnimator = ExpandPopAnimator(selectedCell: selectedCell)
+        let originFrame = selectedCell.convert(selectedCell.primeView.frame, to: homeNavigation.view)
+        citizenDetailViewController.pushAnimator = ExpandPushAnimator(selectedCell: selectedCell, originFrame: originFrame)
+        citizenDetailViewController.popAnimator = ExpandPopAnimator(selectedCell: selectedCell, originFrame: originFrame)
         
         // push
         homeNavigation.pushInteractivePopableViewController(citizenDetailViewController, animated: true)

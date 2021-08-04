@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeViewController.swift
 //  AnimateSample
 //
 //  Created by 이동근 on 2021/07/19.
@@ -24,5 +24,13 @@ class HomeViewController: UIViewController {
         citizemMimimumCollection.backgroundColor = .systemBackground
         citizemMimimumCollection.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(citizemMimimumCollection)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print("home view will appear")
+        
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }

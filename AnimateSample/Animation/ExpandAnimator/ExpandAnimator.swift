@@ -9,8 +9,10 @@ import UIKit
 
 class ExpandAnimator: UIPercentDrivenInteractiveTransition {
     let selectedCell: Expandable
+    let originFrame: CGRect
     
-    init(selectedCell: Expandable) {
+    init(selectedCell: Expandable, originFrame: CGRect) {
         self.selectedCell = selectedCell
+        self.originFrame = originFrame
     }
 }

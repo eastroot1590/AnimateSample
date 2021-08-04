@@ -48,7 +48,14 @@ class HomeNavigationController: UINavigationController {
         }
     }
     
+    /// pan gesture로 뒤로 돌아갈 수 있는 view controller를 push
     func pushInteractivePopableViewController(_ viewController: TransitioningInteractable, animated: Bool = true) {
+        transitioningViewController = viewController
+        pushViewController(viewController, animated: animated)
+    }
+    
+    /// push/pop transition을 커스텀한 view controller를 push
+    func pushCustomTransitioningViewController(_ viewController: TransitioningAnimatable, animated: Bool = true) {
         transitioningViewController = viewController
         pushViewController(viewController, animated: animated)
     }
@@ -56,10 +63,6 @@ class HomeNavigationController: UINavigationController {
 
 // MARK: UINavigationControllerDelegate
 extension HomeNavigationController: UINavigationControllerDelegate {
-//    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-//        setNavigationBarHidden(!(viewController is HomeViewController), animated: true)
-//    }
-    
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let animationDelegate = transitioningViewController as? TransitioningAnimatable else {
             return nil

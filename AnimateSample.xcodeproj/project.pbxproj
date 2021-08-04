@@ -34,6 +34,8 @@
 		D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FC926AE6C0B00183BD3 /* HStackView.swift */; };
 		D3A36FCC26AE83D100183BD3 /* TransitioningInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */; };
 		D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB391326B123F400812554 /* DigitScrollLayer.swift */; };
+		D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */; };
+		D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		D3A36FC926AE6C0B00183BD3 /* HStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackView.swift; sourceTree = "<group>"; };
 		D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitioningInteractable.swift; sourceTree = "<group>"; };
 		D3CB391326B123F400812554 /* DigitScrollLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitScrollLayer.swift; sourceTree = "<group>"; };
+		D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailViewController.swift; sourceTree = "<group>"; };
+		D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestExpandableCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +181,7 @@
 				D3479A8C26A55A0D0006340F /* CitizenCollectionView.swift */,
 				D345FCCE26A7CA4C00A9126C /* CitizenDetailForm.swift */,
 				D345FCD026A7CEAD00A9126C /* SimpleSubject.swift */,
+				D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 				D3479A8826A556F00006340F /* CitizenDetail */,
 				D3479A8726A556E80006340F /* Home */,
 				D378DA2826AF86BA00743BED /* TestViewController.swift */,
+				D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -301,6 +307,7 @@
 				D378DA2926AF86BA00743BED /* TestViewController.swift in Sources */,
 				D3479A8B26A559AE0006340F /* UIView+AnimateSample.swift in Sources */,
 				D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */,
+				D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */,
 				D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */,
 				D345FCCF26A7CA4C00A9126C /* CitizenDetailForm.swift in Sources */,
 				D345FCD726A7D4C100A9126C /* VStackView.swift in Sources */,
@@ -318,6 +325,7 @@
 				D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */,
 				D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */,
 				D364F4F526A53A8400357EAE /* CitizenMinimumCell.swift in Sources */,
+				D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */,
 				D364F4E026A529CC00357EAE /* SceneDelegate.swift in Sources */,
 				D3479A8D26A55A0D0006340F /* CitizenCollectionView.swift in Sources */,
 			);

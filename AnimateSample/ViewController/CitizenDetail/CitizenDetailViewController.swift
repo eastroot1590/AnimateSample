@@ -67,6 +67,14 @@ class CitizenDetailViewController: UIViewController, TransitioningInteractable {
         backButton.isHidden = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print("detail view will appear")
+        
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         

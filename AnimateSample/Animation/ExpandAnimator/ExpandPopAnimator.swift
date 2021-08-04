@@ -55,13 +55,12 @@ class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
         controller.view.frame = initialFrame
         
         // 현재 화면의 최종 프레임
-        var finalFrame = selectedCell.convert(selectedCell.primeView.frame, to: transitionContext.containerView)
-        finalFrame.origin = CGPoint(x: finalFrame.origin.x + transitionContext.containerView.safeAreaInsets.left, y: finalFrame.origin.y + transitionContext.containerView.safeAreaInsets.top)
         let finalBackgroundColor = selectedCell.primeView.backgroundColor
         
         // 애니메이션
         let animator = UIViewPropertyAnimator(duration: transitionDuration(using: transitionContext), dampingRatio: 0.75) {
-            controller.view.frame = finalFrame
+            controller.view.frame = self.originFrame
+            controller.view.layer.cornerRadius = self.selectedCell.primeView.layer.cornerRadius
             controller.view.backgroundColor = finalBackgroundColor
 
             controller.view.layoutIfNeeded()

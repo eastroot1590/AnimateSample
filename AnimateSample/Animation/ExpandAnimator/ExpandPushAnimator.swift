@@ -20,8 +20,7 @@ class ExpandPushAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning 
         transitionContext.containerView.addSubview(controller.view)
         
         // 시작 프레임
-        let initialFrame = selectedCell.convert(selectedCell.primeView.frame, to: transitionContext.containerView)
-        controller.view.frame = initialFrame
+        controller.view.frame = originFrame
         controller.view.layoutIfNeeded()
         
         selectedCell.primeView.isHidden = true
