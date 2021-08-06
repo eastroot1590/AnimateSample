@@ -22,6 +22,9 @@ class VStackScroll: UIScrollView {
     var bannerView: UIView?
     var bannerHeight: CGFloat = 0
     
+    var ribbonView: UIView?
+    var ribbonHeight: CGFloat = 0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -50,6 +53,18 @@ class VStackScroll: UIScrollView {
             bannerView?.frame.size = frame.size
         }
         
+        let ribbonOffset = max(contentOffset.y + adjustedContentInset.top, bannerHeight) - bannerHeight
+        let rHeight = min(ribbonHeight + ribbonOffset, ribbonHeight + adjustedContentInset.top)
+        ribbonView?.frame.origin = CGPoint(x: 0, y: max(contentOffset.y, bannerHeight))
+        ribbonView?.frame.size = CGSize(width: frame.width, height: rHeight)
+        
+        let shadowOffset = min(ribbonOffset / adjustedContentInset.top, 1)
+        print("shadow offset \(shadowOffset)")
+        if let shadowBox = ribbonView?.bounds {
+            ribbonView?.layer.shadowPath = UIBezierPath(rect: CGRect(origin: CGPoint(x: -10, y: 10), size: CGSize(width: shadowBox.width + 20, height: shadowBox.height - 20 + shadowOffset * 10))).cgPath
+            ribbonView?.layer.shadowOffset = CGSize(width: 0, height: shadowOffset * 10)
+        }
+        
         resizeScrollBound()
     }
     
@@ -71,10 +86,27 @@ class VStackScroll: UIScrollView {
         banner.frame.origin = .zero
         banner.frame.size = CGSize(width: frame.width, height: height)
         
-        contentView.frame.origin = CGPoint(x: 0, y: height)
+        contentView.frame.origin = CGPoint(x: 0, y: bannerHeight + ribbonHeight)
+    }
+    
+    func setRibbon(_ ribbon: UIView, height: CGFloat) {
+        ribbonView = ribbon
+        ribbonHeight = height
+        
+        ribbonView?.layer.shadowColor = UIColor.black.cgColor
+        ribbonView?.layer.shadowOpacity = 0.5
+        ribbonView?.layer.shadowRadius = 20
+        
+        addSubview(ribbon)
+        
+        // layout
+        ribbon.frame.origin = CGPoint(x: 0, y: bannerHeight)
+        ribbon.frame.size = CGSize(width: frame.width, height: ribbonHeight)
+        
+        contentView.frame.origin = CGPoint(x: 0, y: bannerHeight + ribbonHeight)
     }
     
     private func resizeScrollBound() {
-        contentSize = CGSize(width: contentView.frame.width, height: bannerHeight + contentView.frame.height)
+        contentSize = CGSize(width: contentView.frame.width, height: bannerHeight + ribbonHeight + contentView.frame.height)
     }
 }

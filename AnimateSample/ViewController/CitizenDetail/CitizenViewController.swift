@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  CitizenViewController.swift
 //  AnimateSample
 //
 //  Created by 이동근 on 2021/07/19.
@@ -8,7 +8,7 @@
 import UIKit
 
 /// 주민 목록을 표시하는 홈
-class HomeViewController: UIViewController {
+class CitizenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
