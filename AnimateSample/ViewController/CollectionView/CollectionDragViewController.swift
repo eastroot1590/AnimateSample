@@ -49,17 +49,22 @@ class CollectionDragViewController: UIViewController {
         
         completeButton.isHidden = true
         
-        let edge: CGFloat = (view.frame.width - 40) / 3
-        
         for _ in 0 ..< 50 {
-            cellInfo.append(DragCellInfo(color: .systemBlue, size: CGSize(width: edge, height: edge)))
+            cellInfo.append(DragCellInfo(color: .systemBlue, size: .small))
         }
         
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 4)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 13)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 17)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 29)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 41)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 4)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 13)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 17)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 29)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 41)
+        
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 5)
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 16)
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 21)
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 6)
+        
+        cellInfo.insert(DragCellInfo(color: .systemPurple, size: .huge), at: 4)
         
         view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleTouch)))
     }
@@ -128,27 +133,35 @@ extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellInfo[indexPath.item].size
+        var cellSize: CGSize = .zero
+        let edge = (collectionView.frame.width - 40) / 3
+        
+        switch cellInfo[indexPath.item].size {
+        case .small:
+            cellSize = CGSize(width: edge, height: edge)
+            
+        case .medium:
+            cellSize = CGSize(width: edge * 2 + 10, height: edge)
+            
+        case .large:
+            cellSize = CGSize(width: edge * 3 + 20, height: edge)
+            
+        case .huge:
+            cellSize = CGSize(width: edge * 2 + 10, height: edge * 2 + 10)
+        }
+        
+        return cellSize
     }
 }
 
 extension CollectionDragViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
-    // drag
+    // MARK: Drag
     func collectionView(_ collectionView: UICollectionView, dragSessionAllowsMoveOperation session: UIDragSession) -> Bool {
         print("allow")
         return true
     }
     
-    func collectionView(_ collectionView: UICollectionView, dragSessionWillBegin session: UIDragSession) {
-        print("drag session begin")
-        completeButton.isHidden = false
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
-        print("drag session did end")
-    }
-    
+    // drag begin
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         // 컨텐츠를 넣어야 됨
         let provider = NSItemProvider(object: cellInfo[indexPath.item].color)
@@ -158,7 +171,12 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
         return [dragItem]
     }
     
-    // drop
+    // drag end
+    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
+        print("drag session did end")
+    }
+    
+    // MARK: Drop
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }

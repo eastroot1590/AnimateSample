@@ -8,6 +8,13 @@
 import UIKit
 
 struct DragCellInfo {
+    enum CellSize {
+        case small
+        case medium
+        case large
+        case huge
+    }
+    
     let color: UIColor
-    let size: CGSize
+    let size: CellSize
 }

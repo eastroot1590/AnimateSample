@@ -37,8 +37,8 @@ class DragCell: UICollectionViewCell {
         animation.calculationMode = .linear
         animation.values = [
             CGFloat(0).radian,
-            CGFloat(-5).radian * odd,
-            CGFloat(5).radian * odd,
+            CGFloat(-1.5).radian * odd,
+            CGFloat(1.5).radian * odd,
             CGFloat(0).radian
         ]
         animation.keyTimes = [
@@ -48,7 +48,7 @@ class DragCell: UICollectionViewCell {
             1
         ]
         animation.repeatCount = .infinity
-        animation.duration = 0.5
+        animation.duration = 0.25
         layer.add(animation, forKey: "transform")
     }
     
