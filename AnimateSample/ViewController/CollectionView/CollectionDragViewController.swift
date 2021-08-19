@@ -18,9 +18,10 @@ class CollectionDragViewController: UIViewController {
         super.viewDidLoad()
 
         let layout = DynamicCollectionLayout()
-        layout.itemSize = CGSize(width: 100, height: 100)
+//        layout.itemSize = CGSize(width: 100, height: 100)
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.minimumInteritemSpacing = 5
+        layout.columnWidth = (view.frame.width - 40)
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         if #available(iOS 13.0, *) {
             collectionView.backgroundColor = .systemBackground
@@ -102,6 +103,10 @@ class CollectionDragViewController: UIViewController {
         
         completeButton.isHidden = true
         collectionView.dragInteractionEnabled = false
+    }
+    
+    func minColumn(_ what: CGFloat) -> CGFloat {
+        return 3
     }
 }
 
