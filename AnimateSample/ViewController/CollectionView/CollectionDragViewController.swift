@@ -12,41 +12,7 @@ class CollectionDragViewController: UIViewController {
     
     let completeButton = UIButton()
     
-    var cellItems: [UIColor] = [
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemRed,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-        .systemBlue,
-    ]
-    
-    var cellSize: [CGSize] = [
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 200, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-        CGSize(width: 100, height: 100),
-    ]
+    var cellInfo: [DragCellInfo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +20,7 @@ class CollectionDragViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 100, height: 100)
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        
+        layout.minimumInteritemSpacing = 5
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         if #available(iOS 13.0, *) {
             collectionView.backgroundColor = .systemBackground
@@ -62,8 +28,7 @@ class CollectionDragViewController: UIViewController {
             collectionView.backgroundColor = .white
         }
         collectionView.register(DragCell.self, forCellWithReuseIdentifier: "CellTypeA")
-        collectionView.register(LongDragCell.self, forCellWithReuseIdentifier: "CellTypeB")
-        collectionView.dragInteractionEnabled = true
+        collectionView.dragInteractionEnabled = false
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
         collectionView.delegate = self
@@ -83,84 +48,95 @@ class CollectionDragViewController: UIViewController {
         
         completeButton.isHidden = true
         
+        let edge: CGFloat = (view.frame.width - 40) / 3
         
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTouch)))
+        for _ in 0 ..< 50 {
+            cellInfo.append(DragCellInfo(color: .systemBlue, size: CGSize(width: edge, height: edge)))
+        }
+        
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 5)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 12)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 29)
+        
+        view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleTouch)))
     }
     
     @objc func handleTouch() {
-        var indexes: [Int] = []
-        
-        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-            guard let cell = collectionView.cellForItem(at: IndexPath(item: item, section: 0)) as? DragCell else {
-                return
-            }
-            
-            indexes.append(cell.index)
+        print(collectionView.dragInteractionEnabled)
+        guard !collectionView.dragInteractionEnabled else {
+            return
         }
         
-        print("collection view indexes: \(indexes)")
+        print("edit begin")
+        
+        var i: Int = 0
+        collectionView.visibleCells.forEach { cell in
+            guard let dragCell = cell as? DragCell else {
+                return
+            }
+            dragCell.shake(i % 2 == 0 ? -1 : 1)
+            i += 1
+        }
+        
+        collectionView.dragInteractionEnabled = true
+        completeButton.isHidden = false
     }
     
     @objc func cancel() {
-        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-            guard let cell = collectionView.cellForItem(at: IndexPath(item: item, section: 0)) else {
+        collectionView.visibleCells.forEach { cell in
+            guard let dragCell = cell as? DragCell else {
                 return
             }
             
-            cell.layer.removeAllAnimations()
+            dragCell.stop()
         }
         
         completeButton.isHidden = true
+        collectionView.dragInteractionEnabled = false
     }
-    
 }
 
 extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        cellItems.count
+        cellInfo.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellTypeA", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellTypeA", for: indexPath) as! DragCell
         
-        cell.backgroundColor = cellItems[indexPath.item]
+        cell.backgroundColor = cellInfo[indexPath.item].color
+        if collectionView.dragInteractionEnabled {
+            cell.shake(indexPath.item % 2 == 0 ? -1 : 1)
+        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize[indexPath.item]
+        return cellInfo[indexPath.item].size
     }
 }
 
 extension CollectionDragViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
     // drag
     func collectionView(_ collectionView: UICollectionView, dragSessionAllowsMoveOperation session: UIDragSession) -> Bool {
+        print("allow")
         return true
     }
     
     func collectionView(_ collectionView: UICollectionView, dragSessionWillBegin session: UIDragSession) {
         print("drag session begin")
         completeButton.isHidden = false
-        
-        // 흔들흔들
-        playShake(collectionView)
     }
     
-    func collectionView(_ collectionView: UICollectionView, dropSessionDidEnd session: UIDropSession) {
-        print("drop session did end")
-        
-    }
     
     func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
         print("drag session did end")
-        
-        playShake(collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         // 컨텐츠를 넣어야 됨
-        let provider = NSItemProvider(object: cellItems[indexPath.item])
+        let provider = NSItemProvider(object: cellInfo[indexPath.item].color)
         
         let dragItem = UIDragItem(itemProvider: provider)
         
@@ -170,6 +146,10 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
     // drop
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidEnd session: UIDropSession) {
+        print("drop session did end")
     }
     
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
@@ -183,11 +163,8 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
             }
             
             collectionView.performBatchUpdates({
-                let temp = cellItems.remove(at: sourceIndexPath.item)
-                cellItems.insert(temp, at: destinationIndexPath.item)
-                
-                let sizeTemp = cellSize.remove(at: sourceIndexPath.item)
-                cellSize.insert(sizeTemp, at: destinationIndexPath.item)
+                let temp = cellInfo.remove(at: sourceIndexPath.item)
+                cellInfo.insert(temp, at: destinationIndexPath.item)
                 
                 collectionView.deleteItems(at: [sourceIndexPath])
                 collectionView.insertItems(at: [destinationIndexPath])
@@ -197,30 +174,30 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
         }
     }
     
-    func playShake(_ collectionView: UICollectionView) {
-        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-            guard let cell = collectionView.cellForItem(at: IndexPath(item: item, section: 0)) else {
-                return
-            }
-            
-            let odd: CGFloat = item % 2 == 0 ? 1 : -1
-            let animation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
-            animation.calculationMode = .linear
-            animation.values = [
-                CGFloat(0).radian,
-                CGFloat(-5).radian * odd,
-                CGFloat(5).radian * odd,
-                CGFloat(0).radian
-            ]
-            animation.keyTimes = [
-                0,
-                0.25,
-                0.75,
-                1
-            ]
-            animation.repeatCount = .infinity
-            animation.duration = 0.5
-            cell.layer.add(animation, forKey: "transform")
-        }
-    }
+//    func playShake(_ collectionView: UICollectionView) {
+//        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
+//            guard let cell = collectionView.cellForItem(at: IndexPath(item: item, section: 0)) else {
+//                return
+//            }
+//
+//            let odd: CGFloat = item % 2 == 0 ? 1 : -1
+//            let animation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
+//            animation.calculationMode = .linear
+//            animation.values = [
+//                CGFloat(0).radian,
+//                CGFloat(-5).radian * odd,
+//                CGFloat(5).radian * odd,
+//                CGFloat(0).radian
+//            ]
+//            animation.keyTimes = [
+//                0,
+//                0.25,
+//                0.75,
+//                1
+//            ]
+//            animation.repeatCount = .infinity
+//            animation.duration = 0.5
+//            cell.layer.add(animation, forKey: "transform")
+//        }
+//    }
 }

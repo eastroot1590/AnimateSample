@@ -42,6 +42,7 @@
 		D3F555E926CDE5EB00C3A59A /* CGFloat+AnimateSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */; };
 		D3F555EB26CDEAC300C3A59A /* DragCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EA26CDEAC300C3A59A /* DragCell.swift */; };
 		D3F555ED26CDEF5E00C3A59A /* LongDragCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */; };
+		D3F555EF26CE04FE00C3A59A /* DragCellInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EE26CE04FE00C3A59A /* DragCellInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+AnimateSample.swift"; sourceTree = "<group>"; };
 		D3F555EA26CDEAC300C3A59A /* DragCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragCell.swift; sourceTree = "<group>"; };
 		D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongDragCell.swift; sourceTree = "<group>"; };
+		D3F555EE26CE04FE00C3A59A /* DragCellInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragCellInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				D364F4F726A53CB000357EAE /* CitizenInfo.swift */,
+				D3F555EE26CE04FE00C3A59A /* DragCellInfo.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				D364F4DE26A529CC00357EAE /* AppDelegate.swift in Sources */,
 				D345FCD826A7D4C100A9126C /* VStackScroll.swift in Sources */,
 				D3479A8626A555EF0006340F /* TransitioningAnimatable.swift in Sources */,
+				D3F555EF26CE04FE00C3A59A /* DragCellInfo.swift in Sources */,
 				D347BA4526B77D0900292FC7 /* ScaleableCollectionLayout.swift in Sources */,
 				D3479A8F26A563500006340F /* Expandable.swift in Sources */,
 				D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */,

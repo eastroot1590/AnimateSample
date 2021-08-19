@@ -10,6 +10,8 @@ import UIKit
 class DragCell: UICollectionViewCell {
     var index: Int = 0
     
+    var shaking: Bool = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -22,7 +24,38 @@ class DragCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        print("prepare and stop")
+        stop()
+    }
+    
     func fatch(_ index: Int) {
         self.index = index
+    }
+    
+    func shake(_ odd: CGFloat) {
+        let animation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
+        animation.calculationMode = .linear
+        animation.values = [
+            CGFloat(0).radian,
+            CGFloat(-5).radian * odd,
+            CGFloat(5).radian * odd,
+            CGFloat(0).radian
+        ]
+        animation.keyTimes = [
+            0,
+            0.25,
+            0.75,
+            1
+        ]
+        animation.repeatCount = .infinity
+        animation.duration = 0.5
+        layer.add(animation, forKey: "transform")
+    }
+    
+    func stop() {
+        layer.removeAnimation(forKey: "transform")
     }
 }
