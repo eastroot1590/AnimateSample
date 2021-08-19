@@ -10,8 +10,6 @@ import UIKit
 class DragCell: UICollectionViewCell {
     var index: Int = 0
     
-    var shaking: Bool = false
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -27,8 +25,7 @@ class DragCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        print("prepare and stop")
-        stop()
+//        stop()
     }
     
     func fatch(_ index: Int) {

@@ -43,6 +43,7 @@
 		D3F555EB26CDEAC300C3A59A /* DragCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EA26CDEAC300C3A59A /* DragCell.swift */; };
 		D3F555ED26CDEF5E00C3A59A /* LongDragCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */; };
 		D3F555EF26CE04FE00C3A59A /* DragCellInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EE26CE04FE00C3A59A /* DragCellInfo.swift */; };
+		D3F555F126CE2DBC00C3A59A /* DynamicCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555F026CE2DBC00C3A59A /* DynamicCollectionLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		D3F555EA26CDEAC300C3A59A /* DragCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragCell.swift; sourceTree = "<group>"; };
 		D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongDragCell.swift; sourceTree = "<group>"; };
 		D3F555EE26CE04FE00C3A59A /* DragCellInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragCellInfo.swift; sourceTree = "<group>"; };
+		D3F555F026CE2DBC00C3A59A /* DynamicCollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicCollectionLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +283,7 @@
 				D3F555E526CDDCF900C3A59A /* CollectionDragViewController.swift */,
 				D3F555EA26CDEAC300C3A59A /* DragCell.swift */,
 				D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */,
+				D3F555F026CE2DBC00C3A59A /* DynamicCollectionLayout.swift */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 				D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */,
 				D364F4E026A529CC00357EAE /* SceneDelegate.swift in Sources */,
 				D3479A8D26A55A0D0006340F /* CitizenCollectionView.swift in Sources */,
+				D3F555F126CE2DBC00C3A59A /* DynamicCollectionLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

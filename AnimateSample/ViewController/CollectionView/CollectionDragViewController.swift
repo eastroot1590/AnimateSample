@@ -17,7 +17,7 @@ class CollectionDragViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let layout = UICollectionViewFlowLayout()
+        let layout = DynamicCollectionLayout()
         layout.itemSize = CGSize(width: 100, height: 100)
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.minimumInteritemSpacing = 5
@@ -30,6 +30,7 @@ class CollectionDragViewController: UIViewController {
         collectionView.register(DragCell.self, forCellWithReuseIdentifier: "CellTypeA")
         collectionView.dragInteractionEnabled = false
         collectionView.dragDelegate = self
+        collectionView.contentMode = .left
         collectionView.dropDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -54,20 +55,21 @@ class CollectionDragViewController: UIViewController {
             cellInfo.append(DragCellInfo(color: .systemBlue, size: CGSize(width: edge, height: edge)))
         }
         
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 5)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 12)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 4)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 13)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 17)
         cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 29)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: CGSize(width: edge * 2 + 10, height: edge)), at: 41)
         
         view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleTouch)))
     }
     
     @objc func handleTouch() {
-        print(collectionView.dragInteractionEnabled)
         guard !collectionView.dragInteractionEnabled else {
             return
         }
         
-        print("edit begin")
+        print("edit begin \(collectionView.visibleCells.count)")
         
         var i: Int = 0
         collectionView.visibleCells.forEach { cell in
@@ -83,6 +85,8 @@ class CollectionDragViewController: UIViewController {
     }
     
     @objc func cancel() {
+        print("edit end \(collectionView.visibleCells.count)")
+        
         collectionView.visibleCells.forEach { cell in
             guard let dragCell = cell as? DragCell else {
                 return
@@ -105,11 +109,22 @@ extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellTypeA", for: indexPath) as! DragCell
         
         cell.backgroundColor = cellInfo[indexPath.item].color
-        if collectionView.dragInteractionEnabled {
-            cell.shake(indexPath.item % 2 == 0 ? -1 : 1)
-        }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let dragCell = cell as? DragCell else {
+            return
+        }
+        
+        if collectionView.dragInteractionEnabled {
+            print("shake")
+            dragCell.shake(indexPath.item % 2 == 0 ? -1 : 1)
+        } else {
+            print("stop")
+            dragCell.stop()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -173,31 +188,4 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
             })
         }
     }
-    
-//    func playShake(_ collectionView: UICollectionView) {
-//        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-//            guard let cell = collectionView.cellForItem(at: IndexPath(item: item, section: 0)) else {
-//                return
-//            }
-//
-//            let odd: CGFloat = item % 2 == 0 ? 1 : -1
-//            let animation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
-//            animation.calculationMode = .linear
-//            animation.values = [
-//                CGFloat(0).radian,
-//                CGFloat(-5).radian * odd,
-//                CGFloat(5).radian * odd,
-//                CGFloat(0).radian
-//            ]
-//            animation.keyTimes = [
-//                0,
-//                0.25,
-//                0.75,
-//                1
-//            ]
-//            animation.repeatCount = .infinity
-//            animation.duration = 0.5
-//            cell.layer.add(animation, forKey: "transform")
-//        }
-//    }
 }
