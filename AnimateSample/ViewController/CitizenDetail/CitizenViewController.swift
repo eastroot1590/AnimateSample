@@ -12,7 +12,11 @@ class CitizenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
         
         title = "모여봐요 동물의 숲"
      
@@ -20,10 +24,14 @@ class CitizenViewController: UIViewController {
         customCollectionLayout.itemSize = CGSize(width: 100, height: 400)
         customCollectionLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        let citizemMimimumCollection = CitizenCollectionView(frame: view.frame, collectionViewLayout: customCollectionLayout)
-        citizemMimimumCollection.backgroundColor = .systemBackground
-        citizemMimimumCollection.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(citizemMimimumCollection)
+        let citizenMimimumCollection = CitizenCollectionView(frame: view.frame, collectionViewLayout: customCollectionLayout)
+        if #available(iOS 13.0, *) {
+            citizenMimimumCollection.backgroundColor = .systemBackground
+        } else {
+            citizenMimimumCollection.backgroundColor = .white
+        }
+        citizenMimimumCollection.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(citizenMimimumCollection)
     }
     
     override func viewWillAppear(_ animated: Bool) {

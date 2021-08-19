@@ -14,7 +14,11 @@ class TestViewController: UIViewController {
 
         title = "테스트"
         
-        view.backgroundColor = .systemBackground
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
         
         let vStackScroll = VStackScroll(frame: view.frame)
         vStackScroll.autoresizingMask = [.flexibleWidth, .flexibleHeight]

@@ -114,12 +114,21 @@ class Number: UIView {
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
         gradientLayer.locations = [0, 0.2, 0.8, 1]
-        gradientLayer.colors = [
-            CGColor(gray: 0, alpha: 0),
-            CGColor(gray: 0, alpha: 1),
-            CGColor(gray: 0, alpha: 1),
-            CGColor(gray: 0, alpha: 0)
-        ]
+        if #available(iOS 13.0, *) {
+            gradientLayer.colors = [
+                CGColor(gray:0, alpha: 0),
+                CGColor(gray:0, alpha: 1),
+                CGColor(gray:0, alpha: 1),
+                CGColor(gray:0, alpha: 0)
+            ]
+        } else {
+            gradientLayer.colors = [
+                UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0).cgColor,
+                UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 1).cgColor,
+                UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 1).cgColor,
+                UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0).cgColor
+            ]
+        }
         layer.addSublayer(gradientLayer)
         layer.mask = gradientLayer
         

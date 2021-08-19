@@ -33,11 +33,19 @@ class CitizenDetailViewController: UIViewController, TransitioningInteractable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
         
         // detail form
         detailForm = CitizenDetailForm(frame: view.frame, profile: UIImage(named: citizenInfo.profileImage))
-        detailForm.backgroundColor = .systemBackground
+        if #available(iOS 13.0, *) {
+            detailForm.backgroundColor = .systemBackground
+        } else {
+            detailForm.backgroundColor = .white
+        }
         detailForm.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(detailForm)
         NSLayoutConstraint.activate([

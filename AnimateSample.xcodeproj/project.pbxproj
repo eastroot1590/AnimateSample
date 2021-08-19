@@ -38,6 +38,10 @@
 		D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB391326B123F400812554 /* DigitScrollLayer.swift */; };
 		D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */; };
 		D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */; };
+		D3F555E626CDDCF900C3A59A /* CollectionDragViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555E526CDDCF900C3A59A /* CollectionDragViewController.swift */; };
+		D3F555E926CDE5EB00C3A59A /* CGFloat+AnimateSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */; };
+		D3F555EB26CDEAC300C3A59A /* DragCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EA26CDEAC300C3A59A /* DragCell.swift */; };
+		D3F555ED26CDEF5E00C3A59A /* LongDragCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +78,10 @@
 		D3CB391326B123F400812554 /* DigitScrollLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitScrollLayer.swift; sourceTree = "<group>"; };
 		D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailViewController.swift; sourceTree = "<group>"; };
 		D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestExpandableCell.swift; sourceTree = "<group>"; };
+		D3F555E526CDDCF900C3A59A /* CollectionDragViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDragViewController.swift; sourceTree = "<group>"; };
+		D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+AnimateSample.swift"; sourceTree = "<group>"; };
+		D3F555EA26CDEAC300C3A59A /* DragCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragCell.swift; sourceTree = "<group>"; };
+		D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongDragCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +196,7 @@
 		D364F4DC26A529CC00357EAE /* AnimateSample */ = {
 			isa = PBXGroup;
 			children = (
+				D3F555E726CDE5DF00C3A59A /* Foundation */,
 				D3479A8926A5599E0006340F /* UIKit */,
 				D364F4FF26A5489900357EAE /* ViewController */,
 				D364F4F926A546A700357EAE /* Animation */,
@@ -236,6 +245,7 @@
 		D364F4FF26A5489900357EAE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				D3F555E426CDDCDD00C3A59A /* CollectionView */,
 				D348D6B026BA67F4006229FA /* Test */,
 				D3479A8826A556F00006340F /* CitizenDetail */,
 				D3479A8726A556E80006340F /* Home */,
@@ -260,6 +270,24 @@
 				D3CB391326B123F400812554 /* DigitScrollLayer.swift */,
 			);
 			path = Number;
+			sourceTree = "<group>";
+		};
+		D3F555E426CDDCDD00C3A59A /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D3F555E526CDDCF900C3A59A /* CollectionDragViewController.swift */,
+				D3F555EA26CDEAC300C3A59A /* DragCell.swift */,
+				D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		D3F555E726CDE5DF00C3A59A /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */,
+			);
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -333,16 +361,20 @@
 			files = (
 				D348D6B626BA8D23006229FA /* TestBox.swift in Sources */,
 				D3479A9126A570280006340F /* ExpandPopAnimator.swift in Sources */,
+				D3F555E926CDE5EB00C3A59A /* CGFloat+AnimateSample.swift in Sources */,
 				D348D6B426BA6875006229FA /* SelectorView.swift in Sources */,
 				D378DA2B26AF876E00743BED /* Number.swift in Sources */,
 				D364F4E226A529CC00357EAE /* CitizenViewController.swift in Sources */,
 				D378DA2926AF86BA00743BED /* TestViewController.swift in Sources */,
+				D3F555EB26CDEAC300C3A59A /* DragCell.swift in Sources */,
+				D3F555ED26CDEF5E00C3A59A /* LongDragCell.swift in Sources */,
 				D3479A8B26A559AE0006340F /* UIView+AnimateSample.swift in Sources */,
 				D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */,
 				D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */,
 				D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */,
 				D345FCCF26A7CA4C00A9126C /* CitizenDetailForm.swift in Sources */,
 				D345FCD726A7D4C100A9126C /* VStackView.swift in Sources */,
+				D3F555E626CDDCF900C3A59A /* CollectionDragViewController.swift in Sources */,
 				D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */,
 				D345FCD126A7CEAD00A9126C /* SimpleSubject.swift in Sources */,
 				D3479A8326A552270006340F /* HomeNavigationController.swift in Sources */,
@@ -428,7 +460,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -483,7 +515,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

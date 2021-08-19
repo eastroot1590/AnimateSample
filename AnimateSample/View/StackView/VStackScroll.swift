@@ -40,8 +40,6 @@ class VStackScroll: UIScrollView {
     }
     
     override func layoutSubviews() {
-        super.layoutSubviews()
-        
         let offset = min(contentOffset.y, 0)
         let bannerHeightMax = bannerHeight - offset
         
@@ -59,11 +57,7 @@ class VStackScroll: UIScrollView {
         ribbonView?.frame.size = CGSize(width: frame.width, height: rHeight)
         
         let shadowOffset = min(ribbonOffset / adjustedContentInset.top, 1)
-        print("shadow offset \(shadowOffset)")
-        if let shadowBox = ribbonView?.bounds {
-            ribbonView?.layer.shadowPath = UIBezierPath(rect: CGRect(origin: CGPoint(x: -10, y: 10), size: CGSize(width: shadowBox.width + 20, height: shadowBox.height - 20 + shadowOffset * 10))).cgPath
-            ribbonView?.layer.shadowOffset = CGSize(width: 0, height: shadowOffset * 10)
-        }
+        ribbonView?.layer.shadowOffset = CGSize(width: 0, height: shadowOffset * 50)
         
         resizeScrollBound()
     }
@@ -93,15 +87,16 @@ class VStackScroll: UIScrollView {
         ribbonView = ribbon
         ribbonHeight = height
         
-        ribbonView?.layer.shadowColor = UIColor.black.cgColor
-        ribbonView?.layer.shadowOpacity = 0.5
-        ribbonView?.layer.shadowRadius = 20
-        
         addSubview(ribbon)
         
         // layout
         ribbon.frame.origin = CGPoint(x: 0, y: bannerHeight)
         ribbon.frame.size = CGSize(width: frame.width, height: ribbonHeight)
+        // shadow
+        ribbon.layer.shadowColor = UIColor.black.cgColor
+        ribbon.layer.shadowOpacity = 0.5
+        ribbon.layer.shadowRadius = 10
+        ribbon.layer.shadowPath = UIBezierPath(rect: CGRect(origin: CGPoint(x: -20, y: ribbon.frame.height / 2), size: CGSize(width: ribbon.frame.width + 40, height: ribbon.frame.height / 2))).cgPath
         
         contentView.frame.origin = CGPoint(x: 0, y: bannerHeight + ribbonHeight)
     }
