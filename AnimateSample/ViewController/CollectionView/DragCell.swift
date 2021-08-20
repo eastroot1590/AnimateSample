@@ -33,13 +33,13 @@ class DragCell: UICollectionViewCell {
     }
     
     func shake(_ odd: CGFloat) {
-        let animation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
+        let animation = CAKeyframeAnimation(keyPath: "transform")
         animation.calculationMode = .linear
         animation.values = [
-            CGFloat(0).radian,
-            CGFloat(-1.5).radian * odd,
-            CGFloat(1.5).radian * odd,
-            CGFloat(0).radian
+            CATransform3DIdentity,
+            CATransform3DRotate(CATransform3DIdentity, CGFloat(-1.5).radian * odd, 0, 0, 1),
+            CATransform3DRotate(CATransform3DIdentity, CGFloat(1.5).radian * odd, 0, 0, 1),
+            CATransform3DIdentity
         ]
         animation.keyTimes = [
             0,

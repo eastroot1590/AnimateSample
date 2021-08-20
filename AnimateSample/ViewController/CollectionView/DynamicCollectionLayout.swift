@@ -8,7 +8,6 @@
 import UIKit
 
 class DynamicCollectionLayout: UICollectionViewFlowLayout {
-
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let attributes = super.layoutAttributesForElements(in: rect)?.map({ $0.copy() }) as? [UICollectionViewLayoutAttributes] else {
             return nil
@@ -51,8 +50,5 @@ class DynamicCollectionLayout: UICollectionViewFlowLayout {
         }
         
         return attributes
-    }
-    
-    func topAlignment(_ attributes: [UICollectionViewLayoutAttributes]) {
     }
 }
