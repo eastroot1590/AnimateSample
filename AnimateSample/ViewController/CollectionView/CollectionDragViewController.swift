@@ -16,12 +16,13 @@ class CollectionDragViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
 
         let layout = DynamicCollectionLayout()
 //        layout.itemSize = CGSize(width: 100, height: 100)
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.minimumInteritemSpacing = 5
-        layout.columnWidth = (view.frame.width - 40)
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         if #available(iOS 13.0, *) {
             collectionView.backgroundColor = .systemBackground
@@ -51,7 +52,8 @@ class CollectionDragViewController: UIViewController {
         completeButton.isHidden = true
         
         for _ in 0 ..< 50 {
-            cellInfo.append(DragCellInfo(color: .systemBlue, size: .small))
+            let color = UIColor(red: 0.5 + CGFloat.random(in: 0 ... 0.5), green: 0.5 + CGFloat.random(in: 0 ... 0.5), blue: 0.5 + CGFloat.random(in: 0 ... 0.5), alpha: 1)
+            cellInfo.append(DragCellInfo(color: color, size: .small))
         }
         
         cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 4)
@@ -65,9 +67,22 @@ class CollectionDragViewController: UIViewController {
         cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 21)
         cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 6)
         
-        cellInfo.insert(DragCellInfo(color: .systemPurple, size: .huge), at: 4)
-        
         view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleTouch)))
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        collectionView.visibleCells.forEach { cell in
+            guard let dragCell = cell as? DragCell else {
+                return
+            }
+            
+            dragCell.stop()
+        }
+        
+        completeButton.isHidden = true
+        collectionView.dragInteractionEnabled = false
     }
     
     @objc func handleTouch() {
@@ -119,6 +134,11 @@ extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellTypeA", for: indexPath) as! DragCell
         
         cell.backgroundColor = cellInfo[indexPath.item].color
+        if collectionView.dragInteractionEnabled {
+            cell.shake(indexPath.item % 2 == 0 ? -1 : 1)
+        } else {
+            cell.stop()
+        }
         
         return cell
     }
@@ -129,10 +149,8 @@ extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICo
         }
         
         if collectionView.dragInteractionEnabled {
-            print("shake")
             dragCell.shake(indexPath.item % 2 == 0 ? -1 : 1)
         } else {
-            print("stop")
             dragCell.stop()
         }
     }
@@ -162,7 +180,6 @@ extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICo
 extension CollectionDragViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
     // MARK: Drag
     func collectionView(_ collectionView: UICollectionView, dragSessionAllowsMoveOperation session: UIDragSession) -> Bool {
-        print("allow")
         return true
     }
     
@@ -176,18 +193,9 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
         return [dragItem]
     }
     
-    // drag end
-    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
-        print("drag session did end")
-    }
-    
     // MARK: Drop
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, dropSessionDidEnd session: UIDropSession) {
-        print("drop session did end")
     }
     
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
@@ -207,8 +215,11 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
                 collectionView.deleteItems(at: [sourceIndexPath])
                 collectionView.insertItems(at: [destinationIndexPath])
             }, completion: { completed in
-                coordinator.drop(dropItem.dragItem, toItemAt: destinationIndexPath)
+                collectionView.reloadItems(at: [destinationIndexPath])
             })
+        
+            coordinator.drop(dropItem.dragItem, toItemAt: destinationIndexPath)
+            
         }
     }
 }
