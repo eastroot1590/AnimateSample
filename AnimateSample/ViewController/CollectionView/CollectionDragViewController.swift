@@ -30,6 +30,7 @@ class CollectionDragViewController: UIViewController {
             collectionView.backgroundColor = .white
         }
         collectionView.register(DragCell.self, forCellWithReuseIdentifier: "CellTypeA")
+        collectionView.backgroundColor = .gray
         collectionView.dragInteractionEnabled = false
         collectionView.dragDelegate = self
         collectionView.contentMode = .left
@@ -193,6 +194,13 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
         return [dragItem]
     }
     
+    func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+        let parameter = UIDragPreviewParameters()
+        parameter.backgroundColor = .clear
+
+        return parameter
+    }
+    
     // MARK: Drop
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
@@ -219,7 +227,13 @@ extension CollectionDragViewController: UICollectionViewDragDelegate, UICollecti
             })
         
             coordinator.drop(dropItem.dragItem, toItemAt: destinationIndexPath)
-            
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+        let parameter = UIDragPreviewParameters()
+        parameter.backgroundColor = .black
+        
+        return parameter
     }
 }
