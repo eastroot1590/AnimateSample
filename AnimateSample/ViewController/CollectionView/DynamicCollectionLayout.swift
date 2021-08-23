@@ -95,8 +95,6 @@ class DynamicCollectionLayout: UICollectionViewFlowLayout {
         
         dragOffset = CGPoint(x: cell.center.x - location.x, y: cell.center.y - location.y)
         
-//        copiedView.layer.shadowPath = UIBezierPath(rect: cell.bounds).cgPath
-//        copiedView.layer.shadowColor = UIColor.black.cgColor
         copiedView.layer.shadowOpacity = cell.layer.shadowOpacity
         copiedView.layer.shadowRadius = cell.layer.shadowRadius
         copiedView.layer.cornerRadius = cell.layer.cornerRadius

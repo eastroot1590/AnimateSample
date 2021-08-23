@@ -71,10 +71,13 @@ class CollectionDragViewController: UIViewController {
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTouch))
         recognizer.minimumPressDuration = 0.3
         view.addGestureRecognizer(recognizer)
+        
+        // foreground
+        NotificationCenter.default.addObserver(self, selector: #selector(appEnterBackround), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    @objc func appEnterBackround() {
+        print("app enter background")
         
         collectionView.visibleCells.forEach { cell in
             guard let dragCell = cell as? DragCell else {
