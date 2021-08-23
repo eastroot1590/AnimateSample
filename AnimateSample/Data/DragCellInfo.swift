@@ -12,7 +12,6 @@ struct DragCellInfo {
         case small
         case medium
         case large
-        case huge
     }
     
     let color: UIColor

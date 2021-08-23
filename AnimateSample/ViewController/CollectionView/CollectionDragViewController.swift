@@ -32,9 +32,9 @@ class CollectionDragViewController: UIViewController {
         collectionView.register(DragCell.self, forCellWithReuseIdentifier: "CellTypeA")
         collectionView.backgroundColor = .gray
         collectionView.dragInteractionEnabled = false
-        collectionView.dragDelegate = self
+//        collectionView.dragDelegate = self
         collectionView.contentMode = .left
-        collectionView.dropDelegate = self
+//        collectionView.dropDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleTopMargin]
@@ -68,7 +68,9 @@ class CollectionDragViewController: UIViewController {
         cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 21)
         cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 6)
         
-        view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleTouch)))
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTouch))
+        recognizer.minimumPressDuration = 0.3
+        view.addGestureRecognizer(recognizer)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -86,12 +88,15 @@ class CollectionDragViewController: UIViewController {
         collectionView.dragInteractionEnabled = false
     }
     
-    @objc func handleTouch() {
+    @objc func handleTouch(longPress: UILongPressGestureRecognizer) {
         guard !collectionView.dragInteractionEnabled else {
+            if let dynamicLayout = collectionView.collectionViewLayout as? DynamicCollectionLayout {
+                dynamicLayout.handleDragInput(longPress.state, location: longPress.location(in: collectionView))
+            }
             return
         }
         
-        print("edit begin \(collectionView.visibleCells.count)")
+        print("edit begin")
         
         var i: Int = 0
         collectionView.visibleCells.forEach { cell in
@@ -107,7 +112,7 @@ class CollectionDragViewController: UIViewController {
     }
     
     @objc func cancel() {
-        print("edit end \(collectionView.visibleCells.count)")
+        print("edit end")
         
         collectionView.visibleCells.forEach { cell in
             guard let dragCell = cell as? DragCell else {
@@ -124,8 +129,10 @@ class CollectionDragViewController: UIViewController {
     func minColumn(_ what: CGFloat) -> CGFloat {
         return 3
     }
+    
 }
 
+// MARK: UICollectionViewDelegate, UICollectionViewDataSource
 extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         cellInfo.count
@@ -169,71 +176,25 @@ extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICo
             
         case .large:
             cellSize = CGSize(width: edge * 3 + 20, height: edge)
-            
-        case .huge:
-            cellSize = CGSize(width: edge * 2 + 10, height: edge * 2 + 10)
         }
         
         return cellSize
     }
-}
-
-extension CollectionDragViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
-    // MARK: Drag
-    func collectionView(_ collectionView: UICollectionView, dragSessionAllowsMoveOperation session: UIDragSession) -> Bool {
-        return true
+    
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        true
     }
     
-    // drag begin
-    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        // 컨텐츠를 넣어야 됨
-        let provider = NSItemProvider(object: cellInfo[indexPath.item].color)
-        
-        let dragItem = UIDragItem(itemProvider: provider)
-        
-        return [dragItem]
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
-        let parameter = UIDragPreviewParameters()
-        parameter.backgroundColor = .clear
-
-        return parameter
-    }
-    
-    // MARK: Drop
-    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-        UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        guard let destinationIndexPath = coordinator.destinationIndexPath else {
+    func moveInfo(_ sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard sourceIndexPath.item != destinationIndexPath.item else {
             return
         }
-        
-        coordinator.items.forEach { dropItem in
-            guard let sourceIndexPath = dropItem.sourceIndexPath else {
-                return
-            }
-            
-            collectionView.performBatchUpdates({
-                let temp = cellInfo.remove(at: sourceIndexPath.item)
-                cellInfo.insert(temp, at: destinationIndexPath.item)
-                
-                collectionView.deleteItems(at: [sourceIndexPath])
-                collectionView.insertItems(at: [destinationIndexPath])
-            }, completion: { completed in
-                collectionView.reloadItems(at: [destinationIndexPath])
-            })
-        
-            coordinator.drop(dropItem.dragItem, toItemAt: destinationIndexPath)
-        }
+
+        let temp = cellInfo.remove(at: sourceIndexPath.item)
+        cellInfo.insert(temp, at: destinationIndexPath.item)
     }
     
-    func collectionView(_ collectionView: UICollectionView, dropPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
-        let parameter = UIDragPreviewParameters()
-        parameter.backgroundColor = .black
-        
-        return parameter
+    func cellSizeType(_ indexPath: IndexPath) -> DragCellInfo.CellSize {
+        return cellInfo[indexPath.item].size
     }
 }
