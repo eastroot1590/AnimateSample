@@ -31,6 +31,9 @@
 		D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */; };
 		D364F50C26A54A7700357EAE /* ExpandPushAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */; };
 		D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364F50E26A54B2800357EAE /* ExpandAnimator.swift */; };
+		D36B5CF926D473F70086DCAE /* RawScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CF826D473F70086DCAE /* RawScrollView.swift */; };
+		D36B5CFB26D4740F0086DCAE /* RawScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */; };
+		D36B5CFD26D475110086DCAE /* CGPoint+AnimateSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CFC26D475110086DCAE /* CGPoint+AnimateSample.swift */; };
 		D378DA2926AF86BA00743BED /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378DA2826AF86BA00743BED /* TestViewController.swift */; };
 		D378DA2B26AF876E00743BED /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378DA2A26AF876E00743BED /* Number.swift */; };
 		D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FC926AE6C0B00183BD3 /* HStackView.swift */; };
@@ -73,6 +76,9 @@
 		D364F50026A548AE00357EAE /* CitizenDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenDetailViewController.swift; sourceTree = "<group>"; };
 		D364F50A26A54A7700357EAE /* ExpandPushAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandPushAnimator.swift; sourceTree = "<group>"; };
 		D364F50E26A54B2800357EAE /* ExpandAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandAnimator.swift; sourceTree = "<group>"; };
+		D36B5CF826D473F70086DCAE /* RawScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawScrollView.swift; sourceTree = "<group>"; };
+		D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawScrollViewController.swift; sourceTree = "<group>"; };
+		D36B5CFC26D475110086DCAE /* CGPoint+AnimateSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+AnimateSample.swift"; sourceTree = "<group>"; };
 		D378DA2826AF86BA00743BED /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		D378DA2A26AF876E00743BED /* Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		D3A36FC926AE6C0B00183BD3 /* HStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackView.swift; sourceTree = "<group>"; };
@@ -141,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				D3479A8A26A559AE0006340F /* UIView+AnimateSample.swift */,
+				D36B5CFC26D475110086DCAE /* CGPoint+AnimateSample.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -250,7 +257,8 @@
 		D364F4FF26A5489900357EAE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				D3F555E426CDDCDD00C3A59A /* CollectionView */,
+				D36B5CF726D473B90086DCAE /* RowScrollView */,
+				D3F555E426CDDCDD00C3A59A /* DragCollectionView */,
 				D348D6B026BA67F4006229FA /* Test */,
 				D3479A8826A556F00006340F /* CitizenDetail */,
 				D3479A8726A556E80006340F /* Home */,
@@ -268,6 +276,15 @@
 			path = ExpandAnimator;
 			sourceTree = "<group>";
 		};
+		D36B5CF726D473B90086DCAE /* RowScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				D36B5CF826D473F70086DCAE /* RawScrollView.swift */,
+				D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */,
+			);
+			path = RowScrollView;
+			sourceTree = "<group>";
+		};
 		D3CB391226B123E000812554 /* Number */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,7 +294,7 @@
 			path = Number;
 			sourceTree = "<group>";
 		};
-		D3F555E426CDDCDD00C3A59A /* CollectionView */ = {
+		D3F555E426CDDCDD00C3A59A /* DragCollectionView */ = {
 			isa = PBXGroup;
 			children = (
 				D3F555E526CDDCF900C3A59A /* CollectionDragViewController.swift */,
@@ -285,7 +302,7 @@
 				D3F555EC26CDEF5E00C3A59A /* LongDragCell.swift */,
 				D3F555F026CE2DBC00C3A59A /* DynamicCollectionLayout.swift */,
 			);
-			path = CollectionView;
+			path = DragCollectionView;
 			sourceTree = "<group>";
 		};
 		D3F555E726CDE5DF00C3A59A /* Foundation */ = {
@@ -367,6 +384,7 @@
 			files = (
 				D348D6B626BA8D23006229FA /* TestBox.swift in Sources */,
 				D3479A9126A570280006340F /* ExpandPopAnimator.swift in Sources */,
+				D36B5CF926D473F70086DCAE /* RawScrollView.swift in Sources */,
 				D3F555E926CDE5EB00C3A59A /* CGFloat+AnimateSample.swift in Sources */,
 				D348D6B426BA6875006229FA /* SelectorView.swift in Sources */,
 				D378DA2B26AF876E00743BED /* Number.swift in Sources */,
@@ -380,6 +398,7 @@
 				D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */,
 				D345FCCF26A7CA4C00A9126C /* CitizenDetailForm.swift in Sources */,
 				D345FCD726A7D4C100A9126C /* VStackView.swift in Sources */,
+				D36B5CFD26D475110086DCAE /* CGPoint+AnimateSample.swift in Sources */,
 				D3F555E626CDDCF900C3A59A /* CollectionDragViewController.swift in Sources */,
 				D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */,
 				D345FCD126A7CEAD00A9126C /* SimpleSubject.swift in Sources */,
@@ -393,6 +412,7 @@
 				D3F555EF26CE04FE00C3A59A /* DragCellInfo.swift in Sources */,
 				D347BA4526B77D0900292FC7 /* ScaleableCollectionLayout.swift in Sources */,
 				D3479A8F26A563500006340F /* Expandable.swift in Sources */,
+				D36B5CFB26D4740F0086DCAE /* RawScrollViewController.swift in Sources */,
 				D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */,
 				D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */,
 				D364F4F526A53A8400357EAE /* CitizenMinimumCell.swift in Sources */,
