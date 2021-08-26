@@ -38,6 +38,8 @@
 		D378DA2B26AF876E00743BED /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378DA2A26AF876E00743BED /* Number.swift */; };
 		D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FC926AE6C0B00183BD3 /* HStackView.swift */; };
 		D3A36FCC26AE83D100183BD3 /* TransitioningInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */; };
+		D3ACBC1126D719DE00DD3929 /* ChartERView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ACBC1026D719DE00DD3929 /* ChartERView.swift */; };
+		D3ACBC1326D71DCC00DD3929 /* ChartERElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ACBC1226D71DCC00DD3929 /* ChartERElements.swift */; };
 		D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB391326B123F400812554 /* DigitScrollLayer.swift */; };
 		D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */; };
 		D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */; };
@@ -83,6 +85,8 @@
 		D378DA2A26AF876E00743BED /* Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		D3A36FC926AE6C0B00183BD3 /* HStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackView.swift; sourceTree = "<group>"; };
 		D3A36FCB26AE83D100183BD3 /* TransitioningInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitioningInteractable.swift; sourceTree = "<group>"; };
+		D3ACBC1026D719DE00DD3929 /* ChartERView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartERView.swift; sourceTree = "<group>"; };
+		D3ACBC1226D71DCC00DD3929 /* ChartERElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartERElements.swift; sourceTree = "<group>"; };
 		D3CB391326B123F400812554 /* DigitScrollLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitScrollLayer.swift; sourceTree = "<group>"; };
 		D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailViewController.swift; sourceTree = "<group>"; };
 		D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestExpandableCell.swift; sourceTree = "<group>"; };
@@ -225,6 +229,7 @@
 		D364F4F326A53A6900357EAE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D3ACBC0F26D7117300DD3929 /* Chart */,
 				D348D6B226BA6825006229FA /* Selector */,
 				D348D6B126BA6808006229FA /* Citizen */,
 				D347BA4326B77CD400292FC7 /* ScaleableCollection */,
@@ -283,6 +288,15 @@
 				D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */,
 			);
 			path = RowScrollView;
+			sourceTree = "<group>";
+		};
+		D3ACBC0F26D7117300DD3929 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				D3ACBC1026D719DE00DD3929 /* ChartERView.swift */,
+				D3ACBC1226D71DCC00DD3929 /* ChartERElements.swift */,
+			);
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		D3CB391226B123E000812554 /* Number */ = {
@@ -392,6 +406,7 @@
 				D378DA2926AF86BA00743BED /* TestViewController.swift in Sources */,
 				D3F555EB26CDEAC300C3A59A /* DragCell.swift in Sources */,
 				D3F555ED26CDEF5E00C3A59A /* LongDragCell.swift in Sources */,
+				D3ACBC1126D719DE00DD3929 /* ChartERView.swift in Sources */,
 				D3479A8B26A559AE0006340F /* UIView+AnimateSample.swift in Sources */,
 				D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */,
 				D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */,
@@ -403,6 +418,7 @@
 				D364F50126A548AE00357EAE /* CitizenDetailViewController.swift in Sources */,
 				D345FCD126A7CEAD00A9126C /* SimpleSubject.swift in Sources */,
 				D3479A8326A552270006340F /* HomeNavigationController.swift in Sources */,
+				D3ACBC1326D71DCC00DD3929 /* ChartERElements.swift in Sources */,
 				D345FCD626A7D4C100A9126C /* Stackable.swift in Sources */,
 				D364F50C26A54A7700357EAE /* ExpandPushAnimator.swift in Sources */,
 				D3A36FCC26AE83D100183BD3 /* TransitioningInteractable.swift in Sources */,
