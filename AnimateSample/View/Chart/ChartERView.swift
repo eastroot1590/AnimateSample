@@ -55,7 +55,6 @@ class ChartERView: UIScrollView {
     // 차트
     let chartLineLayer = CAShapeLayer()
     let chartPointLayer = CAShapeLayer()
-    let chartPath = UIBezierPath()
     
     // 스크롤 width를 계산하기 위한 spacing
     private var spacingInterValues: CGFloat = 0
@@ -168,13 +167,11 @@ class ChartERView: UIScrollView {
         minValue = currentMinValue
         maxValue = currentMaxValue
         
-        // generate layer
-        chartPath.move(to: .zero)
-        
         // recalculate spacingInterValues
         let spacing = (frame.width - chartInset.left - chartInset.right) / CGFloat(visibleValueCount - 1)
         spacingInterValues = max(spacing, minimumSpacingInterValues)
         
+        // store elements
         chartElements = elements
         
         // original chart
