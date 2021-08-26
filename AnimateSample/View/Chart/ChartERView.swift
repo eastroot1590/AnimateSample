@@ -20,11 +20,14 @@ class ChartERView: UIScrollView {
             return 0
         }
         
-        return CGFloat(elements.values.count - 1) * spaceInterValues
+        return CGFloat(elements.values.count - 1) * spacingInterValues
     }
     
     // 보이는 값 개수
     var visibleValueCount: Int = 5
+    
+    // 차트 포인트 크기
+    var chartPointRadius: CGFloat = 5
     
     // 각 값 사이의 거리
     var minimumSpacingInterValues: CGFloat = 50
@@ -50,14 +53,17 @@ class ChartERView: UIScrollView {
     let overlayView: UIView = UIView()
     
     // 차트
-    let chartLayer = CAShapeLayer()
+    let chartLineLayer = CAShapeLayer()
+    let chartPointLayer = CAShapeLayer()
     let chartPath = UIBezierPath()
     
     // 스크롤 width를 계산하기 위한 spacing
-    private var spaceInterValues: CGFloat = 0
+    private var spacingInterValues: CGFloat = 0
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        showsHorizontalScrollIndicator = false
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
@@ -70,10 +76,21 @@ class ChartERView: UIScrollView {
         ])
         
         overlayView.frame = bounds
-        overlayView.alpha = 0.5
+//        overlayView.alpha = 0.5
         overlayView.isUserInteractionEnabled = false
         overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(overlayView)
+        
+        // 차트 Layer
+        chartLineLayer.fillColor = nil
+        chartLineLayer.strokeColor = UIColor.systemBlue.cgColor
+        chartLineLayer.lineWidth = 4
+        overlayView.layer.addSublayer(chartLineLayer)
+        
+        chartPointLayer.fillColor = UIColor.systemBlue.cgColor
+        chartPointLayer.strokeColor = UIColor.white.cgColor
+        chartPointLayer.lineWidth = 2
+        overlayView.layer.addSublayer(chartPointLayer)
     }
     
     required init?(coder: NSCoder) {
@@ -96,15 +113,19 @@ class ChartERView: UIScrollView {
         
         overlayView.frame.origin = CGPoint(x: contentOffset.x, y: contentOffset.y)
         
-        // update path
-        var virtualIndex = Int(contentOffset.x / spaceInterValues)
+        // 선계산
+        var virtualIndex = Int(contentOffset.x / spacingInterValues)
         virtualIndex = max(min(virtualIndex, elements.values.count - 1), 0)
-        let alpha = Float(contentOffset.x / spaceInterValues) - Float(virtualIndex)
-        var visibleValues: [Float] = Array(repeating: 0, count: visibleValueCount)
+        let alpha = Float(contentOffset.x / spacingInterValues) - Float(virtualIndex)
         let spacing = (frame.width - chartInset.left - chartInset.right) / CGFloat(visibleValueCount - 1)
         
-        let path = UIBezierPath()
+        var visibleValues: [Float] = Array(repeating: 0, count: visibleValueCount)
         var x = chartInset.left
+        var lastPoint: CGPoint = .zero
+        
+        // Path 그리기
+        let linePath = UIBezierPath()
+        let pointPath = UIBezierPath()
         
         for index in 0 ..< visibleValueCount {
             if virtualIndex + index < elements.values.count - 1 {
@@ -119,14 +140,22 @@ class ChartERView: UIScrollView {
             let y = chartInset.top + CGFloat(1 - yOffset) * (frame.height - chartInset.top - chartInset.bottom)
             
             if index == 0 {
-                path.move(to: CGPoint(x: x, y: y))
+                linePath.move(to: CGPoint(x: x, y: y))
             } else {
-                path.addLine(to: CGPoint(x: x, y: y))
+                linePath.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + 20, y: lastPoint.y), controlPoint2: CGPoint(x: x - 20, y: y))
             }
+            
+            let radius = chartPointRadius
+            pointPath.move(to: CGPoint(x: x + radius, y: y))
+            pointPath.addArc(withCenter: CGPoint(x: x, y: y), radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
+            
+            lastPoint = CGPoint(x: x, y: y)
+            
             x += max(minimumSpacingInterValues, spacing)
         }
         
-        chartLayer.path = path.cgPath
+        chartLineLayer.path = linePath.cgPath
+        chartPointLayer.path = pointPath.cgPath
     }
     
     func addElement(_ elements: ChartERElements) {
@@ -142,50 +171,43 @@ class ChartERView: UIScrollView {
         // generate layer
         chartPath.move(to: .zero)
         
+        // recalculate spacingInterValues
         let spacing = (frame.width - chartInset.left - chartInset.right) / CGFloat(visibleValueCount - 1)
-        spaceInterValues = max(spacing, minimumSpacingInterValues)
-        
-        var x: CGFloat = chartInset.left
-        
-        for _ in 0 ..< visibleValueCount {
-            let y = frame.height - chartInset.bottom
-            chartPath.addLine(to: CGPoint(x: x, y: y))
-            
-            x += max(spacing, minimumSpacingInterValues)
-        }
-        
-        chartLayer.fillColor = nil
-        chartLayer.strokeColor = UIColor.systemBlue.cgColor
-        chartLayer.lineWidth = 2
-        chartLayer.path = chartPath.cgPath
-        
-        overlayView.layer.addSublayer(chartLayer)
+        spacingInterValues = max(spacing, minimumSpacingInterValues)
         
         chartElements = elements
         
         // original chart
-        let originChartLayer = CAShapeLayer()
-        originChartLayer.fillColor = nil
-        originChartLayer.strokeColor = UIColor.systemRed.cgColor
-        
-        let path = UIBezierPath()
-        x = chartInset.left
-        
-        for index in 0 ..< elements.values.count {
-            let yOffset = (elements.values[index] - minValue) / valueRange
-            let y = chartInset.top + CGFloat(1 - yOffset) * (frame.height - chartInset.top - chartInset.bottom)
-            
-            if index == 0 {
-                path.move(to: CGPoint(x: x, y: y))
-            } else {
-                path.addLine(to: CGPoint(x: x, y: y))
-            }
-            
-            x += spaceInterValues
-        }
-        
-        originChartLayer.path = path.cgPath
-        contentView.layer.addSublayer(originChartLayer)
+        // uncomment below to show original chart
+//        overlayView.alpha = 0.5
+//
+//        let originChartLayer = CAShapeLayer()
+//        originChartLayer.fillColor = nil
+//        originChartLayer.strokeColor = UIColor.systemRed.cgColor
+//
+//        let path = UIBezierPath()
+//        x = chartInset.left
+//
+//        var lastPoint: CGPoint = .zero
+//
+//        for index in 0 ..< elements.values.count {
+//            let yOffset = (elements.values[index] - minValue) / valueRange
+//            let y = chartInset.top + CGFloat(1 - yOffset) * (frame.height - chartInset.top - chartInset.bottom)
+//
+//            if index == 0 {
+//                path.move(to: CGPoint(x: x, y: y))
+//            } else {
+//                path.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + 20, y: lastPoint.y), controlPoint2: CGPoint(x: x - 20, y: y))
+//            }
+//
+//            lastPoint = CGPoint(x: x, y: y)
+//
+//            x += spaceInterValues
+//        }
+//
+//        originChartLayer.path = path.cgPath
+//        contentView.layer.addSublayer(originChartLayer)
+        // original chart end
     }
     
     private func lerp(_ lhs: Float, _ rhs: Float, alpha: Float) -> Float {
