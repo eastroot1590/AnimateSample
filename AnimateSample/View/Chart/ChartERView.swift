@@ -73,7 +73,7 @@ class ChartERView: UIScrollView {
     let chartPointLayer = CAShapeLayer()
     let chartAxisLayer = CAShapeLayer()
     var chartYValueLayers: [CATextLayer] = []
-    var chartXValueLayers: [CAShapeLayer] = []
+    var chartXValueLayers: [CATextLayer] = []
     
     let originChartLayer = CAShapeLayer()
     
@@ -109,7 +109,7 @@ class ChartERView: UIScrollView {
         // 차트 Layer
         chartLineLayer.fillColor = nil
         chartLineLayer.strokeColor = UIColor.systemBlue.cgColor
-        chartLineLayer.lineWidth = 4
+        chartLineLayer.lineWidth = 3
         overlayView.layer.addSublayer(chartLineLayer)
         
         chartPointLayer.fillColor = UIColor.systemBlue.cgColor
@@ -143,7 +143,6 @@ class ChartERView: UIScrollView {
         
         overlayView.frame.origin = CGPoint(x: contentOffset.x, y: contentOffset.y)
         
-        
         drawOverlayedChart()
     }
     
@@ -175,6 +174,26 @@ class ChartERView: UIScrollView {
             yValueLayer.foregroundColor = UIColor.gray.cgColor
             overlayView.layer.addSublayer(yValueLayer)
             chartYValueLayers.append(yValueLayer)
+        }
+        
+        // x axis 라벨
+        var x = chartMinX
+        for _ in 0 ..< visibleValueCount {
+            let y = frame.height - xAxisHeight + 5
+            
+            let xValueLayer = CATextLayer()
+            xValueLayer.string = "nil"
+            xValueLayer.frame = CGRect(origin: CGPoint(x: x - 20, y: y), size: CGSize(width: 40, height: xAxisHeight - 5))
+            xValueLayer.font = UIFont.systemFont(ofSize: 8)
+            xValueLayer.alignmentMode = .center
+            xValueLayer.fontSize = 12
+            xValueLayer.contentsScale = UIScreen.main.scale
+            xValueLayer.foregroundColor = UIColor.gray.cgColor
+            
+            overlayView.layer.addSublayer(xValueLayer)
+            chartXValueLayers.append(xValueLayer)
+            
+            x += spacingInterValues
         }
     }
     
@@ -212,6 +231,12 @@ class ChartERView: UIScrollView {
     }
     
     private func drawOverlayedChart() {
+        guard let elements = chartElements else {
+            return
+        }
+        
+        let virtualIndex = clamp(Int(contentOffset.x / spacingInterValues), -visibleValueCount, elements.values.count)
+        
         // Path
         let linePath = UIBezierPath()
         let pointPath = UIBezierPath()
@@ -234,9 +259,11 @@ class ChartERView: UIScrollView {
             let radius = chartPointRadius
             pointPath.move(to: CGPoint(x: x + radius, y: y))
             pointPath.addArc(withCenter: CGPoint(x: x, y: y), radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
-            
             lastPoint = CGPoint(x: x, y: y)
-
+            
+            // update x values
+            chartXValueLayers[index].string = "\(virtualIndex + index)"
+            
             x += spacingInterValues
         }
         
@@ -277,13 +304,21 @@ class ChartERView: UIScrollView {
             return 0
         }
         
-        let virtualIndex = clamp(Int(contentOffset.x / spacingInterValues), 0, elements.values.count)
-        let valueAlpha = Float(contentOffset.x / spacingInterValues) - Float(virtualIndex)
+        let virtualIndex = Int(contentOffset.x / spacingInterValues)
+        let valueAlpha = contentOffset.x / spacingInterValues - CGFloat(virtualIndex)
         let maxIndex = elements.values.count - 1
+        
+        if contentOffset.x < 0 {
+            if virtualIndex + index > 0 {
+                return lerp(elements.values[virtualIndex + index], elements.values[virtualIndex + index - 1], Float(abs(valueAlpha)))
+            } else {
+                return elements.values.first ?? 0
+            }
+        }
         
         if virtualIndex + index < maxIndex {
             // 다음 값이랑 거리를 계산
-            return lerp(elements.values[virtualIndex + index], elements.values[virtualIndex + index + 1], valueAlpha)
+            return lerp(elements.values[virtualIndex + index], elements.values[virtualIndex + index + 1], Float(valueAlpha))
         } else {
             // 마지막 값
             return elements.values.last ?? 0
