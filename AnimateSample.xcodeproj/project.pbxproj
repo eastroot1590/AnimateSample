@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D344AB4426D8772200F990E7 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = D344AB4326D8772200F990E7 /* Math.swift */; };
+		D344AB4626D8CBF000F990E7 /* ChartERType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D344AB4526D8CBF000F990E7 /* ChartERType.swift */; };
 		D345FCCF26A7CA4C00A9126C /* CitizenDetailForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345FCCE26A7CA4C00A9126C /* CitizenDetailForm.swift */; };
 		D345FCD126A7CEAD00A9126C /* SimpleSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345FCD026A7CEAD00A9126C /* SimpleSubject.swift */; };
 		D345FCD626A7D4C100A9126C /* Stackable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345FCD326A7D4C100A9126C /* Stackable.swift */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		D344AB4326D8772200F990E7 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		D344AB4526D8CBF000F990E7 /* ChartERType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartERType.swift; sourceTree = "<group>"; };
 		D345FCCE26A7CA4C00A9126C /* CitizenDetailForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenDetailForm.swift; sourceTree = "<group>"; };
 		D345FCD026A7CEAD00A9126C /* SimpleSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSubject.swift; sourceTree = "<group>"; };
 		D345FCD326A7D4C100A9126C /* Stackable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stackable.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 			children = (
 				D3ACBC1026D719DE00DD3929 /* ChartERView.swift */,
 				D3ACBC1226D71DCC00DD3929 /* ChartERElements.swift */,
+				D344AB4526D8CBF000F990E7 /* ChartERType.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				D3ACBC1126D719DE00DD3929 /* ChartERView.swift in Sources */,
 				D3479A8B26A559AE0006340F /* UIView+AnimateSample.swift in Sources */,
 				D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */,
+				D344AB4626D8CBF000F990E7 /* ChartERType.swift in Sources */,
 				D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */,
 				D364F50F26A54B2800357EAE /* ExpandAnimator.swift in Sources */,
 				D345FCCF26A7CA4C00A9126C /* CitizenDetailForm.swift in Sources */,

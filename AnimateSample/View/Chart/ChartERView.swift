@@ -10,12 +10,11 @@ import UIKit
 /// 차트를 표현하는 View
 /// TODO: 일단 LineChart를 만들고 나중에 추상화 시키자.
 class ChartERView: UIScrollView {
-    // 차트 옵션
     // 여백
     var chartInset: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
     // 가로 길이
-    var chartWidth: CGFloat {
+    var chartIntrinsicWidth: CGFloat {
         guard let elements = chartElements else {
             return 0
         }
@@ -29,6 +28,8 @@ class ChartERView: UIScrollView {
         return CGSize(width: width, height: height)
     }
     
+    var chartType: ChartERType = .curvedLine
+    
     // 보이는 값 개수
     var visibleValueCount: Int = 7
     
@@ -40,33 +41,30 @@ class ChartERView: UIScrollView {
     
     // 차트 선 곡률
     // 0~1
-    var chartCurveRate: CGFloat = 1
+    var chartCurveRate: CGFloat = 0.8
     
     // 축
-    // y
     var yAxisWidth: CGFloat = 40
     var xAxisHeight: CGFloat = 30
     
     // 데이터
     private var chartElements: ChartERElements? = nil
+    
     var visibleValues: [Float] = []
     
     var minValue: Float = 0
     var maxValue: Float = 0
-    var valueRange: Float {
-        maxValue - minValue
-    }
     
     // view
     // 스크롤 기능을 위해 추가한 투명한 view
     let contentView: UIView = UIView()
     var contentWidth: CGFloat {
-        yAxisWidth + chartInset.left + chartWidth + chartInset.right
+        yAxisWidth + chartInset.left + chartIntrinsicWidth + chartInset.right
     }
     var contentWidthConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
     // 실제 차트가 그려지는 view
-    let overlayView: UIView = UIView()
+    let chartER: UIView = UIView()
     
     // 차트
     let chartLineLayer = CAShapeLayer()
@@ -75,7 +73,7 @@ class ChartERView: UIScrollView {
     var chartYValueLayers: [CATextLayer] = []
     var chartXValueLayers: [CATextLayer] = []
     
-    let originChartLayer = CAShapeLayer()
+    let shadowChartLayer = CAShapeLayer()
     
     // 스크롤 width를 계산하기 위한 spacing
     private var spacingInterValues: CGFloat = 0
@@ -101,30 +99,30 @@ class ChartERView: UIScrollView {
             contentWidthConstraint
         ])
         
-        overlayView.frame = bounds
-        overlayView.isUserInteractionEnabled = false
-        overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(overlayView)
+        chartER.frame = bounds
+        chartER.isUserInteractionEnabled = false
+        chartER.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(chartER)
         
         // 차트 Layer
         chartLineLayer.fillColor = nil
         chartLineLayer.strokeColor = UIColor.systemBlue.cgColor
         chartLineLayer.lineWidth = 3
-        overlayView.layer.addSublayer(chartLineLayer)
+        chartER.layer.addSublayer(chartLineLayer)
         
         chartPointLayer.fillColor = UIColor.systemBlue.cgColor
         chartPointLayer.strokeColor = UIColor.white.cgColor
         chartPointLayer.lineWidth = 2
-        overlayView.layer.addSublayer(chartPointLayer)
+        chartER.layer.addSublayer(chartPointLayer)
 
         chartAxisLayer.fillColor = nil
         chartAxisLayer.strokeColor = UIColor.gray.cgColor
         chartAxisLayer.lineWidth = 1
-        overlayView.layer.addSublayer(chartAxisLayer)
+        chartER.layer.addSublayer(chartAxisLayer)
         
-        originChartLayer.fillColor = nil
-        originChartLayer.strokeColor = UIColor.systemRed.cgColor
-        contentView.layer.addSublayer(originChartLayer)
+        shadowChartLayer.fillColor = nil
+        shadowChartLayer.strokeColor = UIColor.systemRed.cgColor
+        contentView.layer.addSublayer(shadowChartLayer)
     }
     
     required init?(coder: NSCoder) {
@@ -133,7 +131,7 @@ class ChartERView: UIScrollView {
     
     override func updateConstraints() {
         contentWidthConstraint.constant = contentWidth
-        contentSize = CGSize(width: contentWidth, height: overlayView.frame.height - adjustedContentInset.top)
+        contentSize = CGSize(width: contentWidth, height: chartER.frame.height - adjustedContentInset.top)
         
         super.updateConstraints()
     }
@@ -141,60 +139,13 @@ class ChartERView: UIScrollView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        overlayView.frame.origin = CGPoint(x: contentOffset.x, y: contentOffset.y)
+        chartER.frame.origin = CGPoint(x: contentOffset.x, y: contentOffset.y)
         
-        drawOverlayedChart()
-    }
-    
-    func initializeAxisLayer() {
-        // axis
-        let axisPath = UIBezierPath()
-        axisPath.move(to: CGPoint(x: yAxisWidth, y: 0))
-        axisPath.addLine(to: CGPoint(x: yAxisWidth, y: frame.height - xAxisHeight))
-        axisPath.addLine(to: CGPoint(x: frame.width - chartInset.right, y: frame.height - xAxisHeight))
-        chartAxisLayer.path = axisPath.cgPath
-        
-        chartYValueLayers.forEach { $0.removeFromSuperlayer() }
-        chartYValueLayers = []
-        
-        // y axis 라벨
-        for index in 0 ..< 4 {
-            let alpha = Float(index) / 3
-            let value = lerp(maxValue, minValue, alpha)
-            
-            let y = lerp(chartInset.top, chartInset.top + chartAvailableSize.height, CGFloat(alpha))
-            
-            let yValueLayer = CATextLayer()
-            yValueLayer.string = "\(Int(value))"
-            yValueLayer.frame = CGRect(origin: CGPoint(x: 0, y: y - 7), size: CGSize(width: yAxisWidth - 5, height: 14))
-            yValueLayer.font = UIFont.systemFont(ofSize: 8)
-            yValueLayer.alignmentMode = .right
-            yValueLayer.fontSize = 12
-            yValueLayer.contentsScale = UIScreen.main.scale
-            yValueLayer.foregroundColor = UIColor.gray.cgColor
-            overlayView.layer.addSublayer(yValueLayer)
-            chartYValueLayers.append(yValueLayer)
-        }
-        
-        // x axis 라벨
-        var x = chartMinX
-        for _ in 0 ..< visibleValueCount {
-            let y = frame.height - xAxisHeight + 5
-            
-            let xValueLayer = CATextLayer()
-            xValueLayer.string = "nil"
-            xValueLayer.frame = CGRect(origin: CGPoint(x: x - 20, y: y), size: CGSize(width: 40, height: xAxisHeight - 5))
-            xValueLayer.font = UIFont.systemFont(ofSize: 8)
-            xValueLayer.alignmentMode = .center
-            xValueLayer.fontSize = 12
-            xValueLayer.contentsScale = UIScreen.main.scale
-            xValueLayer.foregroundColor = UIColor.gray.cgColor
-            
-            overlayView.layer.addSublayer(xValueLayer)
-            chartXValueLayers.append(xValueLayer)
-            
-            x += spacingInterValues
-        }
+        let linePath = UIBezierPath()
+        let pointPath = UIBezierPath()
+        drawChartLayer(linePath: linePath, pointPath: pointPath)
+        chartLineLayer.path = linePath.cgPath
+        chartPointLayer.path = pointPath.cgPath
     }
     
     func addElement(_ elements: ChartERElements) {
@@ -225,21 +176,67 @@ class ChartERView: UIScrollView {
         
         // original chart
         // uncomment below to see original chart
-//        overlayView.alpha = 0.8
-//        drawOriginalChart()
+        drawShadowChart()
         // original chart end
     }
     
-    private func drawOverlayedChart() {
+    private func initializeAxisLayer() {
+        // axis
+        let axisPath = UIBezierPath()
+        axisPath.move(to: CGPoint(x: yAxisWidth, y: 0))
+        axisPath.addLine(to: CGPoint(x: yAxisWidth, y: frame.height - xAxisHeight))
+        axisPath.addLine(to: CGPoint(x: frame.width - chartInset.right, y: frame.height - xAxisHeight))
+        chartAxisLayer.path = axisPath.cgPath
+        
+        chartYValueLayers.forEach { $0.removeFromSuperlayer() }
+        chartYValueLayers = []
+        
+        // y axis 라벨
+        for index in 0 ..< 4 {
+            let alpha = Float(index) / 3
+            let value = lerp(maxValue, minValue, alpha)
+            
+            let y = lerp(chartInset.top, chartInset.top + chartAvailableSize.height, CGFloat(alpha))
+            
+            let yValueLayer = CATextLayer()
+            yValueLayer.string = "\(Int(value))"
+            yValueLayer.frame = CGRect(origin: CGPoint(x: 0, y: y - 7), size: CGSize(width: yAxisWidth - 5, height: 14))
+            yValueLayer.font = UIFont.systemFont(ofSize: 8)
+            yValueLayer.alignmentMode = .right
+            yValueLayer.fontSize = 12
+            yValueLayer.contentsScale = UIScreen.main.scale
+            yValueLayer.foregroundColor = UIColor.gray.cgColor
+            chartER.layer.addSublayer(yValueLayer)
+            chartYValueLayers.append(yValueLayer)
+        }
+        
+        // x axis 라벨
+        var x = chartMinX
+        for _ in 0 ..< visibleValueCount {
+            let y = frame.height - xAxisHeight + 5
+            
+            let xValueLayer = CATextLayer()
+            xValueLayer.string = "nil"
+            xValueLayer.frame = CGRect(origin: CGPoint(x: x - 20, y: y), size: CGSize(width: 40, height: xAxisHeight - 5))
+            xValueLayer.font = UIFont.systemFont(ofSize: 8)
+            xValueLayer.alignmentMode = .center
+            xValueLayer.fontSize = 12
+            xValueLayer.contentsScale = UIScreen.main.scale
+            xValueLayer.foregroundColor = UIColor.gray.cgColor
+            
+            chartER.layer.addSublayer(xValueLayer)
+            chartXValueLayers.append(xValueLayer)
+            
+            x += spacingInterValues
+        }
+    }
+    
+    private func drawChartLayer(linePath: UIBezierPath, pointPath: UIBezierPath? = nil) {
         guard let elements = chartElements else {
             return
         }
         
         let virtualIndex = clamp(Int(contentOffset.x / spacingInterValues), -visibleValueCount, elements.values.count)
-        
-        // Path
-        let linePath = UIBezierPath()
-        let pointPath = UIBezierPath()
         
         var x = chartMinX
         var lastPoint: CGPoint = .zero
@@ -251,32 +248,33 @@ class ChartERView: UIScrollView {
             if index == 0 {
                 linePath.move(to: CGPoint(x: x, y: y))
             } else {
-                let controlOffset = spacingInterValues / 2 * chartCurveRate
-                linePath.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + controlOffset, y: lastPoint.y), controlPoint2: CGPoint(x: x - controlOffset, y: y))
+                if chartType == .curvedLine {
+                    let controlOffset = spacingInterValues / 2 * chartCurveRate
+                    linePath.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + controlOffset, y: lastPoint.y), controlPoint2: CGPoint(x: x - controlOffset, y: y))
+                } else {
+                    linePath.addLine(to: CGPoint(x: x, y: y))
+                }
             }
+            lastPoint = CGPoint(x: x, y: y)
             
             // point
             let radius = chartPointRadius
-            pointPath.move(to: CGPoint(x: x + radius, y: y))
-            pointPath.addArc(withCenter: CGPoint(x: x, y: y), radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
-            lastPoint = CGPoint(x: x, y: y)
+            pointPath?.move(to: CGPoint(x: x + radius, y: y))
+            pointPath?.addArc(withCenter: CGPoint(x: x, y: y), radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
             
             // update x values
             chartXValueLayers[index].string = "\(virtualIndex + index)"
             
             x += spacingInterValues
         }
-        
-        chartLineLayer.path = linePath.cgPath
-        chartPointLayer.path = pointPath.cgPath
     }
     
-    private func drawOriginalChart() {
+    private func drawShadowChart() {
         guard let elements = chartElements else {
             return
         }
         
-        let path = UIBezierPath()
+        let linePath = UIBezierPath()
         
         var x = chartMinX
         var lastPoint: CGPoint = .zero
@@ -286,9 +284,15 @@ class ChartERView: UIScrollView {
 
             // line
             if index == 0 {
-                path.move(to: CGPoint(x: x, y: y))
+                linePath.move(to: CGPoint(x: x, y: y))
             } else {
-                path.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + spacingInterValues / 2, y: lastPoint.y), controlPoint2: CGPoint(x: x - spacingInterValues / 2, y: y))
+                if chartType == .curvedLine {
+                    let controlOffset = spacingInterValues / 2 * chartCurveRate
+                    linePath.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + controlOffset, y: lastPoint.y), controlPoint2: CGPoint(x: x - controlOffset, y: y))
+                    lastPoint = CGPoint(x: x, y: y)
+                } else {
+                    linePath.addLine(to: CGPoint(x: x, y: y))
+                }
             }
 
             lastPoint = CGPoint(x: x, y: y)
@@ -296,7 +300,7 @@ class ChartERView: UIScrollView {
             x += spacingInterValues
         }
 
-        originChartLayer.path = path.cgPath
+        shadowChartLayer.path = linePath.cgPath
     }
     
     private func value(for index: Int) -> Float {
@@ -326,7 +330,7 @@ class ChartERView: UIScrollView {
     }
     
     private func yCoordinate(for value: Float) -> CGFloat {
-        let yOffset = (value - minValue) / valueRange
+        let yOffset = (value - minValue) / (maxValue - minValue)
         return chartInset.top + CGFloat(1 - yOffset) * chartAvailableSize.height + adjustedContentInset.top
     }
 }
