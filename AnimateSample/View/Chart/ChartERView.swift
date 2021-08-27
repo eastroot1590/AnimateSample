@@ -32,6 +32,10 @@ class ChartERView: UIScrollView {
     // 각 값 사이의 거리
     var minimumSpacingInterValues: CGFloat = 50
     
+    // 차트 선 곡률
+    // 0~1
+    var chartCurveRate: CGFloat = 1
+    
     // 데이터
     private var chartElements: ChartERElements? = nil
     
@@ -63,6 +67,8 @@ class ChartERView: UIScrollView {
         super.init(frame: frame)
         
         showsHorizontalScrollIndicator = false
+        delegate = self
+        decelerationRate = .fast
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
@@ -75,7 +81,6 @@ class ChartERView: UIScrollView {
         ])
         
         overlayView.frame = bounds
-//        overlayView.alpha = 0.5
         overlayView.isUserInteractionEnabled = false
         overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(overlayView)
@@ -115,8 +120,7 @@ class ChartERView: UIScrollView {
         // 선계산
         var virtualIndex = Int(contentOffset.x / spacingInterValues)
         virtualIndex = max(min(virtualIndex, elements.values.count - 1), 0)
-        let alpha = Float(contentOffset.x / spacingInterValues) - Float(virtualIndex)
-        let spacing = (frame.width - chartInset.left - chartInset.right) / CGFloat(visibleValueCount - 1)
+        let valueAlpha = Float(contentOffset.x / spacingInterValues) - Float(virtualIndex)
         
         var visibleValues: [Float] = Array(repeating: 0, count: visibleValueCount)
         var x = chartInset.left
@@ -129,7 +133,7 @@ class ChartERView: UIScrollView {
         for index in 0 ..< visibleValueCount {
             if virtualIndex + index < elements.values.count - 1 {
                 // 다음 값이랑 거리를 계산해서 저장
-                visibleValues[index] = lerp(elements.values[virtualIndex + index], elements.values[virtualIndex + index + 1], alpha: Float(alpha))
+                visibleValues[index] = lerp(elements.values[virtualIndex + index], elements.values[virtualIndex + index + 1], alpha: Float(valueAlpha))
             } else {
                 // 마지막 값을 저장
                 visibleValues[index] = elements.values.last ?? 0
@@ -141,7 +145,8 @@ class ChartERView: UIScrollView {
             if index == 0 {
                 linePath.move(to: CGPoint(x: x, y: y))
             } else {
-                linePath.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + 20, y: lastPoint.y), controlPoint2: CGPoint(x: x - 20, y: y))
+                let controlOffset = spacingInterValues / 2 * chartCurveRate
+                linePath.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + controlOffset, y: lastPoint.y), controlPoint2: CGPoint(x: x - controlOffset, y: y))
             }
             
             let radius = chartPointRadius
@@ -150,7 +155,7 @@ class ChartERView: UIScrollView {
             
             lastPoint = CGPoint(x: x, y: y)
             
-            x += max(minimumSpacingInterValues, spacing)
+            x += spacingInterValues
         }
         
         chartLineLayer.path = linePath.cgPath
@@ -169,45 +174,62 @@ class ChartERView: UIScrollView {
         
         // recalculate spacingInterValues
         let spacing = (frame.width - chartInset.left - chartInset.right) / CGFloat(visibleValueCount - 1)
-        spacingInterValues = max(spacing, minimumSpacingInterValues)
+        if spacing > minimumSpacingInterValues {
+            spacingInterValues = spacing
+        } else {
+            spacingInterValues = minimumSpacingInterValues
+        }
         
         // store elements
         chartElements = elements
         
         // original chart
         // uncomment below to show original chart
-//        overlayView.alpha = 0.5
-//
-//        let originChartLayer = CAShapeLayer()
-//        originChartLayer.fillColor = nil
-//        originChartLayer.strokeColor = UIColor.systemRed.cgColor
-//
-//        let path = UIBezierPath()
-//        x = chartInset.left
-//
-//        var lastPoint: CGPoint = .zero
-//
-//        for index in 0 ..< elements.values.count {
-//            let yOffset = (elements.values[index] - minValue) / valueRange
-//            let y = chartInset.top + CGFloat(1 - yOffset) * (frame.height - chartInset.top - chartInset.bottom)
-//
-//            if index == 0 {
-//                path.move(to: CGPoint(x: x, y: y))
-//            } else {
-//                path.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + 20, y: lastPoint.y), controlPoint2: CGPoint(x: x - 20, y: y))
-//            }
-//
-//            lastPoint = CGPoint(x: x, y: y)
-//
-//            x += spaceInterValues
-//        }
-//
-//        originChartLayer.path = path.cgPath
-//        contentView.layer.addSublayer(originChartLayer)
+        overlayView.alpha = 0.5
+
+        let originChartLayer = CAShapeLayer()
+        originChartLayer.fillColor = nil
+        originChartLayer.strokeColor = UIColor.systemRed.cgColor
+
+        let path = UIBezierPath()
+        var x = chartInset.left
+
+        var lastPoint: CGPoint = .zero
+
+        for index in 0 ..< elements.values.count {
+            let yOffset = (elements.values[index] - minValue) / valueRange
+            let y = chartInset.top + CGFloat(1 - yOffset) * (frame.height - chartInset.top - chartInset.bottom)
+
+            if index == 0 {
+                path.move(to: CGPoint(x: x, y: y))
+            } else {
+                path.addCurve(to: CGPoint(x: x, y: y), controlPoint1: CGPoint(x: lastPoint.x + spacingInterValues / 2, y: lastPoint.y), controlPoint2: CGPoint(x: x - spacingInterValues / 2, y: y))
+            }
+
+            lastPoint = CGPoint(x: x, y: y)
+
+            x += spacingInterValues
+        }
+
+        originChartLayer.path = path.cgPath
+        contentView.layer.addSublayer(originChartLayer)
         // original chart end
     }
     
     private func lerp(_ lhs: Float, _ rhs: Float, alpha: Float) -> Float {
         return lhs * (1 - alpha) + rhs * alpha
+    }
+}
+
+extension ChartERView: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard let elements = chartElements else {
+            return
+        }
+
+        var virtualIndex = Int(((targetContentOffset.pointee.x - chartInset.left) / spacingInterValues).rounded())
+        virtualIndex = max(min(virtualIndex, elements.values.count - 1), 0)
+
+        targetContentOffset.initialize(to: CGPoint(x: CGFloat(virtualIndex) * spacingInterValues, y: 0))
     }
 }
