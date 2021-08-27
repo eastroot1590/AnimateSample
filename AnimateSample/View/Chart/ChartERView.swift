@@ -23,6 +23,12 @@ class ChartERView: UIScrollView {
         return CGFloat(elements.values.count - 1) * spacingInterValues
     }
     
+    var chartAvailableSize: CGSize {
+        let width = frame.width - chartInset.left - chartInset.right - yAxisWidth
+        let height = frame.height - chartInset.top - chartInset.bottom
+        return CGSize(width: width, height: height)
+    }
+    
     // 보이는 값 개수
     var visibleValueCount: Int = 7
     
@@ -35,6 +41,10 @@ class ChartERView: UIScrollView {
     // 차트 선 곡률
     // 0~1
     var chartCurveRate: CGFloat = 1
+    
+    // 축
+    // y
+    var yAxisWidth: CGFloat = 40
     
     // 데이터
     private var chartElements: ChartERElements? = nil
@@ -50,7 +60,7 @@ class ChartERView: UIScrollView {
     // 스크롤 기능을 위해 추가한 투명한 view
     let contentView: UIView = UIView()
     var contentWidth: CGFloat {
-        chartInset.left + chartWidth + chartInset.right
+        yAxisWidth + chartInset.left + chartWidth + chartInset.right
     }
     var contentWidthConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
@@ -60,11 +70,17 @@ class ChartERView: UIScrollView {
     // 차트
     let chartLineLayer = CAShapeLayer()
     let chartPointLayer = CAShapeLayer()
+    let chartYAxisLayer = CAShapeLayer()
+    var chartYValueLayers: [CATextLayer] = []
     
     let originChartLayer = CAShapeLayer()
     
     // 스크롤 width를 계산하기 위한 spacing
     private var spacingInterValues: CGFloat = 0
+    
+    private var chartMinX: CGFloat {
+        yAxisWidth + chartInset.left
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -98,6 +114,11 @@ class ChartERView: UIScrollView {
         chartPointLayer.strokeColor = UIColor.white.cgColor
         chartPointLayer.lineWidth = 2
         overlayView.layer.addSublayer(chartPointLayer)
+
+        chartYAxisLayer.fillColor = nil
+        chartYAxisLayer.strokeColor = UIColor.gray.cgColor
+        chartYAxisLayer.lineWidth = 1
+        overlayView.layer.addSublayer(chartYAxisLayer)
         
         originChartLayer.fillColor = nil
         originChartLayer.strokeColor = UIColor.systemRed.cgColor
@@ -118,10 +139,42 @@ class ChartERView: UIScrollView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        
         overlayView.frame.origin = CGPoint(x: contentOffset.x, y: contentOffset.y)
         
+        
         drawOverlayedChart()
+    }
+    
+    func initializeAxisLayer() {
+        // y axis
+        let yAxisPath = UIBezierPath()
+        yAxisPath.move(to: CGPoint(x: yAxisWidth, y: chartInset.top))
+        yAxisPath.addLine(to: CGPoint(x: yAxisWidth, y: frame.height - chartInset.bottom))
+        chartYAxisLayer.path = yAxisPath.cgPath
+        
+        chartYValueLayers.forEach { $0.removeFromSuperlayer() }
+        chartYValueLayers = []
+        
+        // y axis 라벨
+        for index in 0 ..< 4 {
+            let alpha = Float(index) / 3
+            let value = lerp(maxValue, minValue, alpha)
+            
+            let y = lerp(chartInset.top, frame.height - chartInset.bottom, CGFloat(alpha))
+            
+            let yValueLayer = CATextLayer()
+            yValueLayer.string = "\(Int(value))"
+            yValueLayer.frame = CGRect(origin: CGPoint(x: 0, y: y - 7), size: CGSize(width: yAxisWidth - 5, height: 14))
+            yValueLayer.font = UIFont.systemFont(ofSize: 8)
+            yValueLayer.alignmentMode = .right
+            yValueLayer.fontSize = 12
+            yValueLayer.contentsScale = UIScreen.main.scale
+            yValueLayer.foregroundColor = UIColor.gray.cgColor
+            overlayView.layer.addSublayer(yValueLayer)
+            chartYValueLayers.append(yValueLayer)
+        }
+        
+        // x axis
     }
     
     func addElement(_ elements: ChartERElements) {
@@ -135,7 +188,7 @@ class ChartERView: UIScrollView {
         maxValue = currentMaxValue
         
         // recalculate spacingInterValues
-        let spacing = (frame.width - chartInset.left - chartInset.right) / CGFloat(visibleValueCount - 1)
+        let spacing = chartAvailableSize.width / CGFloat(visibleValueCount - 1)
         if spacing > minimumSpacingInterValues {
             spacingInterValues = spacing
         } else {
@@ -147,6 +200,8 @@ class ChartERView: UIScrollView {
         
         // initialize visible values
         visibleValues = Array(repeating: 0, count: visibleValueCount)
+        
+        initializeAxisLayer()
         
         // original chart
         // uncomment below to see original chart
@@ -160,7 +215,7 @@ class ChartERView: UIScrollView {
         let linePath = UIBezierPath()
         let pointPath = UIBezierPath()
         
-        var x = chartInset.left
+        var x = chartMinX
         var lastPoint: CGPoint = .zero
         
         for index in 0 ..< visibleValueCount {
@@ -195,8 +250,7 @@ class ChartERView: UIScrollView {
         
         let path = UIBezierPath()
         
-        var x = chartInset.left
-
+        var x = chartMinX
         var lastPoint: CGPoint = .zero
 
         for index in 0 ..< elements.values.count {
@@ -237,7 +291,7 @@ class ChartERView: UIScrollView {
     
     private func yCoordinate(for value: Float) -> CGFloat {
         let yOffset = (value - minValue) / valueRange
-        return chartInset.top + CGFloat(1 - yOffset) * (frame.height - chartInset.top - chartInset.bottom) + adjustedContentInset.top
+        return chartInset.top + CGFloat(1 - yOffset) * chartAvailableSize.height + adjustedContentInset.top
     }
 }
 
