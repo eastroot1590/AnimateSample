@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D344AB4426D8772200F990E7 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = D344AB4326D8772200F990E7 /* Math.swift */; };
 		D345FCCF26A7CA4C00A9126C /* CitizenDetailForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345FCCE26A7CA4C00A9126C /* CitizenDetailForm.swift */; };
 		D345FCD126A7CEAD00A9126C /* SimpleSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345FCD026A7CEAD00A9126C /* SimpleSubject.swift */; };
 		D345FCD626A7D4C100A9126C /* Stackable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345FCD326A7D4C100A9126C /* Stackable.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D344AB4326D8772200F990E7 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		D345FCCE26A7CA4C00A9126C /* CitizenDetailForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitizenDetailForm.swift; sourceTree = "<group>"; };
 		D345FCD026A7CEAD00A9126C /* SimpleSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSubject.swift; sourceTree = "<group>"; };
 		D345FCD326A7D4C100A9126C /* Stackable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stackable.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */,
+				D344AB4326D8772200F990E7 /* Math.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				D3479A8626A555EF0006340F /* TransitioningAnimatable.swift in Sources */,
 				D3F555EF26CE04FE00C3A59A /* DragCellInfo.swift in Sources */,
 				D347BA4526B77D0900292FC7 /* ScaleableCollectionLayout.swift in Sources */,
+				D344AB4426D8772200F990E7 /* Math.swift in Sources */,
 				D3479A8F26A563500006340F /* Expandable.swift in Sources */,
 				D36B5CFB26D4740F0086DCAE /* RawScrollViewController.swift in Sources */,
 				D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */,

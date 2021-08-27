@@ -22,8 +22,7 @@ class TestViewController: UIViewController {
             view.backgroundColor = .white
         }
         
-        let chart = ChartERView(frame: CGRect(origin: CGPoint(x: 0, y: 100), size: CGSize(width: view.frame.width, height: 200)))
-        chart.visibleValueCount = 5
+        let chart = ChartERView(frame: CGRect(origin: CGPoint(x: 0, y: 50), size: CGSize(width: view.frame.width, height: 200)))
         chart.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
         chart.addElement(ChartERElements(name: "hello", values: [13, 5, 2, 3, 1, 6, 21, 1, 5, 8]))
         view.addSubview(chart)
