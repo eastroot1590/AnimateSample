@@ -24,7 +24,7 @@ class TestViewController: UIViewController {
         
         let chart = ChartERView(frame: CGRect(origin: CGPoint(x: 0, y: 50), size: CGSize(width: view.frame.width, height: 200)))
         chart.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-        chart.addElement(ChartERElements(name: "hello", values: [13, 5, 2, 3, 1, 6, 21, 1, 5, 8]))
+        chart.addElement(ChartERElements(name: "hello", values: [13, 5, 7, 2, -4, 15, -21, -21, -21, 1, 5, 17]))
         view.addSubview(chart)
     }
 }

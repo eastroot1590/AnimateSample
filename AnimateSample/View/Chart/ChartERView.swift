@@ -12,7 +12,7 @@ import UIKit
 class ChartERView: UIScrollView {
     // 차트 옵션
     // 여백
-    var chartInset: UIEdgeInsets = UIEdgeInsets(top: 50, left: 20, bottom: 50, right: 20)
+    var chartInset: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
     // 가로 길이
     var chartWidth: CGFloat {
@@ -25,7 +25,7 @@ class ChartERView: UIScrollView {
     
     var chartAvailableSize: CGSize {
         let width = frame.width - chartInset.left - chartInset.right - yAxisWidth
-        let height = frame.height - chartInset.top - chartInset.bottom
+        let height = frame.height - chartInset.top - chartInset.bottom - xAxisHeight
         return CGSize(width: width, height: height)
     }
     
@@ -45,6 +45,7 @@ class ChartERView: UIScrollView {
     // 축
     // y
     var yAxisWidth: CGFloat = 40
+    var xAxisHeight: CGFloat = 30
     
     // 데이터
     private var chartElements: ChartERElements? = nil
@@ -70,8 +71,9 @@ class ChartERView: UIScrollView {
     // 차트
     let chartLineLayer = CAShapeLayer()
     let chartPointLayer = CAShapeLayer()
-    let chartYAxisLayer = CAShapeLayer()
+    let chartAxisLayer = CAShapeLayer()
     var chartYValueLayers: [CATextLayer] = []
+    var chartXValueLayers: [CAShapeLayer] = []
     
     let originChartLayer = CAShapeLayer()
     
@@ -115,10 +117,10 @@ class ChartERView: UIScrollView {
         chartPointLayer.lineWidth = 2
         overlayView.layer.addSublayer(chartPointLayer)
 
-        chartYAxisLayer.fillColor = nil
-        chartYAxisLayer.strokeColor = UIColor.gray.cgColor
-        chartYAxisLayer.lineWidth = 1
-        overlayView.layer.addSublayer(chartYAxisLayer)
+        chartAxisLayer.fillColor = nil
+        chartAxisLayer.strokeColor = UIColor.gray.cgColor
+        chartAxisLayer.lineWidth = 1
+        overlayView.layer.addSublayer(chartAxisLayer)
         
         originChartLayer.fillColor = nil
         originChartLayer.strokeColor = UIColor.systemRed.cgColor
@@ -146,11 +148,12 @@ class ChartERView: UIScrollView {
     }
     
     func initializeAxisLayer() {
-        // y axis
-        let yAxisPath = UIBezierPath()
-        yAxisPath.move(to: CGPoint(x: yAxisWidth, y: chartInset.top))
-        yAxisPath.addLine(to: CGPoint(x: yAxisWidth, y: frame.height - chartInset.bottom))
-        chartYAxisLayer.path = yAxisPath.cgPath
+        // axis
+        let axisPath = UIBezierPath()
+        axisPath.move(to: CGPoint(x: yAxisWidth, y: 0))
+        axisPath.addLine(to: CGPoint(x: yAxisWidth, y: frame.height - xAxisHeight))
+        axisPath.addLine(to: CGPoint(x: frame.width - chartInset.right, y: frame.height - xAxisHeight))
+        chartAxisLayer.path = axisPath.cgPath
         
         chartYValueLayers.forEach { $0.removeFromSuperlayer() }
         chartYValueLayers = []
@@ -160,7 +163,7 @@ class ChartERView: UIScrollView {
             let alpha = Float(index) / 3
             let value = lerp(maxValue, minValue, alpha)
             
-            let y = lerp(chartInset.top, frame.height - chartInset.bottom, CGFloat(alpha))
+            let y = lerp(chartInset.top, chartInset.top + chartAvailableSize.height, CGFloat(alpha))
             
             let yValueLayer = CATextLayer()
             yValueLayer.string = "\(Int(value))"
@@ -173,8 +176,6 @@ class ChartERView: UIScrollView {
             overlayView.layer.addSublayer(yValueLayer)
             chartYValueLayers.append(yValueLayer)
         }
-        
-        // x axis
     }
     
     func addElement(_ elements: ChartERElements) {
@@ -205,7 +206,7 @@ class ChartERView: UIScrollView {
         
         // original chart
         // uncomment below to see original chart
-//        overlayView.alpha = 0.5
+//        overlayView.alpha = 0.8
 //        drawOriginalChart()
         // original chart end
     }
