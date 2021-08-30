@@ -15,10 +15,6 @@ class ChartERView: UIScrollView {
     
     // 가로 길이
     var chartIntrinsicWidth: CGFloat {
-        guard let elements = chartElements else {
-            return 0
-        }
-        
         return CGFloat(elements.values.count - 1) * spacingInterValues
     }
     
@@ -48,7 +44,8 @@ class ChartERView: UIScrollView {
     var xAxisHeight: CGFloat = 30
     
     // 데이터
-    private var chartElements: ChartERElements? = nil
+    private var elements: ChartERElements = .empty
+    private var elementsNames: [String] = []
     
     var visibleValues: [Float] = []
     
@@ -148,7 +145,7 @@ class ChartERView: UIScrollView {
         chartPointLayer.path = pointPath.cgPath
     }
     
-    func addElement(_ elements: ChartERElements) {
+    func setElements(_ elements: ChartERElements) {
         guard let currentMinValue = elements.values.min(),
               let currentMaxValue = elements.values.max() else {
             return
@@ -167,7 +164,7 @@ class ChartERView: UIScrollView {
         }
         
         // store elements
-        chartElements = elements
+        self.elements = elements
         
         // initialize visible values
         visibleValues = Array(repeating: 0, count: visibleValueCount)
@@ -178,6 +175,10 @@ class ChartERView: UIScrollView {
         // uncomment below to see original chart
         drawShadowChart()
         // original chart end
+    }
+    
+    func setName(_ names: [String]) {
+        self.elementsNames = names
     }
     
     private func initializeAxisLayer() {
@@ -232,10 +233,6 @@ class ChartERView: UIScrollView {
     }
     
     private func drawChartLayer(linePath: UIBezierPath, pointPath: UIBezierPath? = nil) {
-        guard let elements = chartElements else {
-            return
-        }
-        
         let virtualIndex = clamp(Int(contentOffset.x / spacingInterValues), -visibleValueCount, elements.values.count)
         
         var x = chartMinX
@@ -262,18 +259,19 @@ class ChartERView: UIScrollView {
             pointPath?.move(to: CGPoint(x: x + radius, y: y))
             pointPath?.addArc(withCenter: CGPoint(x: x, y: y), radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
             
-            // update x values
-            chartXValueLayers[index].string = "\(virtualIndex + index)"
+            // update x values name
+            let currentIndex = virtualIndex + index
+            if currentIndex >= 0, currentIndex < elements.values.count {
+                chartXValueLayers[index].string = xValueName(for: currentIndex)
+            } else {
+                chartXValueLayers[index].string = ""
+            }
             
             x += spacingInterValues
         }
     }
     
     private func drawShadowChart() {
-        guard let elements = chartElements else {
-            return
-        }
-        
         let linePath = UIBezierPath()
         
         var x = chartMinX
@@ -304,10 +302,6 @@ class ChartERView: UIScrollView {
     }
     
     private func value(for index: Int) -> Float {
-        guard let elements = self.chartElements else {
-            return 0
-        }
-        
         let virtualIndex = Int(contentOffset.x / spacingInterValues)
         let valueAlpha = contentOffset.x / spacingInterValues - CGFloat(virtualIndex)
         let maxIndex = elements.values.count - 1
@@ -333,14 +327,18 @@ class ChartERView: UIScrollView {
         let yOffset = (value - minValue) / (maxValue - minValue)
         return chartInset.top + CGFloat(1 - yOffset) * chartAvailableSize.height + adjustedContentInset.top
     }
+    
+    private func xValueName(for index: Int) -> String {
+        guard index >= 0, index < elementsNames.count else {
+            return "\(index)"
+        }
+        
+        return elementsNames[index]
+    }
 }
 
 extension ChartERView: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        guard let elements = chartElements else {
-            return
-        }
-
         var virtualIndex = Int(((targetContentOffset.pointee.x - chartInset.left) / spacingInterValues).rounded())
         virtualIndex = max(min(virtualIndex, elements.values.count - 1), 0)
 
