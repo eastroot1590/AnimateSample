@@ -143,7 +143,8 @@ class CellSpreadDetailViewController: UIViewController, TransitioningInteractabl
             return
         }
         
-        interactiveAnimator.update(percent)
+//        interactiveAnimator.update(percent)
+        interactiveAnimator.update(min(percent, 0.5))
     }
     
     func interactiveDidEnd(_ percent: CGFloat) {

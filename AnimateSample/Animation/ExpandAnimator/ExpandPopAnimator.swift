@@ -47,6 +47,11 @@ class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
             transitionContext.containerView.addSubview(toVC.view)
         }
         
+        // dimming view
+        let dimmingView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        dimmingView.frame = transitionContext.containerView.frame
+        transitionContext.containerView.addSubview(dimmingView)
+        
         // 현재 화면
         transitionContext.containerView.addSubview(controller.view)
         
@@ -54,16 +59,23 @@ class ExpandPopAnimator: ExpandAnimator, UIViewControllerAnimatedTransitioning {
         let initialFrame = transitionContext.initialFrame(for: controller)
         controller.view.frame = initialFrame
         
-        // 현재 화면의 최종 프레임
-        let finalBackgroundColor = selectedCell.primeView.backgroundColor
-        
         // 애니메이션
-        let animator = UIViewPropertyAnimator(duration: transitionDuration(using: transitionContext), dampingRatio: 0.75) {
-            controller.view.frame = self.originFrame
-            controller.view.layer.cornerRadius = self.selectedCell.primeView.layer.cornerRadius
-            controller.view.backgroundColor = finalBackgroundColor
+        let animator = UIViewPropertyAnimator(duration: transitionDuration(using: transitionContext), dampingRatio: 0.75)
+        animator.addAnimations {
+            UIView.animateKeyframes(withDuration: animator.duration, delay: 0, options: [], animations: {
+                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5, animations: {
+                    controller.view.frame = initialFrame.insetBy(dx: initialFrame.width * 0.05, dy: initialFrame.height * 0.1)
 
-            controller.view.layoutIfNeeded()
+                    controller.view.layer.cornerRadius = self.originFrame.width / 2
+                    controller.view.layer.masksToBounds = true
+                })
+
+                UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5, animations: {
+                    dimmingView.alpha = 0
+
+                    controller.view.frame = self.originFrame
+                })
+            })
         }
         
         animator.addCompletion({ position in
