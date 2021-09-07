@@ -29,5 +29,21 @@ class ChartViewController: UIViewController {
             chart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             chart.heightAnchor.constraint(equalToConstant: 200)
         ])
+        
+        
+        let charter = ChartERView(frame: CGRect(origin: CGPoint(x: 0, y: 100), size: CGSize(width: view.frame.width, height: 200)))
+        charter.builder = LineChartERBuilder()
+//        chart.builder = BarChartERBuilder(xAxisLabelCount: 5)
+//        charter.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
+        charter.series = ChartERSeries(name: "hello", values: [13, 5, 7, 2, -4, 15, -21, -21, -21, 1, 5, 17])
+        charter.xAxisNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+        charter.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(charter)
+        NSLayoutConstraint.activate([
+            charter.topAnchor.constraint(equalTo: chart.bottomAnchor, constant: 50),
+            charter.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            charter.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            charter.heightAnchor.constraint(equalToConstant: 200)
+        ])
     }
 }

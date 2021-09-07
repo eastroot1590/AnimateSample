@@ -37,6 +37,11 @@
 		D36849F526E700CC009A7336 /* TestViewControllerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36849F426E700CC009A7336 /* TestViewControllerData.swift */; };
 		D36849F826E701DA009A7336 /* NumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36849F726E701DA009A7336 /* NumberViewController.swift */; };
 		D36849FA26E703E5009A7336 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36849F926E703E5009A7336 /* HomeTableViewCell.swift */; };
+		D3684A0326E71458009A7336 /* ChartERSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36849FC26E71458009A7336 /* ChartERSeries.swift */; };
+		D3684A0426E71458009A7336 /* ChartERView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36849FD26E71458009A7336 /* ChartERView.swift */; };
+		D3684A0526E71458009A7336 /* ChartERBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36849FF26E71458009A7336 /* ChartERBuilder.swift */; };
+		D3684A0626E71458009A7336 /* LineChartERBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3684A0026E71458009A7336 /* LineChartERBuilder.swift */; };
+		D3684A0726E71458009A7336 /* BarChartERBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3684A0126E71458009A7336 /* BarChartERBuilder.swift */; };
 		D36B5CF926D473F70086DCAE /* RawScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CF826D473F70086DCAE /* RawScrollView.swift */; };
 		D36B5CFB26D4740F0086DCAE /* RawScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */; };
 		D36B5CFD26D475110086DCAE /* CGPoint+AnimateSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CFC26D475110086DCAE /* CGPoint+AnimateSample.swift */; };
@@ -89,6 +94,11 @@
 		D36849F426E700CC009A7336 /* TestViewControllerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewControllerData.swift; sourceTree = "<group>"; };
 		D36849F726E701DA009A7336 /* NumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberViewController.swift; sourceTree = "<group>"; };
 		D36849F926E703E5009A7336 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		D36849FC26E71458009A7336 /* ChartERSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartERSeries.swift; sourceTree = "<group>"; };
+		D36849FD26E71458009A7336 /* ChartERView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartERView.swift; sourceTree = "<group>"; };
+		D36849FF26E71458009A7336 /* ChartERBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartERBuilder.swift; sourceTree = "<group>"; };
+		D3684A0026E71458009A7336 /* LineChartERBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartERBuilder.swift; sourceTree = "<group>"; };
+		D3684A0126E71458009A7336 /* BarChartERBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartERBuilder.swift; sourceTree = "<group>"; };
 		D36B5CF826D473F70086DCAE /* RawScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawScrollView.swift; sourceTree = "<group>"; };
 		D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawScrollViewController.swift; sourceTree = "<group>"; };
 		D36B5CFC26D475110086DCAE /* CGPoint+AnimateSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+AnimateSample.swift"; sourceTree = "<group>"; };
@@ -233,6 +243,7 @@
 		D364F4F326A53A6900357EAE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D36849FB26E7143E009A7336 /* ChartER */,
 				D348D6B226BA6825006229FA /* Selector */,
 				D347BA4326B77CD400292FC7 /* ScaleableCollection */,
 				D345FCD226A7D4B000A9126C /* StackView */,
@@ -293,6 +304,26 @@
 				D36849F726E701DA009A7336 /* NumberViewController.swift */,
 			);
 			path = Number;
+			sourceTree = "<group>";
+		};
+		D36849FB26E7143E009A7336 /* ChartER */ = {
+			isa = PBXGroup;
+			children = (
+				D36849FE26E71458009A7336 /* ChartERBuilder */,
+				D36849FC26E71458009A7336 /* ChartERSeries.swift */,
+				D36849FD26E71458009A7336 /* ChartERView.swift */,
+			);
+			path = ChartER;
+			sourceTree = "<group>";
+		};
+		D36849FE26E71458009A7336 /* ChartERBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				D36849FF26E71458009A7336 /* ChartERBuilder.swift */,
+				D3684A0026E71458009A7336 /* LineChartERBuilder.swift */,
+				D3684A0126E71458009A7336 /* BarChartERBuilder.swift */,
+			);
+			path = ChartERBuilder;
 			sourceTree = "<group>";
 		};
 		D36B5CF726D473B90086DCAE /* RawScrollView */ = {
@@ -423,6 +454,7 @@
 				D3F555EB26CDEAC300C3A59A /* GridUXCell.swift in Sources */,
 				D36849F826E701DA009A7336 /* NumberViewController.swift in Sources */,
 				D3ACBC1126D719DE00DD3929 /* ChartView.swift in Sources */,
+				D3684A0326E71458009A7336 /* ChartERSeries.swift in Sources */,
 				D3479A8B26A559AE0006340F /* UIView+AnimateSample.swift in Sources */,
 				D364F4F826A53CB000357EAE /* CitizenInfo.swift in Sources */,
 				D36849F326E70041009A7336 /* HomeViewController.swift in Sources */,
@@ -454,8 +486,12 @@
 				D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */,
 				D364F4E026A529CC00357EAE /* SceneDelegate.swift in Sources */,
 				D3479A8D26A55A0D0006340F /* CitizenCollectionView.swift in Sources */,
+				D3684A0626E71458009A7336 /* LineChartERBuilder.swift in Sources */,
+				D3684A0426E71458009A7336 /* ChartERView.swift in Sources */,
 				D3F555F126CE2DBC00C3A59A /* GridCollectionViewLayout.swift in Sources */,
 				D36849F526E700CC009A7336 /* TestViewControllerData.swift in Sources */,
+				D3684A0526E71458009A7336 /* ChartERBuilder.swift in Sources */,
+				D3684A0726E71458009A7336 /* BarChartERBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
