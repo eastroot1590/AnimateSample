@@ -170,16 +170,10 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
-		D347BA4326B77CD400292FC7 /* ScaleableCollection */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ScaleableCollection;
-			sourceTree = "<group>";
-		};
 		D348D6B026BA67F4006229FA /* Chart */ = {
 			isa = PBXGroup;
 			children = (
+				D36849FB26E7143E009A7336 /* ChartER */,
 				D3ACBC0F26D7117300DD3929 /* Chart */,
 				D378DA2826AF86BA00743BED /* ChartViewController.swift */,
 			);
@@ -242,9 +236,6 @@
 		D364F4F326A53A6900357EAE /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D36849FB26E7143E009A7336 /* ChartER */,
-				D348D6B226BA6825006229FA /* Selector */,
-				D347BA4326B77CD400292FC7 /* ScaleableCollection */,
 				D345FCD226A7D4B000A9126C /* StackView */,
 				D3479A8426A5556F0006340F /* Protocol */,
 				D345FCD026A7CEAD00A9126C /* SimpleSubject.swift */,
@@ -329,6 +320,7 @@
 		D3684A0926E71878009A7336 /* Selector */ = {
 			isa = PBXGroup;
 			children = (
+				D348D6B226BA6825006229FA /* Selector */,
 				D3684A0A26E71885009A7336 /* SelectorViewController.swift */,
 			);
 			path = Selector;
