@@ -33,9 +33,7 @@ class ChartViewController: UIViewController {
         
         let charter = ChartERView(frame: CGRect(origin: CGPoint(x: 0, y: 100), size: CGSize(width: view.frame.width, height: 200)))
         charter.builder = LineChartERBuilder()
-//        chart.builder = BarChartERBuilder(xAxisLabelCount: 5)
-//        charter.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-        charter.series = ChartERSeries(name: "hello", values: [13, 5, 7, 2, -4, 15, -21, -21, -21, 1, 5, 17])
+        charter.series = ChartERSeries(name: "hello", values: [1, 5, 17, 2, 4, 5, 21, 7, 1, 18, 5, 7])
         charter.xAxisNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
         charter.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(charter)
@@ -44,6 +42,20 @@ class ChartViewController: UIViewController {
             charter.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             charter.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             charter.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+        
+        let barChart = ChartERView(frame: CGRect(origin: CGPoint(x: 0, y: 100), size: CGSize(width: view.frame.width, height: 200)))
+        barChart.builder = BarChartERBuilder(xAxisLabelCount: 4, yAxisLabelCount: 3)
+        barChart.series = ChartERSeries(name: "hello", values: [1, 5, 17, 2, 4, 5, 21, 7, 1, 18, 5, 7])
+        barChart.xAxisNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+        barChart.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(barChart)
+        NSLayoutConstraint.activate([
+            barChart.topAnchor.constraint(equalTo: charter.bottomAnchor, constant: 50),
+            barChart.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            barChart.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            barChart.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
 }

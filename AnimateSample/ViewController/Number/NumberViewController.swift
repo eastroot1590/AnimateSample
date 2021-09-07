@@ -16,7 +16,6 @@ class NumberViewController: UIViewController {
         view.backgroundColor = .white
 
         number.font = .systemFont(ofSize: 24)
-//        number.number = Double.random(in: 0 ..< 100000)
         number.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(number)
         NSLayoutConstraint.activate([

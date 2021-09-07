@@ -42,6 +42,7 @@
 		D3684A0526E71458009A7336 /* ChartERBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36849FF26E71458009A7336 /* ChartERBuilder.swift */; };
 		D3684A0626E71458009A7336 /* LineChartERBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3684A0026E71458009A7336 /* LineChartERBuilder.swift */; };
 		D3684A0726E71458009A7336 /* BarChartERBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3684A0126E71458009A7336 /* BarChartERBuilder.swift */; };
+		D3684A0B26E71885009A7336 /* SelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3684A0A26E71885009A7336 /* SelectorViewController.swift */; };
 		D36B5CF926D473F70086DCAE /* RawScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CF826D473F70086DCAE /* RawScrollView.swift */; };
 		D36B5CFB26D4740F0086DCAE /* RawScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */; };
 		D36B5CFD26D475110086DCAE /* CGPoint+AnimateSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B5CFC26D475110086DCAE /* CGPoint+AnimateSample.swift */; };
@@ -52,7 +53,6 @@
 		D3ACBC1126D719DE00DD3929 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ACBC1026D719DE00DD3929 /* ChartView.swift */; };
 		D3ACBC1326D71DCC00DD3929 /* ChartElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ACBC1226D71DCC00DD3929 /* ChartElements.swift */; };
 		D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB391326B123F400812554 /* DigitScrollLayer.swift */; };
-		D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */; };
 		D3E683BA26B7E9640086FB35 /* TestExpandableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */; };
 		D3F555E626CDDCF900C3A59A /* GridUXViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555E526CDDCF900C3A59A /* GridUXViewController.swift */; };
 		D3F555E926CDE5EB00C3A59A /* CGFloat+AnimateSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */; };
@@ -99,6 +99,7 @@
 		D36849FF26E71458009A7336 /* ChartERBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartERBuilder.swift; sourceTree = "<group>"; };
 		D3684A0026E71458009A7336 /* LineChartERBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartERBuilder.swift; sourceTree = "<group>"; };
 		D3684A0126E71458009A7336 /* BarChartERBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartERBuilder.swift; sourceTree = "<group>"; };
+		D3684A0A26E71885009A7336 /* SelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorViewController.swift; sourceTree = "<group>"; };
 		D36B5CF826D473F70086DCAE /* RawScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawScrollView.swift; sourceTree = "<group>"; };
 		D36B5CFA26D4740F0086DCAE /* RawScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawScrollViewController.swift; sourceTree = "<group>"; };
 		D36B5CFC26D475110086DCAE /* CGPoint+AnimateSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+AnimateSample.swift"; sourceTree = "<group>"; };
@@ -109,7 +110,6 @@
 		D3ACBC1026D719DE00DD3929 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		D3ACBC1226D71DCC00DD3929 /* ChartElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartElements.swift; sourceTree = "<group>"; };
 		D3CB391326B123F400812554 /* DigitScrollLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitScrollLayer.swift; sourceTree = "<group>"; };
-		D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailViewController.swift; sourceTree = "<group>"; };
 		D3E683B926B7E9640086FB35 /* TestExpandableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestExpandableCell.swift; sourceTree = "<group>"; };
 		D3F555E526CDDCF900C3A59A /* GridUXViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridUXViewController.swift; sourceTree = "<group>"; };
 		D3F555E826CDE5EB00C3A59A /* CGFloat+AnimateSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+AnimateSample.swift"; sourceTree = "<group>"; };
@@ -182,7 +182,6 @@
 			children = (
 				D3ACBC0F26D7117300DD3929 /* Chart */,
 				D378DA2826AF86BA00743BED /* ChartViewController.swift */,
-				D3E683B726B7E7820086FB35 /* TestDetailViewController.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -275,6 +274,7 @@
 		D364F4FF26A5489900357EAE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				D3684A0926E71878009A7336 /* Selector */,
 				D36849F626E701C5009A7336 /* Number */,
 				D36B5CF726D473B90086DCAE /* RawScrollView */,
 				D3F555E426CDDCDD00C3A59A /* GridUX */,
@@ -324,6 +324,14 @@
 				D3684A0126E71458009A7336 /* BarChartERBuilder.swift */,
 			);
 			path = ChartERBuilder;
+			sourceTree = "<group>";
+		};
+		D3684A0926E71878009A7336 /* Selector */ = {
+			isa = PBXGroup;
+			children = (
+				D3684A0A26E71885009A7336 /* SelectorViewController.swift */,
+			);
+			path = Selector;
 			sourceTree = "<group>";
 		};
 		D36B5CF726D473B90086DCAE /* RawScrollView */ = {
@@ -481,9 +489,9 @@
 				D3479A8F26A563500006340F /* Expandable.swift in Sources */,
 				D36B5CFB26D4740F0086DCAE /* RawScrollViewController.swift in Sources */,
 				D3CB391426B123F400812554 /* DigitScrollLayer.swift in Sources */,
+				D3684A0B26E71885009A7336 /* SelectorViewController.swift in Sources */,
 				D3A36FCA26AE6C0B00183BD3 /* HStackView.swift in Sources */,
 				D364F4F526A53A8400357EAE /* CitizenMinimumCell.swift in Sources */,
-				D3E683B826B7E7820086FB35 /* TestDetailViewController.swift in Sources */,
 				D364F4E026A529CC00357EAE /* SceneDelegate.swift in Sources */,
 				D3479A8D26A55A0D0006340F /* CitizenCollectionView.swift in Sources */,
 				D3684A0626E71458009A7336 /* LineChartERBuilder.swift in Sources */,

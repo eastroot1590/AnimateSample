@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
         TestViewControllerData(title: "숫자 애니메이션", viewController: NumberViewController()),
         TestViewControllerData(title: "그래프 애니메이션", viewController: ChartViewController()),
         TestViewControllerData(title: "그리드 UX", viewController: GridUXViewController()),
+        TestViewControllerData(title: "Selector", viewController: SelectorViewController())
     ]
 
     override func viewDidLoad() {

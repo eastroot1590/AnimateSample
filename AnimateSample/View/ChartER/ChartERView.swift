@@ -250,6 +250,10 @@ open class ChartERView: UIView {
     }
     
     private func updateSeries(animated: Bool) {
+        guard !series.values.isEmpty else {
+            return
+        }
+        
         let seriesPath = builder.seriesPath(in: chartFrame)
         
         if animated {
