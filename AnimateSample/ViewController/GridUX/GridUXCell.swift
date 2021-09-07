@@ -1,5 +1,5 @@
 //
-//  DragCell.swift
+//  GridUXCell.swift
 //  AnimateSample
 //
 //  Created by 이동근 on 2021/08/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DragCell: UICollectionViewCell {
+class GridUXCell: UICollectionViewCell {
     var index: Int = 0
     
     override init(frame: CGRect) {

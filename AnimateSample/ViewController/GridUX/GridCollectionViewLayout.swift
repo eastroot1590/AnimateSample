@@ -1,5 +1,5 @@
 //
-//  DynamicCollectionLayout.swift
+//  GridCollectionViewLayout.swift
 //  AnimateSample
 //
 //  Created by 이동근 on 2021/08/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DynamicCollectionLayout: UICollectionViewFlowLayout {
+class GridCollectionViewLayout: UICollectionViewFlowLayout {
     var originalIndexPath: IndexPath?
     var draggingIndexPath: IndexPath?
     
@@ -113,7 +113,7 @@ class DynamicCollectionLayout: UICollectionViewFlowLayout {
     func updateDragAtLocation(location: CGPoint) {
         guard let draggingView = draggingView,
               let cv = collectionView,
-              let dataSource = cv.dataSource as? CollectionDragViewController else {
+              let dataSource = cv.dataSource as? GridUXViewController else {
             return
         }
         

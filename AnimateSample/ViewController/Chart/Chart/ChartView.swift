@@ -1,5 +1,5 @@
 //
-//  ChartERView.swift
+//  ChartView.swift
 //  AnimateSample
 //
 //  Created by 이동근 on 2021/08/26.
@@ -9,7 +9,7 @@ import UIKit
 
 /// 차트를 표현하는 View
 /// TODO: 일단 LineChart를 만들고 나중에 추상화 시키자.
-class ChartERView: UIScrollView {
+class ChartView: UIScrollView {
     // 여백
     var chartInset: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     
@@ -24,7 +24,7 @@ class ChartERView: UIScrollView {
         return CGSize(width: width, height: height)
     }
     
-    var chartType: ChartERType = .curvedLine
+    var chartType: ChartType = .curvedLine
     
     // 보이는 값 개수
     var visibleValueCount: Int = 7
@@ -44,7 +44,7 @@ class ChartERView: UIScrollView {
     var xAxisHeight: CGFloat = 30
     
     // 데이터
-    private var elements: ChartERElements = .empty
+    private var elements: ChartElements = .empty
     private var elementsNames: [String] = []
     
     var visibleValues: [Float] = []
@@ -145,7 +145,7 @@ class ChartERView: UIScrollView {
         chartPointLayer.path = pointPath.cgPath
     }
     
-    func setElements(_ elements: ChartERElements) {
+    func setElements(_ elements: ChartElements) {
         guard let currentMinValue = elements.values.min(),
               let currentMaxValue = elements.values.max() else {
             return
@@ -337,7 +337,7 @@ class ChartERView: UIScrollView {
     }
 }
 
-extension ChartERView: UIScrollViewDelegate {
+extension ChartView: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         var virtualIndex = Int(((targetContentOffset.pointee.x - chartInset.left) / spacingInterValues).rounded())
         virtualIndex = max(min(virtualIndex, elements.values.count - 1), 0)

@@ -1,5 +1,5 @@
 //
-//  CollectionDragViewController.swift
+//  GridUXViewController.swift
 //  AnimateSample
 //
 //  Created by 이동근 on 2021/08/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectionDragViewController: UIViewController {
+class GridUXViewController: UIViewController {
     var collectionView: UICollectionView!
     
     let completeButton = UIButton()
@@ -17,10 +17,7 @@ class CollectionDragViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.setNavigationBarHidden(true, animated: false)
-
-        let layout = DynamicCollectionLayout()
-//        layout.itemSize = CGSize(width: 100, height: 100)
+        let layout = GridCollectionViewLayout()
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.minimumInteritemSpacing = 5
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
@@ -29,12 +26,10 @@ class CollectionDragViewController: UIViewController {
         } else {
             collectionView.backgroundColor = .white
         }
-        collectionView.register(DragCell.self, forCellWithReuseIdentifier: "CellTypeA")
+        collectionView.register(GridUXCell.self, forCellWithReuseIdentifier: "CellTypeA")
         collectionView.backgroundColor = .gray
         collectionView.dragInteractionEnabled = false
-//        collectionView.dragDelegate = self
         collectionView.contentMode = .left
-//        collectionView.dropDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleTopMargin]
@@ -80,7 +75,7 @@ class CollectionDragViewController: UIViewController {
         print("app enter background")
         
         collectionView.visibleCells.forEach { cell in
-            guard let dragCell = cell as? DragCell else {
+            guard let dragCell = cell as? GridUXCell else {
                 return
             }
             
@@ -93,7 +88,7 @@ class CollectionDragViewController: UIViewController {
     
     @objc func handleTouch(longPress: UILongPressGestureRecognizer) {
         guard !collectionView.dragInteractionEnabled else {
-            if let dynamicLayout = collectionView.collectionViewLayout as? DynamicCollectionLayout {
+            if let dynamicLayout = collectionView.collectionViewLayout as? GridCollectionViewLayout {
                 dynamicLayout.handleDragInput(longPress.state, location: longPress.location(in: collectionView))
             }
             return
@@ -103,7 +98,7 @@ class CollectionDragViewController: UIViewController {
         
         var i: Int = 0
         collectionView.visibleCells.forEach { cell in
-            guard let dragCell = cell as? DragCell else {
+            guard let dragCell = cell as? GridUXCell else {
                 return
             }
             dragCell.shake(i % 2 == 0 ? -1 : 1)
@@ -118,7 +113,7 @@ class CollectionDragViewController: UIViewController {
         print("edit end")
         
         collectionView.visibleCells.forEach { cell in
-            guard let dragCell = cell as? DragCell else {
+            guard let dragCell = cell as? GridUXCell else {
                 return
             }
             
@@ -136,13 +131,13 @@ class CollectionDragViewController: UIViewController {
 }
 
 // MARK: UICollectionViewDelegate, UICollectionViewDataSource
-extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
+extension GridUXViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         cellInfo.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellTypeA", for: indexPath) as! DragCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellTypeA", for: indexPath) as! GridUXCell
         
         cell.backgroundColor = cellInfo[indexPath.item].color
         if collectionView.dragInteractionEnabled {
@@ -155,7 +150,7 @@ extension CollectionDragViewController: UICollectionViewDelegateFlowLayout, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let dragCell = cell as? DragCell else {
+        guard let dragCell = cell as? GridUXCell else {
             return
         }
         

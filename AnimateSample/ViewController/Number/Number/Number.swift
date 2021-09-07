@@ -134,6 +134,7 @@ class Number: UIView {
         
         // layout
         fontChanged()
+        numberChanged()
     }
     
     required init?(coder: NSCoder) {

@@ -8,7 +8,7 @@
 import UIKit
 
 /// 주민 상세정보 화면
-class CitizenDetailViewController: UIViewController, TransitioningInteractable {
+class CellSpreadDetailViewController: UIViewController, TransitioningInteractable {
     /// 상세 정보 view
     var detailForm: CitizenDetailForm!
     
