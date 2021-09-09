@@ -80,7 +80,8 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout {
     func startDragAtLocation(location: CGPoint) {
         guard let cv = collectionView,
               let indexPath = cv.indexPathForItem(at: location),
-              let cell = cv.cellForItem(at: indexPath) else {
+              let cell = cv.cellForItem(at: indexPath),
+              let copiedView = cell.snapshotView(afterScreenUpdates: false) else {
             return
         }
         
@@ -88,8 +89,8 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout {
         draggingIndexPath = indexPath
         
         
-        let copiedView = UIView()
-        copiedView.frame = cell.frame
+        copiedView.center = cell.center
+//        copiedView.frame = cell.frame.applying(CGAffineTransform(scaleX: 1.2, y: 1.2))
         copiedView.backgroundColor = cell.backgroundColor
         cv.addSubview(copiedView)
         
@@ -104,10 +105,10 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout {
         invalidateLayout()
         
         // don't use animation
-//        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: [], animations: {
-//            self.draggingView?.alpha = 0.95
-//            self.draggingView?.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-//        }, completion: nil)
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: [], animations: {
+            self.draggingView?.alpha = 0.95
+            self.draggingView?.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }, completion: nil)
     }
     
     func updateDragAtLocation(location: CGPoint) {

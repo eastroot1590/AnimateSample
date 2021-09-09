@@ -47,21 +47,14 @@ class GridUXViewController: UIViewController {
         
         completeButton.isHidden = true
         
-        for _ in 0 ..< 50 {
-            let color = UIColor(red: 0.5 + CGFloat.random(in: 0 ... 0.5), green: 0.5 + CGFloat.random(in: 0 ... 0.5), blue: 0.5 + CGFloat.random(in: 0 ... 0.5), alpha: 1)
-            cellInfo.append(DragCellInfo(color: color, size: .small))
+        if let storedCellInfo = AnimateSampleUserDefault.shared.getValue(forKey: .gridCellInfo),
+           let infoData = storedCellInfo.data(using: .utf8) {
+            if let decodedCellInfo = try? JSONDecoder().decode([DragCellInfo].self, from: infoData) {
+                cellInfo = decodedCellInfo
+            }
+        } else {
+            initializeDefaultCellInfo()
         }
-        
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 4)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 13)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 17)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 29)
-        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 41)
-        
-        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 5)
-        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 16)
-        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 21)
-        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 6)
         
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTouch))
         recognizer.minimumPressDuration = 0.3
@@ -112,6 +105,13 @@ class GridUXViewController: UIViewController {
     @objc func cancel() {
         print("edit end")
         
+        // store current cell info
+        
+        if let encodedData = try? JSONEncoder().encode(cellInfo),
+           let cellInfoString = String(data: encodedData, encoding: .utf8) {
+            AnimateSampleUserDefault.shared.setValue(cellInfoString, forKey: .gridCellInfo)
+        }
+        
         collectionView.visibleCells.forEach { cell in
             guard let dragCell = cell as? GridUXCell else {
                 return
@@ -122,6 +122,24 @@ class GridUXViewController: UIViewController {
         
         completeButton.isHidden = true
         collectionView.dragInteractionEnabled = false
+    }
+    
+    func initializeDefaultCellInfo() {
+        for _ in 0 ..< 50 {
+            let color = UIColor(red: 0.5 + CGFloat.random(in: 0 ... 0.5), green: 0.5 + CGFloat.random(in: 0 ... 0.5), blue: 0.5 + CGFloat.random(in: 0 ... 0.5), alpha: 1)
+            cellInfo.append(DragCellInfo(color: color, size: .small))
+        }
+        
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 4)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 13)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 17)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 29)
+        cellInfo.insert(DragCellInfo(color: .systemRed, size: .medium), at: 41)
+        
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 5)
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 16)
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 21)
+        cellInfo.insert(DragCellInfo(color: .systemGreen, size: .large), at: 6)
     }
     
     func minColumn(_ what: CGFloat) -> CGFloat {

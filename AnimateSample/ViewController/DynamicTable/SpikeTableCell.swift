@@ -26,7 +26,7 @@ class SpikeTableCell: UITableViewCell {
         stack.addArrangedSubview(titleLabel)
         
         subtitleLabel.numberOfLines = 0
-        subtitleLabel.text = "subtitle\nlongsubtitle"
+        subtitleLabel.text = "subtitle\nlongsubtitle\nasdfsad\nasdfsdf\nasfasdge"
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(subtitleLabel)
         
@@ -34,9 +34,7 @@ class SpikeTableCell: UITableViewCell {
             stack.topAnchor.constraint(equalTo: contentView.topAnchor),
             stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            stack.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -10),
-            stack.bottomAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 10)
+            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     
