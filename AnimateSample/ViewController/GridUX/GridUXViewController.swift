@@ -48,10 +48,9 @@ class GridUXViewController: UIViewController {
         completeButton.isHidden = true
         
         if let storedCellInfo = AnimateSampleUserDefault.shared.getValue(forKey: .gridCellInfo),
-           let infoData = storedCellInfo.data(using: .utf8) {
-            if let decodedCellInfo = try? JSONDecoder().decode([DragCellInfo].self, from: infoData) {
-                cellInfo = decodedCellInfo
-            }
+           let infoData = storedCellInfo.data(using: .utf8),
+           let decodedCellInfo = try? JSONDecoder().decode([DragCellInfo].self, from: infoData) {
+            cellInfo = decodedCellInfo
         } else {
             initializeDefaultCellInfo()
         }
